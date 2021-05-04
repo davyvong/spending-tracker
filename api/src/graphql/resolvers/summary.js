@@ -5,15 +5,12 @@ import { getDateStringFromMoment, getMonthStringFromMoment } from 'utils/date';
 export default {
   Query: {
     dailySpending: async (parent, args, context) => {
-      if (!args.currency) {
-        throw new BadRequest();
-      }
       const startDate = moment(args.startDate, 'YYYY-MM-DD', true);
-      if (!args.startDate || !startDate.isValid()) {
+      if (!startDate.isValid()) {
         throw new BadRequest();
       }
       const endDate = moment(args.endDate, 'YYYY-MM-DD', true);
-      if (!args.endDate || !endDate.isValid()) {
+      if (!endDate.isValid()) {
         throw new BadRequest();
       }
       const countOfDays = endDate.diff(startDate, 'days');
@@ -55,15 +52,12 @@ export default {
       return Object.values(dailySpending);
     },
     monthlySpending: async (parent, args, context) => {
-      if (!args.currency) {
-        throw new BadRequest();
-      }
       const startDate = moment(args.startDate, 'YYYY-MM', true);
-      if (!args.startDate || !startDate.isValid()) {
+      if (!startDate.isValid()) {
         throw new BadRequest();
       }
       const endDate = moment(args.endDate, 'YYYY-MM', true);
-      if (!args.endDate || !endDate.isValid()) {
+      if (!endDate.isValid()) {
         throw new BadRequest();
       }
       const countOfMonths = endDate.diff(startDate, 'months');

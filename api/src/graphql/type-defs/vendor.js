@@ -1,5 +1,5 @@
 export default `
   type Query {
-    vendors(name: String): [String]
+    vendors(name: String!): [String]
   }
 `;

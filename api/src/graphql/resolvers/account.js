@@ -1,4 +1,4 @@
-import { BadRequest, Unauthorized } from 'http-errors';
+import { Unauthorized } from 'http-errors';
 import jwt from 'jsonwebtoken';
 import { getCurrentTimestamp } from 'utils/date';
 import { createPassword, verifyPassword } from 'utils/password';
@@ -6,9 +6,6 @@ import { createPassword, verifyPassword } from 'utils/password';
 export default {
   Mutation: {
     login: async (parent, args, context) => {
-      if (!args.email || !args.password) {
-        throw new BadRequest();
-      }
       const account = await context.dataSources.account.model.findOne({ email: args.email });
       if (!account) {
         throw new Unauthorized();
@@ -24,9 +21,6 @@ export default {
       });
     },
     updateAccount: async (parent, args, context) => {
-      if (!args.data) {
-        throw BadRequest();
-      }
       await context.dataSources.account.model.findOneAndUpdate(
         { _id: context.accountId },
         { ...args.data, updateTime: getCurrentTimestamp() },
@@ -34,9 +28,6 @@ export default {
       return context.dataSources.account.findOneById(context.accountId);
     },
     updatePassword: async (parent, args, context) => {
-      if (!args.oldPassword || !args.newPassword) {
-        throw new BadRequest();
-      }
       const account = await context.dataSources.account.findOneById(context.accountId);
       if (!account) {
         throw new Unauthorized();
@@ -45,12 +36,16 @@ export default {
       if (!verifiedPassword) {
         throw new Unauthorized();
       }
-      const passwordHash = await createPassword(args.newPassword);
-      await context.dataSources.account.model.findOneAndUpdate(
-        { _id: context.accountId },
-        { passwordHash, updateTime: getCurrentTimestamp() },
-      );
-      return true;
+      try {
+        const passwordHash = await createPassword(args.newPassword);
+        await context.dataSources.account.model.findOneAndUpdate(
+          { _id: context.accountId },
+          { passwordHash, updateTime: getCurrentTimestamp() },
+        );
+        return true;
+      } catch (error) {
+        return false;
+      }
     },
   },
   Query: {
