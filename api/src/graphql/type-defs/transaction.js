@@ -7,7 +7,7 @@ export default `
 
   type Query {
     transaction(id: ID!): Transaction
-    transactions(cardId: ID, categoryId: ID, page: Page): [Transaction]
+    transactions(filters: TransactionFilters, page: Page): [Transaction]
   }
 
   type Transaction {
@@ -20,6 +20,11 @@ export default `
     postTime: String
     type: String
     vendor: String
+  }
+
+  input TransactionFilters {
+    cardId: ID
+    categoryId: ID
   }
 
   input CreateTransactionData {

@@ -73,5 +73,5 @@ import pkg from '../package.json';
   app.use(compression());
 
   await new Promise(resolve => app.listen(process.env.SERVER_PORT, resolve));
-  console.log(`${pkg.name} v${pkg.version} is running on http://localhost:${process.env.SERVER_PORT}/`);
+  console.log(`${pkg.name} running on http://localhost:${process.env.SERVER_PORT}/`);
 })();

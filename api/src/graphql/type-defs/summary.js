@@ -1,7 +1,7 @@
 export default `
   type Query {
-    dailySpending(startDate: String!, endDate: String!, currency: String!): [Spending]
-    monthlySpending(startDate: String!, endDate: String!, currency: String!): [Spending]
+    dailySpending(startDate: String!, endDate: String!): [Spending]
+    monthlySpending(startDate: String!, endDate: String!): [Spending]
   }
 
   type Spending {

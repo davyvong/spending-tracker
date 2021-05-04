@@ -1,6 +1,6 @@
 export default `
   type Query {
-    category(id: ID, name: String): Category
+    category(id: ID!): Category
     categories(page: Page): [Category]
   }
 

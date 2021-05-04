@@ -39,11 +39,14 @@ export default {
       const query = {
         accountId: context.accountId,
       };
-      if (args.cardId) {
-        query.cardId = args.cardId;
-      }
-      if (args.categoryId) {
-        query.categoryId = args.categoryId;
+      if (args.filters) {
+        const { cardId, categoryId } = args.filters;
+        if (cardId) {
+          query.cardId = cardId;
+        }
+        if (categoryId) {
+          query.categoryId = categoryId;
+        }
       }
       const options = buildFindOptions(args);
       return context.dataSources.transaction.model.find(query, null, options);
