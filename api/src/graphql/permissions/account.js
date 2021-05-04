@@ -3,11 +3,11 @@ import { allow } from 'graphql-shield';
 
 export default {
   Mutation: {
-    login: allow,
     updateAccount: authenticated,
     updatePassword: authenticated,
   },
   Query: {
-    me: authenticated,
+    account: authenticated,
+    login: allow,
   },
 };

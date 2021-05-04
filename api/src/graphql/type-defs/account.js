@@ -1,12 +1,12 @@
 export default `
   type Mutation {
-    login(email: String!, password: String!): String
     updateAccount(data: UpdateAccountData!): Account
     updatePassword(oldPassword: String!, newPassword: String!): Boolean
   }
 
   type Query {
-    me: Account
+    account: Account
+    login(email: String!, password: String!): String
   }
 
   type Account {

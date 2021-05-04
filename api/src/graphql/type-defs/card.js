@@ -1,8 +1,8 @@
 export default `
   type Mutation {
     createCard(data: CreateCardData!): Card
-    updateCard(id: ID!, data: UpdateCardData!): Card
     deleteCard(id: ID!): Boolean
+    updateCard(id: ID!, data: UpdateCardData!): Card
   }
 
   type Query {

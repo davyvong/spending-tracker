@@ -5,21 +5,6 @@ import { createPassword, verifyPassword } from 'utils/password';
 
 export default {
   Mutation: {
-    login: async (parent, args, context) => {
-      const account = await context.dataSources.account.model.findOne({ email: args.email });
-      if (!account) {
-        throw new Unauthorized();
-      }
-      const verifiedPassword = await verifyPassword(args.password, account.get('passwordHash'));
-      if (!verifiedPassword) {
-        throw new Unauthorized();
-      }
-      return jwt.sign({}, process.env.JWT_SECRET, {
-        algorithm: 'HS256',
-        expiresIn: '7d',
-        subject: account.id,
-      });
-    },
     updateAccount: async (parent, args, context) => {
       await context.dataSources.account.model.findOneAndUpdate(
         { _id: context.accountId },
@@ -49,8 +34,23 @@ export default {
     },
   },
   Query: {
-    me: async (parent, args, context) => {
+    account: async (parent, args, context) => {
       return context.dataSources.account.findOneById(context.accountId);
+    },
+    login: async (parent, args, context) => {
+      const account = await context.dataSources.account.model.findOne({ email: args.email });
+      if (!account) {
+        throw new Unauthorized();
+      }
+      const verifiedPassword = await verifyPassword(args.password, account.get('passwordHash'));
+      if (!verifiedPassword) {
+        throw new Unauthorized();
+      }
+      return jwt.sign({}, process.env.JWT_SECRET, {
+        algorithm: 'HS256',
+        expiresIn: '7d',
+        subject: account.id,
+      });
     },
   },
 };
