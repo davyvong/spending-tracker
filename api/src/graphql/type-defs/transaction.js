@@ -1,7 +1,7 @@
 export default `
   type Query {
     transaction(id: ID!): Transaction
-    transactions(cardId: ID, page: Page): [Transaction]
+    transactions(cardId: ID, categoryId: ID, page: Page): [Transaction]
   }
 
   type Transaction {

@@ -6,7 +6,9 @@ export default {
       return context.dataSources.card.findOneById(args.id);
     },
     cards: async (parent, args, context) => {
-      const query = {};
+      const query = {
+        accountId: context.accountId,
+      };
       if (args.type) {
         query.type = args.type;
       }

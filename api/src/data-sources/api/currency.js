@@ -23,7 +23,7 @@ export default class CurrencyDataSource extends DataSource {
     return exchangeRates;
   }
 
-  async convertCurrency(transactions, currency) {
+  async convert(transactions, currency) {
     const convertedTransactions = [];
     for (let i = 0; i < transactions.length; i++) {
       const transaction = transactions[i];
