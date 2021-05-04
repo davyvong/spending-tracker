@@ -1,0 +1,10 @@
+# Expo	
+.expo/
+.expo-shared/README.md
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/

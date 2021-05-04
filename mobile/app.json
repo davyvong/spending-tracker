@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Budget",
+    "orientation": "portrait",
+    "privacy": "unlisted",
+    "slug": "budget",
+    "version": "0.1.0",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": ["**/*"],
+    "entryPoint": "./app/entry.js",
+    "icon": "./app/assets/icon.png",
+    "android": {
+      "package": "com.davyvong.budget"
+    },
+    "ios": {
+      "bundleIdentifier": "com.davyvong.budget",
+      "supportsTablet": true
+    },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": ["expo.ts", "expo.tsx", "expo.js", "expo.jsx", "ts", "tsx", "js", "jsx", "json", "wasm", "svg"]
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    }
+  }
+}

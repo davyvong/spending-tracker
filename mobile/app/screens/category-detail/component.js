@@ -1,0 +1,64 @@
+import Header from 'components/header';
+import Title from 'components/title';
+import TransactionList from 'components/transaction-list';
+import TransactionModal from 'components/transaction-modal';
+import Category from 'models/category';
+import Transaction from 'models/transaction';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { View } from 'react-native';
+
+import styles from './styles';
+
+const CategoryDetailScreenComponent = ({
+  category,
+  getTransactions,
+  getTransactionsWithoutLoading,
+  navigateToEditTransaction,
+  pending,
+  selectedTransaction,
+  setSelectedTransaction,
+  skip,
+  transactions,
+}) => (
+  <View style={styles.container}>
+    <Header>
+      <Title>{category.name}</Title>
+    </Header>
+    <TransactionList
+      onEndReached={() => getTransactionsWithoutLoading(skip)}
+      onPressItem={setSelectedTransaction}
+      onRefresh={getTransactions}
+      refreshing={pending}
+      sections={transactions}
+    />
+    <TransactionModal
+      onClose={() => setSelectedTransaction(null)}
+      onEdit={navigateToEditTransaction}
+      transaction={selectedTransaction}
+    />
+  </View>
+);
+
+CategoryDetailScreenComponent.defaultProps = {
+  transactions: [],
+};
+
+CategoryDetailScreenComponent.propTypes = {
+  category: PropTypes.instanceOf(Category),
+  getTransactions: PropTypes.func.isRequired,
+  getTransactionsWithoutLoading: PropTypes.func.isRequired,
+  navigateToEditTransaction: PropTypes.func.isRequired,
+  pending: PropTypes.bool,
+  selectedTransaction: PropTypes.instanceOf(Transaction),
+  setSelectedTransaction: PropTypes.func.isRequired,
+  skip: PropTypes.number.isRequired,
+  transactions: PropTypes.arrayOf(
+    PropTypes.shape({
+      data: PropTypes.arrayOf(PropTypes.instanceOf(Transaction)).isRequired,
+      section: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
+
+export default CategoryDetailScreenComponent;

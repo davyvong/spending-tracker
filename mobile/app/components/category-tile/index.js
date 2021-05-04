@@ -1,0 +1,30 @@
+import useTheme from 'hooks/theme';
+import Category from 'models/category';
+import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
+
+import CategoryTileComponent from './component';
+
+const CategoryTile = ({ category, ...props }) => {
+  const { palette } = useTheme();
+
+  const theme = useMemo(
+    () => ({
+      categoryTile: {
+        backgroundColor: palette.get('inputBackground'),
+      },
+      categoryTileName: {
+        color: palette.get('primaryText'),
+      },
+    }),
+    [palette],
+  );
+
+  return <CategoryTileComponent {...props} category={category} theme={theme} />;
+};
+
+CategoryTile.propTypes = {
+  category: PropTypes.instanceOf(Category).isRequired,
+};
+
+export default CategoryTile;

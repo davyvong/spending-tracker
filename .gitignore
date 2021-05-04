@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Editors
+.vscode/
+
+# Environment
+.env
+
+# Logs
+*.log
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
