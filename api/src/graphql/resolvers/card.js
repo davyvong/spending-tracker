@@ -9,6 +9,9 @@ export default {
       const query = {
         accountId: context.accountId,
       };
+      if (!args.page) {
+        return context.dataSources.card.model.find(query);
+      }
       if (args.type) {
         query.type = args.type;
       }
