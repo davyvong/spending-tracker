@@ -1,4 +1,6 @@
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
+import { getCardType } from 'utils/card';
+import { isEmpty } from 'validator';
 
 export default new Schema(
   {
@@ -7,14 +9,23 @@ export default new Schema(
       ref: 'Account',
       required: true,
       type: Schema.Types.ObjectId,
+      validate: {
+        validator: value => Types.ObjectId.isValid(value),
+      },
     },
     color: {
       required: true,
       type: String,
+      validate: {
+        validator: value => !isEmpty(value),
+      },
     },
     company: {
       required: true,
       type: String,
+      validate: {
+        validator: value => !isEmpty(value),
+      },
     },
     createTime: {
       required: true,
@@ -23,11 +34,17 @@ export default new Schema(
     name: {
       required: true,
       type: String,
+      validate: {
+        validator: value => !isEmpty(value),
+      },
     },
     type: {
       index: true,
       required: true,
       type: String,
+      validate: {
+        validator: value => !isEmpty(value) || getCardType(value),
+      },
     },
     updateTime: {
       required: true,
