@@ -1,5 +1,5 @@
-import { buildFindOptions } from 'mongoose/utils';
 import { getCurrentTimestamp } from 'utils/date';
+import { buildFindOptions } from 'utils/mongo';
 
 export default {
   Mutation: {

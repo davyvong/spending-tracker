@@ -1,5 +1,5 @@
 import { BadRequest } from 'http-errors';
-import { buildFindOptions } from 'mongoose/utils';
+import { buildFindOptions } from 'utils/mongo';
 
 export default {
   Query: {
