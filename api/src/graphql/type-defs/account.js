@@ -1,7 +1,8 @@
 export default `
   type Mutation {
     login(email: String, password: String): String
-    changePassword(oldPassword: String, newPassword: String): Boolean
+    updateAccount(data: UpdateAccountData): Account
+    updatePassword(oldPassword: String, newPassword: String): Boolean
   }
 
   type Query {
@@ -12,6 +13,13 @@ export default `
     email: String
     firstName: String
     id: ID!
+    lastName: String
+    preferredCurrency: String
+  }
+
+  input UpdateAccountData {
+    email: String
+    firstName: String
     lastName: String
     preferredCurrency: String
   }

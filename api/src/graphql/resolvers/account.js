@@ -1,6 +1,7 @@
 import { BadRequest, Unauthorized } from 'http-errors';
 import jwt from 'jsonwebtoken';
 import { getCurrentTimestamp } from 'utils/date';
+import { createPassword, verifyPassword } from 'utils/password';
 
 export default {
   Mutation: {
@@ -12,10 +13,7 @@ export default {
       if (!account) {
         throw new Unauthorized();
       }
-      const verifiedPassword = await context.dataSources.account.verifyPassword(
-        args.password,
-        account.get('passwordHash'),
-      );
+      const verifiedPassword = await verifyPassword(args.password, account.get('passwordHash'));
       if (!verifiedPassword) {
         throw new Unauthorized();
       }
@@ -25,7 +23,17 @@ export default {
         subject: account.id,
       });
     },
-    changePassword: async (parent, args, context) => {
+    updateAccount: async (parent, args, context) => {
+      if (!args.data) {
+        throw BadRequest();
+      }
+      await context.dataSources.account.model.findOneAndUpdate(
+        { _id: context.accountId },
+        { ...args.data, updateTime: getCurrentTimestamp() },
+      );
+      return context.dataSources.account.findOneById(context.accountId);
+    },
+    updatePassword: async (parent, args, context) => {
       if (!args.oldPassword || !args.newPassword) {
         throw new BadRequest();
       }
@@ -33,14 +41,11 @@ export default {
       if (!account) {
         throw new Unauthorized();
       }
-      const verifiedPassword = await context.dataSources.account.verifyPassword(
-        args.oldPassword,
-        account.get('passwordHash'),
-      );
+      const verifiedPassword = await verifyPassword(args.oldPassword, account.get('passwordHash'));
       if (!verifiedPassword) {
         throw new Unauthorized();
       }
-      const passwordHash = await context.dataSources.account.createPassword(args.newPassword);
+      const passwordHash = await createPassword(args.newPassword);
       await context.dataSources.account.model.findOneAndUpdate(
         { _id: context.accountId },
         { passwordHash, updateTime: getCurrentTimestamp() },
