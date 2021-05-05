@@ -5,8 +5,8 @@ export default `
   }
 
   type Query {
-    account: Account
-    login(email: String!, password: String!): String
+    account: Account!
+    login(email: String!, password: String!): String!
   }
 
   type Account {

@@ -38,7 +38,9 @@ export default {
       return context.dataSources.account.findOneById(context.accountId);
     },
     login: async (parent, args, context) => {
-      const account = await context.dataSources.account.model.findOne({ email: args.email });
+      const account = await context.dataSources.account.model.findOne({
+        email: args.email.toLowerCase(),
+      });
       if (!account) {
         throw new Unauthorized();
       }
