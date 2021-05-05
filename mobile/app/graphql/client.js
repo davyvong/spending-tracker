@@ -4,7 +4,7 @@ import moment from 'moment-timezone';
 import SecureJWT from 'storage/jwt';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3000/graphql',
+  uri: 'http://192.168.0.24:3000/graphql',
 });
 
 const authLink = setContext(async (request, context) => {

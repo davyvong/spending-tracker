@@ -121,7 +121,7 @@ export const APIProvider = ({ children }) => {
       });
       checkErrors(errors);
       const dailySpending = {};
-      data.getDailySpending.forEach(spending => {
+      data.dailySpending.forEach(spending => {
         dailySpending[spending.date] = spending;
       });
       updateCache(prevState => {
