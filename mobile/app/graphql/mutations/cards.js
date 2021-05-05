@@ -20,7 +20,7 @@ export const deleteCard = gql`
 
 export const updateCard = gql`
   mutation($id: ID!, $data: UpdateCardData!) {
-    updateCard(id: ID!, data: $data) {
+    updateCard(id: $id, data: $data) {
       color
       company
       name
