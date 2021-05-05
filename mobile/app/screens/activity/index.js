@@ -59,6 +59,13 @@ const ActivityScreen = ({ navigation, ...props }) => {
     return Object.values(transactionMap);
   }, [cache.transactionsById, transactions]);
 
+  const getDailySpending = useCallback(() => {
+    const tempDate = moment();
+    const endDate = tempDate.format('YYYY-MM-DD');
+    const startDate = tempDate.subtract(6, 'days').format('YYYY-MM-DD');
+    return api.getDailySpending(startDate, endDate);
+  }, [api.getDailySpending]);
+
   const getTransactionsWithoutLoading = useCallback(
     async skip => {
       try {
@@ -79,10 +86,10 @@ const ActivityScreen = ({ navigation, ...props }) => {
     async skip => {
       setPending(true);
       await getTransactionsWithoutLoading(skip);
-      await api.getDailySpending().catch(console.error);
+      await getDailySpending().catch(console.error);
       setPending(false);
     },
-    [api.getTransactions],
+    [getDailySpending, getTransactionsWithoutLoading],
   );
 
   const navigateToCreateTransaction = useCallback(() => {
@@ -100,12 +107,12 @@ const ActivityScreen = ({ navigation, ...props }) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getTransactionsWithoutLoading();
-      api.getDailySpending().catch(console.error);
+      getDailySpending().catch(console.error);
     });
     return () => {
       unsubscribe();
     };
-  }, [api.getDailySpending, getTransactionsWithoutLoading, navigation]);
+  }, [getDailySpending, getTransactionsWithoutLoading, navigation]);
 
   return (
     <ActivityScreenComponent

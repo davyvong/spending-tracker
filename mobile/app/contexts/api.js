@@ -14,7 +14,7 @@ import Category from 'models/category';
 import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
 import React, { createContext, useCallback } from 'react';
-import { setJWT } from 'storage/jwt';
+import SecureJWT from 'storage/jwt';
 
 const APIContext = createContext({});
 
@@ -79,8 +79,8 @@ export const APIProvider = ({ children }) => {
   );
 
   const getAccount = useCallback(async () => {
-    const { data, errors } = await client.mutate({
-      mutation: accountQueries.account,
+    const { data, errors } = await client.query({
+      query: accountQueries.account,
     });
     checkErrors(errors);
     const account = new Account(data.account);
@@ -258,7 +258,7 @@ export const APIProvider = ({ children }) => {
         variables: { email, password },
       });
       checkErrors(errors);
-      await setJWT(data.login);
+      await SecureJWT.set(data.login);
     },
     [client],
   );
