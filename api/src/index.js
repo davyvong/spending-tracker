@@ -63,7 +63,10 @@ import pkg from '../package.json';
   });
 
   await server.start();
-  server.applyMiddleware({ app });
+  server.applyMiddleware({
+    app,
+    path: process.env.SERVER_PREFIX ? `/${process.env.SERVER_PREFIX}/graphql` : '/graphql',
+  });
 
   app.get('*', () => {
     throw new NotFound();
