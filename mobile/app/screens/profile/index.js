@@ -1,4 +1,4 @@
-import { getApolloClient } from 'graphql/client';
+import { useApolloClient } from '@apollo/client';
 import useAPI from 'hooks/api';
 import useAuthentication from 'hooks/authentication';
 import useCache from 'hooks/cache';
@@ -12,6 +12,7 @@ import ProfileScreenComponent from './component';
 
 const ProfileScreen = ({ navigation, ...props }) => {
   const api = useAPI();
+  const client = useApolloClient();
   const [, setIsLoggedIn] = useAuthentication();
   const [cache] = useCache();
   const { palette } = useTheme();
@@ -31,9 +32,9 @@ const ProfileScreen = ({ navigation, ...props }) => {
 
   const logout = useCallback(async () => {
     await SecureJWT.delete();
-    getApolloClient().resetStore();
+    client.resetStore();
     setIsLoggedIn(false);
-  }, [setIsLoggedIn]);
+  }, [client, setIsLoggedIn]);
 
   const closeLogoutDialog = useCallback(() => {
     setLogoutDialog(false);

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const dailySpending = gql`
-  query($startDate: String!, $endDate: String!, filters: SpendingFilter) {
+  query($startDate: String!, $endDate: String!, $filters: SpendingFilter) {
     dailySpending(startDate: $startDate, endDate: $endDate, filters: $filters) {
       credit
       currencyCode
@@ -12,7 +12,7 @@ export const dailySpending = gql`
 `;
 
 export const monthlySpending = gql`
-  query($startDate: String!, $endDate: String!) {
+  query($startDate: String!, $endDate: String!, $filters: SpendingFilter) {
     monthlySpending(startDate: $startDate, endDate: $endDate, filters: $filters) {
       credit
       currencyCode

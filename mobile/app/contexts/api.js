@@ -14,7 +14,7 @@ import Category from 'models/category';
 import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
 import React, { createContext, useCallback } from 'react';
-import SecureJWT from 'storage/jwt';
+import { setJWT } from 'storage/jwt';
 
 const APIContext = createContext({});
 
@@ -258,7 +258,7 @@ export const APIProvider = ({ children }) => {
         variables: { email, password },
       });
       checkErrors(errors);
-      await SecureJWT.set(data.login);
+      await setJWT(data.login);
     },
     [client],
   );

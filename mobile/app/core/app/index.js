@@ -21,7 +21,7 @@ const App = () => {
       setIsLoggedIn(Boolean(jwt));
       setIsReady(true);
     });
-  }, [cache.rehydrate, setIsLoggedIn]);
+  }, []);
 
   const statusBar = useMemo(() => (name === themeModes.light ? 'dark' : 'light'), [name]);
 
