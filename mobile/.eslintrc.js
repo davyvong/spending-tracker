@@ -9,7 +9,7 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ['plugin:react/recommended', 'prettier'],
+  extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended', 'prettier'],
   parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: { jsx: true },
@@ -28,6 +28,7 @@ module.exports = {
     'react/jsx-first-prop-new-line': ['error', 'multiline'],
     'react/jsx-fragments': ['warn', 'element'],
     'react/jsx-uses-vars': 'error',
+    'react-hooks/exhaustive-deps': 'off',
   },
   settings: {
     'import/resolver': {

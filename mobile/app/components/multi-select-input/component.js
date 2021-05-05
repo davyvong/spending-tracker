@@ -43,7 +43,7 @@ const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...
       nextValue += option.value;
       setTempValue(nextValue);
     },
-    [options, tempValue],
+    [tempValue],
   );
 
   const onDeselect = useCallback(
@@ -55,13 +55,13 @@ const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...
         setTempValue(split.join(','));
       }
     },
-    [options, tempValue],
+    [tempValue],
   );
 
   const onApply = useCallback(() => {
     onChange(tempValue);
     closeModal();
-  }, [onChange, tempValue]);
+  }, [closeModal, onChange, tempValue]);
 
   const renderOption = useCallback(
     ({ item: option = {} }) => {
@@ -75,7 +75,7 @@ const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...
         </TouchableOpacity>
       );
     },
-    [options, tempValue],
+    [onDeselect, onSelect, optionByValue, theme],
   );
 
   const prettifiedValue = useMemo(() => {
@@ -95,11 +95,11 @@ const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...
         }
         return values;
       }, '');
-  }, [options, value]);
+  }, [optionByValue, value]);
 
   const getCancelButtonStyle = useCallback(
     ({ pressed }) => (pressed ? [styles.button, theme.cancelButtonPressed] : [styles.button, theme.cancelButton]),
-    [],
+    [theme],
   );
 
   return (

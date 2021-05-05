@@ -1,4 +1,5 @@
-import { searchVendors } from 'apis/vendors';
+import { useApolloClient } from '@apollo/client';
+import * as vendorQueries from 'graphql/queries/vendors';
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -6,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import VendorAutoCompleteComponent from './component';
 
 const VendorAutoComplete = ({ onChange, value, ...props }) => {
+  const client = useApolloClient();
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -30,10 +32,13 @@ const VendorAutoComplete = ({ onChange, value, ...props }) => {
 
   const getSuggestions = useCallback(async () => {
     if (value) {
-      const searchResults = await searchVendors(value);
-      if (Array.isArray(searchResults)) {
-        setSuggestions(searchResults);
-      }
+      const { data } = await client
+        .query({
+          query: vendorQueries.vendors,
+          variables: { name: value },
+        })
+        .catch();
+      setSuggestions(data.vendors || []);
     } else {
       setSuggestions([]);
     }

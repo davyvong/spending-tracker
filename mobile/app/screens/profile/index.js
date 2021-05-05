@@ -1,17 +1,18 @@
-import { getApolloClient } from 'graphql/client';
+import { useApolloClient } from '@apollo/client';
 import useAPI from 'hooks/api';
 import useAuthentication from 'hooks/authentication';
 import useCache from 'hooks/cache';
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { deleteJWT } from 'storage/jwt';
+import SecureJWT from 'storage/jwt';
 import hexToRGB from 'utils/hex-to-rgb';
 
 import ProfileScreenComponent from './component';
 
 const ProfileScreen = ({ navigation, ...props }) => {
   const api = useAPI();
+  const client = useApolloClient();
   const [, setIsLoggedIn] = useAuthentication();
   const [cache] = useCache();
   const { palette } = useTheme();
@@ -30,10 +31,10 @@ const ProfileScreen = ({ navigation, ...props }) => {
   );
 
   const logout = useCallback(async () => {
-    await deleteJWT();
-    getApolloClient().resetStore();
+    await SecureJWT.delete();
+    client.resetStore();
     setIsLoggedIn(false);
-  }, []);
+  }, [client, setIsLoggedIn]);
 
   const closeLogoutDialog = useCallback(() => {
     setLogoutDialog(false);
@@ -45,12 +46,12 @@ const ProfileScreen = ({ navigation, ...props }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      api.getAccount().catch(console.error);
+      api.getAccount().catch();
     });
     return () => {
       unsubscribe();
     };
-  }, [navigation]);
+  }, [api.getAccount, navigation]);
 
   return (
     <ProfileScreenComponent

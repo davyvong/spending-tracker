@@ -1,8 +1,18 @@
 import { gql } from '@apollo/client';
 
-export const getAllCategories = gql`
+export const category = gql`
+  query($id: ID!) {
+    category(id: $id) {
+      icon
+      id
+      name
+    }
+  }
+`;
+
+export const categories = gql`
   query {
-    getAllCategories {
+    categories {
       icon
       id
       name

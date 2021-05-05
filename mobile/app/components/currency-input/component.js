@@ -36,7 +36,7 @@ const CurrencyInputComponent = ({
   const onApplyCurrency = useCallback(() => {
     onChangeCurrency(tempCurrency);
     closeModal();
-  }, [onChangeCurrency, tempCurrency]);
+  }, [closeModal, onChangeCurrency, tempCurrency]);
 
   const onSelectCurrency = currency => {
     setTempCurrency(currency.value);
@@ -67,12 +67,12 @@ const CurrencyInputComponent = ({
         </TouchableOpacity>
       );
     },
-    [tempSelectedCurrency],
+    [name, tempSelectedCurrency, theme],
   );
 
   const getCancelButtonStyle = useCallback(
     ({ pressed }) => (pressed ? [styles.button, theme.cancelButtonPressed] : [styles.button, theme.cancelButton]),
-    [],
+    [theme],
   );
 
   return (

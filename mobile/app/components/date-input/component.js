@@ -24,7 +24,7 @@ const DateInputComponent = ({ editable, onChange, theme, value, ...props }) => {
       setSelected(value);
     }
     setVisible(true);
-  }, [locale]);
+  }, [value]);
 
   const markedDates = useMemo(() => {
     if (!selected) {
@@ -48,7 +48,7 @@ const DateInputComponent = ({ editable, onChange, theme, value, ...props }) => {
 
   const getCancelButtonStyle = useCallback(
     ({ pressed }) => (pressed ? [styles.button, theme.cancelButtonPressed] : [styles.button, theme.cancelButton]),
-    [],
+    [theme],
   );
 
   return (

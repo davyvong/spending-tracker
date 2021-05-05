@@ -13,12 +13,12 @@ const CategoryListScreen = ({ navigation, ...props }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      api.getAllCategories().catch(console.error);
+      api.getAllCategories().catch();
     });
     return () => {
       unsubscribe();
     };
-  }, [navigation]);
+  }, [api.getAllCategories, navigation]);
 
   const categories = useMemo(() => Object.values(cache.categoriesById).sort((a, b) => a.name > b.name), [
     cache.categoriesById,
@@ -26,7 +26,7 @@ const CategoryListScreen = ({ navigation, ...props }) => {
 
   const getCategories = useCallback(async () => {
     setPending(true);
-    await api.getAllCategories().catch(console.error);
+    await api.getAllCategories().catch();
     setPending(false);
   }, [api.getAllCategories]);
 
@@ -37,7 +37,7 @@ const CategoryListScreen = ({ navigation, ...props }) => {
         title: category.name,
       });
     },
-    [navigation.navigate],
+    [navigation],
   );
 
   return (

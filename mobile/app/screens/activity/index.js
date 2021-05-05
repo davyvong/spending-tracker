@@ -59,6 +59,13 @@ const ActivityScreen = ({ navigation, ...props }) => {
     return Object.values(transactionMap);
   }, [cache.transactionsById, transactions]);
 
+  const getDailySpending = useCallback(() => {
+    const tempDate = moment();
+    const endDate = tempDate.format('YYYY-MM-DD');
+    const startDate = tempDate.subtract(6, 'days').format('YYYY-MM-DD');
+    return api.getDailySpending(startDate, endDate);
+  }, [api.getDailySpending]);
+
   const getTransactionsWithoutLoading = useCallback(
     async skip => {
       try {
@@ -69,7 +76,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
           setTransactions(prevState => new Set([...prevState, ...transactionPage.list]));
         }
       } catch (error) {
-        console.error(error);
+        console.log(error.message);
       }
     },
     [api.getTransactions],
@@ -79,15 +86,15 @@ const ActivityScreen = ({ navigation, ...props }) => {
     async skip => {
       setPending(true);
       await getTransactionsWithoutLoading(skip);
-      await api.getDailySpending().catch(console.error);
+      await getDailySpending().catch();
       setPending(false);
     },
-    [api.getTransactions],
+    [getDailySpending, getTransactionsWithoutLoading],
   );
 
   const navigateToCreateTransaction = useCallback(() => {
     navigation.navigate(routeOptions.createTransactionScreen.name);
-  }, [navigation.navigate]);
+  }, [navigation]);
 
   const navigateToEditTransaction = useCallback(() => {
     const targetTransaction = selectedTransaction;
@@ -95,17 +102,17 @@ const ActivityScreen = ({ navigation, ...props }) => {
     setTimeout(() => {
       navigation.navigate(routeOptions.editTransactionScreen.name, { transaction: targetTransaction });
     }, 500);
-  }, [navigation.navigate, selectedTransaction]);
+  }, [navigation, selectedTransaction]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getTransactionsWithoutLoading();
-      api.getDailySpending().catch(console.error);
+      getDailySpending().catch();
     });
     return () => {
       unsubscribe();
     };
-  }, [navigation]);
+  }, [getDailySpending, getTransactionsWithoutLoading, navigation]);
 
   return (
     <ActivityScreenComponent

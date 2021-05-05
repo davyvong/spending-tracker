@@ -44,25 +44,24 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
 
   const getTransactionsWithoutLoading = useCallback(
     async skip => {
-      try {
-        const transactionsInCategory = await api.getTransactionsInCategory(categoryId, skip);
-        if (!skip) {
-          setTransactions(new Set(transactionsInCategory.list));
-        } else {
-          setTransactions(prevState => new Set([...prevState, ...transactionsInCategory.list]));
-        }
-      } catch (error) {
-        console.error(error);
+      const transactionsInCategory = await api.getTransactionsInCategory(categoryId, skip).catch();
+      if (!skip) {
+        setTransactions(new Set(transactionsInCategory.list));
+      } else {
+        setTransactions(prevState => new Set([...prevState, ...transactionsInCategory.list]));
       }
     },
     [api.getTransactionsInCategory, categoryId],
   );
 
-  const getTransactions = useCallback(async skip => {
-    setPending(true);
-    await getTransactionsWithoutLoading(skip);
-    setPending(false);
-  }, []);
+  const getTransactions = useCallback(
+    async skip => {
+      setPending(true);
+      await getTransactionsWithoutLoading(skip);
+      setPending(false);
+    },
+    [getTransactionsWithoutLoading],
+  );
 
   const navigateToEditTransaction = useCallback(() => {
     const targetTransaction = selectedTransaction;
@@ -70,7 +69,7 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
     setTimeout(() => {
       navigation.navigate(routeOptions.editTransactionScreen.name, { transaction: targetTransaction });
     }, 500);
-  }, [navigation.navigate, selectedTransaction]);
+  }, [navigation, selectedTransaction]);
 
   return (
     <CategoryDetailScreenComponent

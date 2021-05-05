@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const createTransaction = gql`
-  mutation($data: NewTransactionInput!) {
+  mutation($data: CreateTransactionData!) {
     createTransaction(data: $data) {
       amount
       cardId
@@ -17,14 +17,14 @@ export const createTransaction = gql`
 `;
 
 export const deleteTransaction = gql`
-  mutation($transactionId: String!) {
-    deleteTransaction(transactionId: $transactionId)
+  mutation($id: ID!) {
+    deleteTransaction(id: $id)
   }
 `;
 
 export const updateTransaction = gql`
-  mutation($transactionId: String!, $data: UpdateTransactionInput!) {
-    updateTransaction(data: $data, transactionId: $transactionId) {
+  mutation($id: ID!, $data: UpdateTransactionData!) {
+    updateTransaction(id: $id, data: $data) {
       amount
       cardId
       categoryId

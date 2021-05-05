@@ -13,7 +13,7 @@ class ErrorBoundary extends PureComponent {
   }
 
   static getDerivedStateFromError(error) {
-    console.error(error);
+    console.log(error.message);
     return { error };
   }
 

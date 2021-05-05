@@ -59,7 +59,7 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
           type: 'POP',
         });
       } catch (error) {
-        console.error(error);
+        console.log(error.message);
         setErrors(prevState => ({
           ...prevState,
           server: 'screens.create-transaction.errors.server-error',
@@ -93,7 +93,7 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
       return false;
     }
     return true;
-  }, [cache.categoriesById, values]);
+  }, [values]);
 
   const theme = useMemo(
     () => ({

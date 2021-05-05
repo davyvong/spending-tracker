@@ -5,15 +5,14 @@ import { CacheProvider } from 'contexts/cache';
 import { DimensionsProvider } from 'contexts/dimensions';
 import { LocaleProvider } from 'contexts/locale';
 import { ThemeProvider } from 'contexts/theme';
+import client from 'graphql/client';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { AppearanceProvider } from 'react-native-appearance';
 
-import { getApolloClient } from 'graphql/client';
-
 const Providers = ({ children }) => (
   <DimensionsProvider>
-    <ApolloProvider client={getApolloClient()}>
+    <ApolloProvider client={client}>
       <AppearanceProvider>
         <ThemeProvider>
           <AuthenticationProvider>

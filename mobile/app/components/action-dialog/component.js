@@ -24,7 +24,7 @@ const ActionDialogComponent = ({
   const getSecondaryButtonStyle = useCallback(
     ({ pressed }) =>
       pressed ? [styles.ctaButton, theme.secondaryCTAButtonPressed] : [styles.ctaButton, theme.secondaryCTAButton],
-    [],
+    [theme],
   );
 
   return (

@@ -1,0 +1,29 @@
+name: Expo
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Setup Expo CLI
+        uses: expo/expo-github-action@v5
+        with:
+          expo-version: 4.x
+          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
+          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          expo-cache: true
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: mobile
+      - name: Publish
+        run: expo build:ios --no-wait --type simulator
+        working-directory: mobile

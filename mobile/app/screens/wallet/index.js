@@ -1,6 +1,5 @@
 import useAPI from 'hooks/api';
 import useCache from 'hooks/cache';
-import useTheme from 'hooks/theme';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -10,14 +9,14 @@ import WalletScreenComponent from './component';
 const WalletScreen = ({ navigation, ...props }) => {
   const api = useAPI();
   const [cache] = useCache();
-  const { palette } = useTheme();
+
   const [pendingCards, setPendingCards] = useState(false);
   const [pendingSummary, setPendingSummary] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(moment().format('YYYY-MM'));
 
-  const theme = useMemo(() => ({}), [palette]);
+  const theme = useMemo(() => ({}), []);
 
   const cards = useMemo(() => Object.values(cache.cardsById), [cache.cardsById]);
 
@@ -32,26 +31,26 @@ const WalletScreen = ({ navigation, ...props }) => {
 
   const getCards = useCallback(async () => {
     setPendingCards(true);
-    await api.getAllCards().catch(console.error);
+    await api.getAllCards().catch();
     setPendingCards(false);
   }, [api.getAllCards]);
 
   const getCardSummary = useCallback(
     async (cardId, month) => {
       setPendingSummary(true);
-      await api.getCardSpending(cardId || selectedCardId, month || selectedMonth).catch(console.error);
+      await api.getMonthlySpending(cardId || selectedCardId, month || selectedMonth).catch();
       setPendingSummary(false);
     },
-    [api.getCardSpending, selectedCardId, selectedMonth],
+    [api.getMonthlySpending, selectedCardId, selectedMonth],
   );
 
   const getCardsAndSummaryWithoutLoading = useCallback(async () => {
-    const requests = [api.getAllCards().catch(console.error)];
+    const requests = [api.getAllCards().catch()];
     if (selectedCardId) {
-      requests.push(api.getCardSpending(selectedCardId, selectedMonth).catch(console.error));
+      requests.push(api.getMonthlySpending(selectedCardId, selectedMonth).catch());
     }
     await Promise.all(requests);
-  }, [api.getAllCards, api.getCardSpending, selectedCardId, selectedMonth]);
+  }, [api.getAllCards, api.getMonthlySpending, selectedCardId, selectedMonth]);
 
   const getCardsAndSummary = useCallback(async () => {
     setRefreshing(true);
@@ -88,7 +87,7 @@ const WalletScreen = ({ navigation, ...props }) => {
     return () => {
       unsubscribe();
     };
-  }, [getCardsAndSummaryWithoutLoading]);
+  }, [getCardsAndSummaryWithoutLoading, navigation]);
 
   return (
     <WalletScreenComponent

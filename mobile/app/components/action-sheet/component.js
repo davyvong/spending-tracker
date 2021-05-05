@@ -43,7 +43,7 @@ const ActionSheetComponent = ({ actions, onClose, theme, visible }) => {
         </Pressable>
       );
     },
-    [getActionButtonStyle],
+    [getActionButtonStyle, onClose, theme],
   );
 
   return (
