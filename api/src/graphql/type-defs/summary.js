@@ -1,7 +1,7 @@
 export default `
   type Query {
-    dailySpending(startDate: String!, endDate: String!): [Spending]
-    monthlySpending(startDate: String!, endDate: String!): [Spending]
+    dailySpending(startDate: String!, endDate: String!, filters: SpendingFilter): [Spending]
+    monthlySpending(startDate: String!, endDate: String!, filters: SpendingFilter): [Spending]
   }
 
   type Spending {
@@ -9,5 +9,9 @@ export default `
     currencyCode: String
     date: String
     debit: Float
+  }
+
+  input SpendingFilter {
+    cardId: ID
   }
 `;

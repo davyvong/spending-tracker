@@ -5,7 +5,7 @@ import useCache from 'hooks/cache';
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { deleteJWT } from 'storage/jwt';
+import SecureJWT from 'storage/jwt';
 import hexToRGB from 'utils/hex-to-rgb';
 
 import ProfileScreenComponent from './component';
@@ -30,10 +30,10 @@ const ProfileScreen = ({ navigation, ...props }) => {
   );
 
   const logout = useCallback(async () => {
-    await deleteJWT();
+    await SecureJWT.delete();
     getApolloClient().resetStore();
     setIsLoggedIn(false);
-  }, []);
+  }, [setIsLoggedIn]);
 
   const closeLogoutDialog = useCallback(() => {
     setLogoutDialog(false);
@@ -50,7 +50,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
     return () => {
       unsubscribe();
     };
-  }, [navigation]);
+  }, [api.getAccount, navigation]);
 
   return (
     <ProfileScreenComponent

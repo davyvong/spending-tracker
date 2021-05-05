@@ -5,7 +5,7 @@ import useAuthentication from 'hooks/authentication';
 import useCache from 'hooks/cache';
 import useTheme from 'hooks/theme';
 import React, { useEffect, useMemo, useState } from 'react';
-import { getJWT } from 'storage/jwt';
+import SecureJWT from 'storage/jwt';
 
 import AppComponent from './component';
 
@@ -16,12 +16,12 @@ const App = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    Promise.all([getJWT(), Font.loadAsync(fontAssets), cache.rehydrate()]).then(responses => {
+    Promise.all([SecureJWT.get(), Font.loadAsync(fontAssets), cache.rehydrate()]).then(responses => {
       const [jwt] = responses;
       setIsLoggedIn(Boolean(jwt));
       setIsReady(true);
     });
-  }, []);
+  }, [cache.rehydrate, setIsLoggedIn]);
 
   const statusBar = useMemo(() => (name === themeModes.light ? 'dark' : 'light'), [name]);
 

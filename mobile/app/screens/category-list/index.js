@@ -18,7 +18,7 @@ const CategoryListScreen = ({ navigation, ...props }) => {
     return () => {
       unsubscribe();
     };
-  }, [navigation]);
+  }, [api.getAllCategories, navigation]);
 
   const categories = useMemo(() => Object.values(cache.categoriesById).sort((a, b) => a.name > b.name), [
     cache.categoriesById,
@@ -37,7 +37,7 @@ const CategoryListScreen = ({ navigation, ...props }) => {
         title: category.name,
       });
     },
-    [navigation.navigate],
+    [navigation],
   );
 
   return (

@@ -1,8 +1,20 @@
 import { gql } from '@apollo/client';
 
-export const getAllCards = gql`
+export const card = gql`
   query {
-    getAllCards {
+    card(id: ID!) {
+      color
+      company
+      name
+      id
+      type
+    }
+  }
+`;
+
+export const cards = gql`
+  query {
+    cards {
       color
       company
       name

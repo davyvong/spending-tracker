@@ -29,6 +29,12 @@ export default {
           $gte: args.startDate,
         },
       };
+      if (args.filters) {
+        const { cardId } = args.filters;
+        if (cardId) {
+          query.cardId = cardId;
+        }
+      }
       let transactions = await context.dataSources.transaction.model.find(query);
       if (transactions.some(transaction => transaction.currencyCode !== account.preferredCurrency)) {
         transactions = await context.dataSources.currency.convert(transactions, account.preferredCurrency);
@@ -73,15 +79,21 @@ export default {
       if (countOfMonths > 6) {
         throw new BadRequest();
       }
-      endDate.add(1, 'months');
       const query = {
         accountId: context.accountId,
         postTime: {
-          $lte: getMonthStringFromMoment(endDate),
           $gte: args.startDate,
         },
       };
+      endDate.add(1, 'months');
+      query.postTime.$lte = getMonthStringFromMoment(endDate);
       endDate.subtract(1, 'months');
+      if (args.filters) {
+        const { cardId } = args.filters;
+        if (cardId) {
+          query.cardId = cardId;
+        }
+      }
       let transactions = await context.dataSources.transaction.model.find(query);
       if (transactions.some(transaction => transaction.currencyCode !== account.preferredCurrency)) {
         transactions = await context.dataSources.currency.convert(transactions, account.preferredCurrency);

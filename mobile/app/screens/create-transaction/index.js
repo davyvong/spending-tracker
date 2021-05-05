@@ -93,7 +93,7 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
       return false;
     }
     return true;
-  }, [cache.categoriesById, values]);
+  }, [values]);
 
   const theme = useMemo(
     () => ({

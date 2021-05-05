@@ -8,7 +8,7 @@ import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, View } f
 
 import styles from './styles';
 
-const LoginScreenComponent = ({ attempting, attemptSignIn, errors, setEmail, setPassword, theme, values }) => {
+const LoginScreenComponent = ({ errors, pending, setEmail, setPassword, signInWithEmail, theme, values }) => {
   const [locale] = useLocale();
 
   return (
@@ -20,7 +20,7 @@ const LoginScreenComponent = ({ attempting, attemptSignIn, errors, setEmail, set
         <TextInput
           autoCompleteType="email"
           containerStyle={styles.textInput}
-          editable={!attempting}
+          editable={!pending}
           error={errors.email && locale.t(errors.email)}
           keyboardType="email-address"
           label={locale.t('screens.login.inputs.email-label')}
@@ -32,7 +32,7 @@ const LoginScreenComponent = ({ attempting, attemptSignIn, errors, setEmail, set
         <TextInput
           autoCompleteType="password"
           containerStyle={styles.textInput}
-          editable={!attempting}
+          editable={!pending}
           error={errors.password && locale.t(errors.password)}
           label={locale.t('screens.login.inputs.password-label')}
           onChangeText={setPassword}
@@ -42,10 +42,10 @@ const LoginScreenComponent = ({ attempting, attemptSignIn, errors, setEmail, set
           value={values.password}
         />
         <Button
-          disabled={attempting}
-          onPress={attemptSignIn}
+          disabled={pending}
+          onPress={signInWithEmail}
           style={styles.signInButton}
-          title={attempting ? '' : locale.t('screens.login.buttons.sign-in')}
+          title={pending ? '' : locale.t('screens.login.buttons.sign-in')}
         >
           <ActivityIndicator color={theme.activityIndicator} />
         </Button>
@@ -55,14 +55,14 @@ const LoginScreenComponent = ({ attempting, attemptSignIn, errors, setEmail, set
 };
 
 LoginScreenComponent.propTypes = {
-  attempting: PropTypes.bool.isRequired,
-  attemptSignIn: PropTypes.func.isRequired,
   errors: PropTypes.shape({
     email: PropTypes.string,
     password: PropTypes.string,
   }).isRequired,
+  pending: PropTypes.bool.isRequired,
   setEmail: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,
+  signInWithEmail: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   values: PropTypes.shape({
     email: PropTypes.string.isRequired,

@@ -87,7 +87,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
 
   const navigateToCreateTransaction = useCallback(() => {
     navigation.navigate(routeOptions.createTransactionScreen.name);
-  }, [navigation.navigate]);
+  }, [navigation]);
 
   const navigateToEditTransaction = useCallback(() => {
     const targetTransaction = selectedTransaction;
@@ -95,7 +95,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
     setTimeout(() => {
       navigation.navigate(routeOptions.editTransactionScreen.name, { transaction: targetTransaction });
     }, 500);
-  }, [navigation.navigate, selectedTransaction]);
+  }, [navigation, selectedTransaction]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -105,7 +105,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
     return () => {
       unsubscribe();
     };
-  }, [navigation]);
+  }, [api.getDailySpending, getTransactionsWithoutLoading, navigation]);
 
   return (
     <ActivityScreenComponent

@@ -58,11 +58,14 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
     [api.getTransactionsInCategory, categoryId],
   );
 
-  const getTransactions = useCallback(async skip => {
-    setPending(true);
-    await getTransactionsWithoutLoading(skip);
-    setPending(false);
-  }, []);
+  const getTransactions = useCallback(
+    async skip => {
+      setPending(true);
+      await getTransactionsWithoutLoading(skip);
+      setPending(false);
+    },
+    [getTransactionsWithoutLoading],
+  );
 
   const navigateToEditTransaction = useCallback(() => {
     const targetTransaction = selectedTransaction;
@@ -70,7 +73,7 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
     setTimeout(() => {
       navigation.navigate(routeOptions.editTransactionScreen.name, { transaction: targetTransaction });
     }, 500);
-  }, [navigation.navigate, selectedTransaction]);
+  }, [navigation, selectedTransaction]);
 
   return (
     <CategoryDetailScreenComponent

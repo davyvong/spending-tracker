@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const createCard = gql`
-  mutation($data: NewCardInput!) {
-    createCard(data: $data) {
+  mutation {
+    createCard(data: CreateCardData!) {
       color
       company
       name
@@ -13,14 +13,14 @@ export const createCard = gql`
 `;
 
 export const deleteCard = gql`
-  mutation($cardId: String!) {
-    deleteCard(cardId: $cardId)
+  mutation {
+    deleteCard(id: ID!)
   }
 `;
 
 export const updateCard = gql`
-  mutation($cardId: String!, $data: UpdateCardInput!) {
-    updateCard(data: $data, cardId: $cardId) {
+  mutation {
+    updateCard(id: ID!, data: UpdateCardData!) {
       color
       company
       name

@@ -9,7 +9,7 @@ const LoginScreen = props => {
   const api = useAPI();
   const [, setIsLoggedIn] = useAuthentication();
   const { palette } = useTheme();
-  const [attempting, setAttempting] = useState(false);
+  const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState({
     email: null,
     password: null,
@@ -19,7 +19,7 @@ const LoginScreen = props => {
     password: '',
   });
 
-  const attemptSignIn = useCallback(async () => {
+  const signInWithEmail = useCallback(async () => {
     const { email, password } = values;
     if (!email || !password) {
       setErrors({
@@ -27,7 +27,7 @@ const LoginScreen = props => {
         password: password ? null : 'screens.login.errors.empty-password',
       });
     } else {
-      setAttempting(true);
+      setPending(true);
       try {
         await api.signInWithEmail(email, password);
         setIsLoggedIn(true);
@@ -36,10 +36,10 @@ const LoginScreen = props => {
           email: null,
           password: 'screens.login.errors.invalid-credentials',
         });
-        setAttempting(false);
+        setPending(false);
       }
     }
-  }, [api, values]);
+  }, [api.signInWithEmail, setIsLoggedIn, values]);
 
   const setEmail = useCallback(text => {
     setValues(prevState => ({ ...prevState, email: text }));
@@ -59,11 +59,11 @@ const LoginScreen = props => {
   return (
     <LoginScreenComponent
       {...props}
-      attempting={attempting}
-      attemptSignIn={attemptSignIn}
       errors={errors}
+      pending={pending}
       setEmail={setEmail}
       setPassword={setPassword}
+      signInWithEmail={signInWithEmail}
       theme={theme}
       values={values}
     />

@@ -30,7 +30,7 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
   const onApply = useCallback(() => {
     onChange(tempValue);
     closeModal();
-  }, [onChange, tempValue]);
+  }, [closeModal, onChange, tempValue]);
 
   const tempSelected = useMemo(() => options.findIndex(option => option.value === tempValue), [options, tempValue]);
 
@@ -56,12 +56,12 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
         </TouchableOpacity>
       );
     },
-    [tempSelected],
+    [name, tempSelected, theme],
   );
 
   const getCancelButtonStyle = useCallback(
     ({ pressed }) => (pressed ? [styles.button, theme.cancelButtonPressed] : [styles.button, theme.cancelButton]),
-    [],
+    [theme],
   );
 
   return (

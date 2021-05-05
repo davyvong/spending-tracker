@@ -34,14 +34,14 @@ const ActionDialog = ({ onClose, primaryAction, secondaryAction, ...props }) => 
     if (isFunction(primaryAction.onPress)) {
       setTimeout(primaryAction.onPress, 500);
     }
-  }, [onClose, primaryAction.onPress]);
+  }, [onClose, primaryAction]);
 
   const onPressSecondary = useCallback(() => {
     onClose();
     if (isFunction(secondaryAction.onPress)) {
       setTimeout(secondaryAction.onPress, 500);
     }
-  }, []);
+  }, [onClose, secondaryAction]);
 
   return (
     <ActionDialogComponent
