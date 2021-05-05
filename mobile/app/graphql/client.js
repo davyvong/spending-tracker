@@ -6,11 +6,12 @@ import SecureJWT from 'storage/jwt';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message }) => console.log(message));
+    graphQLErrors.forEach(error => {
+      console.log(error.message);
+    });
   }
-
   if (networkError) {
-    console.log(networkError);
+    console.log(networkError.message);
   }
 });
 

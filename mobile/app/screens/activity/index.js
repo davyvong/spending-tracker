@@ -76,7 +76,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
           setTransactions(prevState => new Set([...prevState, ...transactionPage.list]));
         }
       } catch (error) {
-        console.error(error);
+        console.log(error.message);
       }
     },
     [api.getTransactions],

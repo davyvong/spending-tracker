@@ -110,7 +110,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
           type: 'POP',
         });
       } catch (error) {
-        console.error(error);
+        console.log(error.message);
         setErrors(prevState => ({
           ...prevState,
           server: 'screens.create-transaction.errors.server-error',
@@ -139,7 +139,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
         type: 'POP',
       });
     } catch (error) {
-      console.error(error);
+      console.log(error.message);
       setPendingDelete(false);
     }
   }, [api.deleteTransaction, navigation, transaction]);
