@@ -2,7 +2,7 @@
 
 import { Dimensions, PixelRatio } from 'react-native';
 
-export default function normalizeText(size) {
+export default size => {
   const pixelRatio = PixelRatio.get();
   const { height, width } = Dimensions.get('window');
 
@@ -43,4 +43,4 @@ export default function normalizeText(size) {
     return size * 1.4;
   }
   return size;
-}
+};

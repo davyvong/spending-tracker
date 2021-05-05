@@ -1,8 +1,8 @@
 // Source: https://stackoverflow.com/questions/5999998/check-if-a-variable-is-of-function-type
 
-export default function isFunction(fn) {
-  if (!fn) {
+export default callback => {
+  if (!callback) {
     return false;
   }
-  return {}.toString.call(fn) === '[object Function]';
-}
+  return {}.toString.call(callback) === '[object Function]';
+};
