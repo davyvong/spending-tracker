@@ -86,7 +86,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
     async skip => {
       setPending(true);
       await getTransactionsWithoutLoading(skip);
-      await getDailySpending().catch(console.error);
+      await getDailySpending().catch();
       setPending(false);
     },
     [getDailySpending, getTransactionsWithoutLoading],
@@ -107,7 +107,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getTransactionsWithoutLoading();
-      getDailySpending().catch(console.error);
+      getDailySpending().catch();
     });
     return () => {
       unsubscribe();

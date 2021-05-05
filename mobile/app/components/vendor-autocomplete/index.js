@@ -1,5 +1,4 @@
 import { useApolloClient } from '@apollo/client';
-import checkErrors from 'graphql/check-errors';
 import * as vendorQueries from 'graphql/queries/vendors';
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
@@ -33,12 +32,13 @@ const VendorAutoComplete = ({ onChange, value, ...props }) => {
 
   const getSuggestions = useCallback(async () => {
     if (value) {
-      const { data, errors } = await client.query({
-        query: vendorQueries.vendors,
-        variables: { name: value },
-      });
-      checkErrors(errors);
-      setSuggestions(data.vendors);
+      const { data } = await client
+        .query({
+          query: vendorQueries.vendors,
+          variables: { name: value },
+        })
+        .catch();
+      setSuggestions(data.vendors || []);
     } else {
       setSuggestions([]);
     }

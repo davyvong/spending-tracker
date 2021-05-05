@@ -1,6 +1,5 @@
 import { useApolloClient } from '@apollo/client';
 import useCache from 'hooks/cache';
-import checkErrors from 'graphql/check-errors';
 import * as cardMutations from 'graphql/mutations/cards';
 import * as transactionMutations from 'graphql/mutations/transactions';
 import * as accountQueries from 'graphql/queries/account';
@@ -26,11 +25,10 @@ export const APIProvider = ({ children }) => {
 
   const createCard = useCallback(
     async cardData => {
-      const { data, errors } = await client.mutate({
+      const { data } = await client.mutate({
         mutation: cardMutations.createCard,
         variables: { data: cardData },
       });
-      checkErrors(errors);
       const card = new Card(data.createCard);
       updateCache(prevState => ({
         cardsById: {
@@ -44,11 +42,10 @@ export const APIProvider = ({ children }) => {
 
   const createTransaction = useCallback(
     async transactionData => {
-      const { data, errors } = await client.mutate({
+      const { data } = await client.mutate({
         mutation: transactionMutations.createTransaction,
         variables: { data: transactionData },
       });
-      checkErrors(errors);
       const transaction = new Transaction(data.createTransaction);
       updateCache(prevState => ({
         transactionsById: {
@@ -63,7 +60,7 @@ export const APIProvider = ({ children }) => {
   const deleteCard = useCallback(
     async cardId =>
       client.mutate({
-        mutation: deleteCard,
+        mutation: cardMutations.deleteCard,
         variables: { id: cardId },
       }),
     [client, updateCache],
@@ -72,26 +69,24 @@ export const APIProvider = ({ children }) => {
   const deleteTransaction = useCallback(
     async transactionId =>
       client.mutate({
-        mutation: deleteTransaction,
+        mutation: transactionMutations.deleteTransaction,
         variables: { id: transactionId },
       }),
     [client, updateCache],
   );
 
   const getAccount = useCallback(async () => {
-    const { data, errors } = await client.query({
+    const { data } = await client.query({
       query: accountQueries.account,
     });
-    checkErrors(errors);
     const account = new Account(data.account);
     updateCache({ account });
   }, [client, updateCache]);
 
   const getAllCards = useCallback(async () => {
-    const { data, errors } = await client.query({
+    const { data } = await client.query({
       query: cardQueries.cards,
     });
-    checkErrors(errors);
     const cardsById = {};
     data.cards.forEach(cardData => {
       const card = new Card(cardData);
@@ -101,10 +96,9 @@ export const APIProvider = ({ children }) => {
   }, [client, updateCache]);
 
   const getAllCategories = useCallback(async () => {
-    const { data, errors } = await client.query({
+    const { data } = await client.query({
       query: categoryQueries.categories,
     });
-    checkErrors(errors);
     const categoriesById = {};
     data.categories.forEach(categoryData => {
       const category = new Category(categoryData);
@@ -115,11 +109,10 @@ export const APIProvider = ({ children }) => {
 
   const getDailySpending = useCallback(
     async (startDate, endDate) => {
-      const { data, errors } = await client.query({
+      const { data } = await client.query({
         query: summaryQueries.dailySpending,
         variables: { endDate, startDate },
       });
-      checkErrors(errors);
       const dailySpending = {};
       data.dailySpending.forEach(spending => {
         dailySpending[spending.date] = spending;
@@ -137,7 +130,7 @@ export const APIProvider = ({ children }) => {
 
   const getMonthlySpending = useCallback(
     async (cardId, month) => {
-      const { data, errors } = await client.query({
+      const { data } = await client.query({
         query: summaryQueries.monthlySpending,
         variables: {
           endDate: month,
@@ -145,7 +138,6 @@ export const APIProvider = ({ children }) => {
           startDate: month,
         },
       });
-      checkErrors(errors);
       const monthlySpending = {};
       data.monthlySpending.forEach(month => {
         if (cardId) {
@@ -167,11 +159,10 @@ export const APIProvider = ({ children }) => {
 
   const getTransaction = useCallback(
     async transactionId => {
-      const { data, errors } = await client.query({
+      const { data } = await client.query({
         query: transactionQueries.transaction,
         variables: { id: transactionId },
       });
-      checkErrors(errors);
       const transaction = new Transaction(data.transaction);
       updateCache(prevState => ({
         transactionsById: {
@@ -186,13 +177,12 @@ export const APIProvider = ({ children }) => {
 
   const getTransactions = useCallback(
     async (skip = 0) => {
-      const { data, errors } = await client.query({
+      const { data } = await client.query({
         query: transactionQueries.transactions,
         variables: {
           page: { skip },
         },
       });
-      checkErrors(errors);
       const categoriesById = {};
       data.categories.forEach(categoryData => {
         const category = new Category(categoryData);
@@ -222,14 +212,13 @@ export const APIProvider = ({ children }) => {
 
   const getTransactionsInCategory = useCallback(
     async (categoryId, skip) => {
-      const { data, errors } = await client.query({
+      const { data } = await client.query({
         query: transactionQueries.transactions,
         variables: {
           filters: { categoryId },
           page: { skip },
         },
       });
-      checkErrors(errors);
       const transactionsById = {};
       const transactionList = [];
       data.transactions.forEach(transactionData => {
@@ -253,11 +242,10 @@ export const APIProvider = ({ children }) => {
 
   const signInWithEmail = useCallback(
     async (email, password) => {
-      const { data, errors } = await client.query({
+      const { data } = await client.query({
         query: accountQueries.login,
         variables: { email, password },
       });
-      checkErrors(errors);
       await SecureJWT.set(data.login);
     },
     [client],
@@ -265,14 +253,13 @@ export const APIProvider = ({ children }) => {
 
   const updateCard = useCallback(
     async (cardId, updateData) => {
-      const { data, errors } = await client.mutate({
+      const { data } = await client.mutate({
         mutation: cardMutations.updateCard,
         variables: {
           id: cardId,
           data: updateData,
         },
       });
-      checkErrors(errors);
       const card = new Card(data.updateCard);
       updateCache(prevState => ({
         cardsById: {
@@ -286,14 +273,13 @@ export const APIProvider = ({ children }) => {
 
   const updateTransaction = useCallback(
     async (transactionId, updateData) => {
-      const { data, errors } = await client.mutate({
+      const { data } = await client.mutate({
         mutation: transactionMutations.updateTransaction,
         variables: {
           id: transactionId,
           data: updateData,
         },
       });
-      checkErrors(errors);
       const transaction = new Transaction(data.updateTransaction);
       updateCache(prevState => ({
         transactionsById: {

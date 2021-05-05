@@ -31,23 +31,23 @@ const WalletScreen = ({ navigation, ...props }) => {
 
   const getCards = useCallback(async () => {
     setPendingCards(true);
-    await api.getAllCards().catch(console.error);
+    await api.getAllCards().catch();
     setPendingCards(false);
   }, [api.getAllCards]);
 
   const getCardSummary = useCallback(
     async (cardId, month) => {
       setPendingSummary(true);
-      await api.getMonthlySpending(cardId || selectedCardId, month || selectedMonth).catch(console.error);
+      await api.getMonthlySpending(cardId || selectedCardId, month || selectedMonth).catch();
       setPendingSummary(false);
     },
     [api.getMonthlySpending, selectedCardId, selectedMonth],
   );
 
   const getCardsAndSummaryWithoutLoading = useCallback(async () => {
-    const requests = [api.getAllCards().catch(console.error)];
+    const requests = [api.getAllCards().catch()];
     if (selectedCardId) {
-      requests.push(api.getMonthlySpending(selectedCardId, selectedMonth).catch(console.error));
+      requests.push(api.getMonthlySpending(selectedCardId, selectedMonth).catch());
     }
     await Promise.all(requests);
   }, [api.getAllCards, api.getMonthlySpending, selectedCardId, selectedMonth]);

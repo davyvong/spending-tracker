@@ -17,7 +17,7 @@ export default new Schema(
       required: true,
       type: Number,
       validate: {
-        validator: value => isNumeric(value) && value >= 0,
+        validator: value => isNumeric(value.toString()) && value >= 0,
       },
     },
     cardId: {

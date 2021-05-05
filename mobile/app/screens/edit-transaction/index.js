@@ -131,7 +131,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const deleteTransaction = useCallback(async () => {
     setPendingDelete(true);
     try {
-      await api.deleteTransaction(transaction.id).catch(console.error);
+      await api.deleteTransaction(transaction.id).catch();
       setPendingDelete(false);
       navigation.dispatch({
         ignoreDiscard: true,

@@ -46,7 +46,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      api.getAccount().catch(console.error);
+      api.getAccount().catch();
     });
     return () => {
       unsubscribe();

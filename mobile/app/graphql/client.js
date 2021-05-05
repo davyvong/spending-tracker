@@ -1,10 +1,17 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, createHttpLink, from, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { onError } from '@apollo/client/link/error';
 import moment from 'moment-timezone';
 import SecureJWT from 'storage/jwt';
 
-const httpLink = createHttpLink({
-  uri: 'http://192.168.0.24:3000/graphql',
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message }) => console.log(message));
+  }
+
+  if (networkError) {
+    console.log(networkError);
+  }
 });
 
 const authLink = setContext(async (request, context) => {
@@ -19,6 +26,10 @@ const authLink = setContext(async (request, context) => {
   return { headers };
 });
 
+const httpLink = createHttpLink({
+  uri: 'http://192.168.0.24:3000/graphql',
+});
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   defaultOptions: {
@@ -31,7 +42,7 @@ const client = new ApolloClient({
       fetchPolicy: 'no-cache',
     },
   },
-  link: authLink.concat(httpLink),
+  link: from([errorLink, authLink, httpLink]),
 });
 
 export default client;

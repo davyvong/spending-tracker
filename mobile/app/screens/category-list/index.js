@@ -13,7 +13,7 @@ const CategoryListScreen = ({ navigation, ...props }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      api.getAllCategories().catch(console.error);
+      api.getAllCategories().catch();
     });
     return () => {
       unsubscribe();
@@ -26,7 +26,7 @@ const CategoryListScreen = ({ navigation, ...props }) => {
 
   const getCategories = useCallback(async () => {
     setPending(true);
-    await api.getAllCategories().catch(console.error);
+    await api.getAllCategories().catch();
     setPending(false);
   }, [api.getAllCategories]);
 
