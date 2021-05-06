@@ -17,7 +17,9 @@ const TransactionList = props => {
     [palette],
   );
 
-  return <TransactionListComponent {...props} categories={cache.categoriesById} theme={theme} />;
+  return (
+    <TransactionListComponent {...props} cards={cache.cardsById} categories={cache.categoriesById} theme={theme} />
+  );
 };
 
 export default TransactionList;
