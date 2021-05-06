@@ -20,14 +20,14 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
   return (
     <View style={styles.statisticRow}>
       <View style={[styles.statisticCard, theme.statisticCard]}>
-        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.income')}</Text>
+        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.credit')}</Text>
         <Text style={styles.statisticAmount}>
           {locale.toCurrency(spending.credit, { precision: 2, unit: '' })}{' '}
           <RNText style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currencyCode}</RNText>
         </Text>
       </View>
       <View style={[styles.statisticCard, theme.statisticCard]}>
-        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.expenses')}</Text>
+        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.debit')}</Text>
         <Text style={styles.statisticAmount}>
           {locale.toCurrency(spending.debit, { precision: 2, unit: '' })}{' '}
           <RNText style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currencyCode}</RNText>
