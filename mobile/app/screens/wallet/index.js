@@ -27,7 +27,12 @@ const WalletScreen = ({ navigation, ...props }) => {
     return cards.length > 0 ? cards[0].id : null;
   }, [cards, selectedCard]);
 
-  const monthlySpending = useMemo(() => cache.monthlySpending[selectedMonth], [cache.monthlySpending, selectedMonth]);
+  const monthlySpending = useMemo(() => {
+    if (!selectedCardId || !selectedMonth) {
+      return null;
+    }
+    return cache.monthlySpending[`${selectedMonth}-${selectedCardId}`];
+  }, [cache.monthlySpending, selectedCardId, selectedMonth]);
 
   const getCards = useCallback(async () => {
     setPendingCards(true);
