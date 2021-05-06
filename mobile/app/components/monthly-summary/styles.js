@@ -6,12 +6,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  noDataImage: {
-    marginBottom: 24,
-  },
-  noDataText: {
-    fontSize: normalizeText(16),
-  },
   statisticRow: {
     flexDirection: 'row',
     marginHorizontal: -6,

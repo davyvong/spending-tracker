@@ -1,4 +1,3 @@
-import NoData from 'assets/svg/no-data.svg';
 import Text from 'components/text';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
@@ -14,15 +13,6 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
     return (
       <View style={styles.container}>
         <ActivityIndicator />
-      </View>
-    );
-  }
-
-  if (!spending.credit && !spending.debit) {
-    return (
-      <View style={styles.container}>
-        <NoData height={120} style={styles.noDataImage} width={120} />
-        <Text style={styles.noDataText}>{locale.t('components.monthly-summary.messages.no-data')}</Text>
       </View>
     );
   }
