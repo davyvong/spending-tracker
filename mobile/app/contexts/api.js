@@ -141,7 +141,7 @@ export const APIProvider = ({ children }) => {
       const monthlySpending = {};
       data.monthlySpending.forEach(month => {
         if (cardId) {
-          monthlySpending[month.date + cardId] = month;
+          monthlySpending[`${month.date}-${cardId}`] = month;
         } else {
           monthlySpending[month.date] = month;
         }
