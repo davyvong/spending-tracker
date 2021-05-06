@@ -8,12 +8,13 @@ import { SectionList, View } from 'react-native';
 
 import styles from './styles';
 
-const TransactionListComponent = ({ activeRow, categories, onPressItem, theme, ...props }) => {
+const TransactionListComponent = ({ activeRow, cards, categories, onPressItem, theme, ...props }) => {
   const [locale] = useLocale();
 
   const renderItem = useCallback(
     ({ item }) => (
       <TransactionRow
+        card={cards[item.cardId]}
         category={categories[item.categoryId]}
         key={item.id}
         onPress={() => onPressItem(item)}
@@ -58,6 +59,7 @@ TransactionListComponent.defaultProps = {
 
 TransactionListComponent.propTypes = {
   activeRow: PropTypes.string,
+  cards: PropTypes.object.isRequired,
   categories: PropTypes.object.isRequired,
   onPressItem: PropTypes.func,
   theme: PropTypes.object.isRequired,

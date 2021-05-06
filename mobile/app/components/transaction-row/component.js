@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Text from 'components/text';
 import useLocale from 'hooks/locale';
+import Card from 'models/card';
 import Category from 'models/category';
 import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
@@ -9,8 +10,9 @@ import { Pressable, View } from 'react-native';
 
 import styles from './styles';
 
-const TransactionRowComponent = ({ category, theme, transaction, ...props }) => {
+const TransactionRowComponent = ({ card, category, theme, transaction, ...props }) => {
   const [locale] = useLocale();
+
   const transactionAmount = useMemo(() => {
     const amount = locale.toCurrency(transaction.amount, { unit: '' });
     if (transaction.amount === 0) {
@@ -34,7 +36,9 @@ const TransactionRowComponent = ({ category, theme, transaction, ...props }) => 
         <Text numberOfLines={1} style={styles.transactionRowVendor}>
           {transaction.vendor}
         </Text>
-        <Text style={[styles.transactionRowCategory, theme.transactionRowMutedText]}>{category.name}</Text>
+        <Text style={[styles.transactionRowCategory, theme.transactionRowMutedText]}>
+          {card.company} {card.name}
+        </Text>
       </View>
       <View style={[styles.transactionRowColumn, styles.transactionRowColumn3]}>
         <Text style={[styles.transactionRowAmount, transaction.isCredit && theme.transactionRowAmountPositive]}>
@@ -47,6 +51,7 @@ const TransactionRowComponent = ({ category, theme, transaction, ...props }) => 
 };
 
 TransactionRowComponent.propTypes = {
+  card: Card.propTypes,
   category: Category.propTypes,
   theme: PropTypes.object,
   transaction: Transaction.propTypes,
