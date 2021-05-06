@@ -49,7 +49,7 @@ export default {
         }
       }
       const options = {
-        sort: '-postTime',
+        sort: '-postDate',
         ...buildFindOptions(args),
       };
       return context.dataSources.transaction.model.find(query, null, options);

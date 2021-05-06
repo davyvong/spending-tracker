@@ -9,7 +9,7 @@ export const transaction = gql`
       currencyCode
       description
       id
-      postTime
+      postDate
       type
       vendor
     }
@@ -30,7 +30,7 @@ export const transactions = gql`
       currencyCode
       description
       id
-      postTime
+      postDate
       type
       vendor
     }

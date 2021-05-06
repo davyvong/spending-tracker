@@ -28,7 +28,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
     cardId: null,
     categoryId: null,
     currencyCode: null,
-    postTime: null,
+    postDate: null,
     server: null,
     type: null,
     vendor: null,
@@ -39,7 +39,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
     categoryId: null,
     currencyCode: cache.account.preferredCurrency,
     description: '',
-    postTime: '',
+    postDate: '',
     type: 'debit',
     vendor: '',
     ...transaction,
@@ -79,14 +79,14 @@ const EditTransactionScreen = ({ route, ...props }) => {
   );
 
   const validateValues = useCallback(() => {
-    const { amount, cardId, categoryId, currencyCode, postTime, type, vendor } = values;
-    if (!amount || !cardId || !categoryId || !currencyCode || !postTime || !type || !vendor) {
+    const { amount, cardId, categoryId, currencyCode, postDate, type, vendor } = values;
+    if (!amount || !cardId || !categoryId || !currencyCode || !postDate || !type || !vendor) {
       setErrors({
         amount: amount ? null : 'screens.create-transaction.errors.empty-amount',
         cardId: cardId ? null : 'screens.create-transaction.errors.empty-card',
         categoryId: categoryId ? null : 'screens.create-transaction.errors.empty-category',
         currencyCode: currencyCode ? null : 'screens.create-transaction.errors.empty-currency',
-        postTime: postTime ? null : 'screens.create-transaction.errors.empty-date',
+        postDate: postDate ? null : 'screens.create-transaction.errors.empty-date',
         server: null,
         type: type ? null : 'screens.create-transaction.errors.empty-type',
         vendor: vendor ? null : 'screens.create-transaction.errors.empty-vendor',
@@ -101,7 +101,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
       setPendingSave(true);
       try {
         await api.updateTransaction(values.id, {
-          ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postTime', 'type', 'vendor'),
+          ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postDate', 'type', 'vendor'),
           amount: Number(values.amount),
         });
         navigation.dispatch({

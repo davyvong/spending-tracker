@@ -52,7 +52,7 @@ export default new Schema(
     description: {
       type: String,
     },
-    postTime: {
+    postDate: {
       index: true,
       required: true,
       type: String,
@@ -82,8 +82,8 @@ export default new Schema(
   },
   {
     toJSON: {
-      versionKey: false,
       virtuals: true,
     },
+    versionKey: false,
   },
 );

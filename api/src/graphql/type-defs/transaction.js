@@ -17,7 +17,7 @@ export default `
     currencyCode: String
     description: String
     id: ID!
-    postTime: String
+    postDate: String
     type: String
     vendor: String
   }
@@ -33,7 +33,7 @@ export default `
     categoryId: ID!
     currencyCode: String!
     description: String
-    postTime: String!
+    postDate: String!
     type: String!
     vendor: String!
   }
@@ -44,7 +44,7 @@ export default `
     categoryId: ID
     currencyCode: String
     description: String
-    postTime: String
+    postDate: String
     type: String
     vendor: String
   }

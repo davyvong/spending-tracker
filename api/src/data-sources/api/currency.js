@@ -30,7 +30,7 @@ export default class CurrencyDataSource extends DataSource {
       if (transaction.currencyCode === currency) {
         convertedTransactions.push(transaction);
       } else {
-        const exchangeRates = await this.getExchangeRates(transaction.postTime, transaction.currencyCode);
+        const exchangeRates = await this.getExchangeRates(transaction.postDate, transaction.currencyCode);
         const conversionRate = exchangeRates.rates[currency];
         Object.assign(transaction, {
           amount: transaction.amount * conversionRate,

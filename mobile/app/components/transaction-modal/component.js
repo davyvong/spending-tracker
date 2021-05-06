@@ -36,7 +36,7 @@ const TransactionModalComponent = ({ category, onClose, onEdit, theme, transacti
       <View style={[styles.innerModal, theme.innerModal]}>
         <View style={styles.field}>
           <Text style={styles.fieldLabel}>{locale.t('components.transaction-modal.fields.date')}</Text>
-          <Text style={styles.fieldValue}>{transaction?.postTime}</Text>
+          <Text style={styles.fieldValue}>{transaction?.postDate}</Text>
         </View>
         <View style={styles.field}>
           <Text style={styles.fieldLabel}>{locale.t('components.transaction-modal.fields.vendor')}</Text>

@@ -24,7 +24,7 @@ export default {
       }
       const query = {
         accountId: context.accountId,
-        postTime: {
+        postDate: {
           $lte: args.endDate,
           $gte: args.startDate,
         },
@@ -55,9 +55,9 @@ export default {
         }, {});
       transactions.forEach(transaction => {
         if (transaction.type === 'credit') {
-          dailySpending[transaction.postTime].credit += transaction.amount;
+          dailySpending[transaction.postDate].credit += transaction.amount;
         } else if (transaction.type === 'debit') {
-          dailySpending[transaction.postTime].debit += transaction.amount;
+          dailySpending[transaction.postDate].debit += transaction.amount;
         }
       });
       return Object.values(dailySpending);
@@ -81,12 +81,12 @@ export default {
       }
       const query = {
         accountId: context.accountId,
-        postTime: {
+        postDate: {
           $gte: args.startDate,
         },
       };
       endDate.add(1, 'months');
-      query.postTime.$lte = getMonthStringFromMoment(endDate);
+      query.postDate.$lte = getMonthStringFromMoment(endDate);
       endDate.subtract(1, 'months');
       if (args.filters) {
         const { cardId } = args.filters;
@@ -113,7 +113,7 @@ export default {
           return map;
         }, {});
       transactions.forEach(transaction => {
-        let monthString = moment(transaction.postTime);
+        let monthString = moment(transaction.postDate);
         monthString = getMonthStringFromMoment(monthString);
         if (transaction.type === 'credit') {
           monthlySpending[monthString].credit += transaction.amount;
