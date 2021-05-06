@@ -49,8 +49,8 @@ export default new Schema(
   },
   {
     toJSON: {
-      versionKey: false,
       virtuals: true,
     },
+    versionKey: false,
   },
 );
