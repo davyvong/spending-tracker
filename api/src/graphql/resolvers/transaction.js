@@ -48,7 +48,10 @@ export default {
           query.categoryId = categoryId;
         }
       }
-      const options = buildFindOptions(args);
+      const options = {
+        sort: '-postTime',
+        ...buildFindOptions(args),
+      };
       return context.dataSources.transaction.model.find(query, null, options);
     },
   },

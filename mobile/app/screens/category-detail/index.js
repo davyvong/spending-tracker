@@ -28,7 +28,8 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
       if (!item) {
         return map;
       }
-      const section = moment(item.postTime, 'YYYY-MM-DD').isAfter(moment()) ? 'PENDING' : item.postTime;
+      const { postTime } = item;
+      const section = moment(postTime, 'YYYY-MM-DD').isAfter(moment()) ? 'PENDING' : postTime;
       if (map[section]) {
         map[section].data.push(item);
       } else {
