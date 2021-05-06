@@ -14,9 +14,8 @@ const ActivityScreen = ({ navigation, ...props }) => {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [transactions, setTransactions] = useState(new Set());
 
-  const [dailySpending, recentlySpent] = useMemo(() => {
+  const dailySpending = useMemo(() => {
     const dailySpending = [];
-    let recentlySpent = 0;
     const dayCount = 7;
     const currentDate = moment().subtract(dayCount - 1, 'days');
     for (let i = 0; i < dayCount; i += 1) {
@@ -24,7 +23,6 @@ const ActivityScreen = ({ navigation, ...props }) => {
       const cachedSpending = cache.dailySpending[dateString];
       if (cachedSpending) {
         dailySpending.push(cachedSpending);
-        recentlySpent += cachedSpending.debit || 0;
       } else {
         dailySpending.push({
           credit: 0,
@@ -35,7 +33,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
       }
       currentDate.add(1, 'days');
     }
-    return [dailySpending, recentlySpent];
+    return dailySpending;
   }, [cache.account.preferredCurrency, cache.dailySpending]);
 
   const transactionList = useMemo(() => {
@@ -123,7 +121,6 @@ const ActivityScreen = ({ navigation, ...props }) => {
       navigateToCreateTransaction={navigateToCreateTransaction}
       navigateToEditTransaction={navigateToEditTransaction}
       pending={pending}
-      recentlySpent={recentlySpent}
       selectedTransaction={selectedTransaction}
       setSelectedTransaction={setSelectedTransaction}
       skip={transactions.size}

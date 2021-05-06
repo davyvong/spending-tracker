@@ -33,7 +33,7 @@ const TransactionListComponent = ({ activeRow, cards, categories, onPressItem, t
           <Text style={theme.sectionHeaderText}>
             {section === 'PENDING'
               ? locale.t('components.transaction-list.sections.pending')
-              : moment(section, 'YYYY-MM-DD').format('MMMM DD, YYYY')}
+              : moment(section, 'YYYY-MM-DD').format('MMMM D, YYYY')}
           </Text>
         </View>
       );

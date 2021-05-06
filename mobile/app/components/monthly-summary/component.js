@@ -1,4 +1,3 @@
-import NoData from 'assets/svg/no-data.svg';
 import Text from 'components/text';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
@@ -18,26 +17,17 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
     );
   }
 
-  if (!spending.credit && !spending.debit) {
-    return (
-      <View style={styles.container}>
-        <NoData height={120} style={styles.noDataImage} width={120} />
-        <Text style={styles.noDataText}>{locale.t('components.monthly-summary.messages.no-data')}</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.statisticRow}>
       <View style={[styles.statisticCard, theme.statisticCard]}>
-        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.income')}</Text>
+        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.credit')}</Text>
         <Text style={styles.statisticAmount}>
           {locale.toCurrency(spending.credit, { precision: 2, unit: '' })}{' '}
           <RNText style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currencyCode}</RNText>
         </Text>
       </View>
       <View style={[styles.statisticCard, theme.statisticCard]}>
-        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.expenses')}</Text>
+        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.debit')}</Text>
         <Text style={styles.statisticAmount}>
           {locale.toCurrency(spending.debit, { precision: 2, unit: '' })}{' '}
           <RNText style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currencyCode}</RNText>
