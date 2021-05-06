@@ -1,6 +1,5 @@
 import useTheme from 'hooks/theme';
 import Category from 'models/category';
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
 import CategoryTileComponent from './component';
