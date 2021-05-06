@@ -30,7 +30,7 @@ const CategoryListScreenComponent = ({ categories, getCategories, navigateToCate
 };
 
 CategoryListScreenComponent.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.instanceOf(Category)),
+  categories: PropTypes.arrayOf(Category.propTypes),
   getCategories: PropTypes.func,
   navigateToCategoryDetail: PropTypes.func,
   pending: PropTypes.bool,

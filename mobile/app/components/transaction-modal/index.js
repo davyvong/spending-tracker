@@ -36,7 +36,7 @@ const TransactionModal = ({ transaction, ...props }) => {
 };
 
 TransactionModal.propTypes = {
-  transaction: PropTypes.instanceOf(Transaction),
+  transaction: Transaction.propTypes,
 };
 
 export default TransactionModal;

@@ -24,7 +24,7 @@ const CategoryTile = ({ category, ...props }) => {
 };
 
 CategoryTile.propTypes = {
-  category: PropTypes.instanceOf(Category).isRequired,
+  category: Category.propTypes.isRequired,
 };
 
 export default CategoryTile;

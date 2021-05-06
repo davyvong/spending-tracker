@@ -47,9 +47,9 @@ const TransactionRowComponent = ({ category, theme, transaction, ...props }) => 
 };
 
 TransactionRowComponent.propTypes = {
-  category: PropTypes.instanceOf(Category),
+  category: Category.propTypes,
   theme: PropTypes.object,
-  transaction: PropTypes.instanceOf(Transaction),
+  transaction: Transaction.propTypes,
 };
 
 export default TransactionRowComponent;

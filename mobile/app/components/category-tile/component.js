@@ -25,7 +25,7 @@ const CategoryTileComponent = ({ category, theme, ...props }) => {
 };
 
 CategoryTileComponent.propTypes = {
-  category: PropTypes.instanceOf(Category),
+  category: Category.propTypes,
   theme: PropTypes.object,
 };
 
