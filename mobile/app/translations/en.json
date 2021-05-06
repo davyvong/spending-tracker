@@ -6,6 +6,7 @@
   "common.days-of-week.thursday": "Thur",
   "common.days-of-week.tuesday": "Tues",
   "common.days-of-week.wednesday": "Wed",
+  "common.not-applicable": "N/A",
   "components.action-dialog.buttons.cancel": "Cancel",
   "components.action-dialog.buttons.confirm": "Confirm",
   "components.action-sheet.buttons.cancel": "Cancel",

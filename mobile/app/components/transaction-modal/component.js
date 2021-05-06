@@ -44,7 +44,7 @@ const TransactionModalComponent = ({ category, onClose, onEdit, theme, transacti
         </View>
         <View style={styles.field}>
           <Text style={styles.fieldLabel}>{locale.t('components.transaction-modal.fields.description')}</Text>
-          <Text style={styles.fieldValue}>{transaction?.description || 'N/A'}</Text>
+          <Text style={styles.fieldValue}>{transaction?.description || locale.t('common.not-applicable')}</Text>
         </View>
         <View style={styles.field}>
           <Text style={styles.fieldLabel}>{locale.t('components.transaction-modal.fields.amount')}</Text>

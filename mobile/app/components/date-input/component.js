@@ -54,7 +54,7 @@ const DateInputComponent = ({ editable, onChange, theme, value, ...props }) => {
   return (
     <Fragment>
       <Pressable disabled={!editable} onPress={openModal}>
-        <TextInput {...props} editable={false} pointerEvents="none" value={(value || '').replace(/\-/g, '/')} />
+        <TextInput {...props} editable={false} pointerEvents="none" value={value} />
         <MaterialIcons color={theme.iconColor} name="calendar-today" size={20} style={styles.calendarIcon} />
       </Pressable>
       <Modal
