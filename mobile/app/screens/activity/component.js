@@ -67,12 +67,12 @@ ActivityScreenComponent.propTypes = {
   navigateToCreateTransaction: PropTypes.func.isRequired,
   navigateToEditTransaction: PropTypes.func.isRequired,
   pending: PropTypes.bool.isRequired,
-  selectedTransaction: PropTypes.instanceOf(Transaction),
+  selectedTransaction: Transaction.propTypes,
   setSelectedTransaction: PropTypes.func.isRequired,
   skip: PropTypes.number.isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({
-      data: PropTypes.arrayOf(PropTypes.instanceOf(Transaction)).isRequired,
+      data: PropTypes.arrayOf(Transaction.propTypes).isRequired,
       section: PropTypes.string.isRequired,
     }),
   ).isRequired,

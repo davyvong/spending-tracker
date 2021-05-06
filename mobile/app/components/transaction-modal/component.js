@@ -72,11 +72,11 @@ const TransactionModalComponent = ({ category, onClose, onEdit, theme, transacti
 };
 
 TransactionModalComponent.propTypes = {
-  category: PropTypes.instanceOf(Category),
+  category: Category.propTypes,
   onClose: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
-  transaction: PropTypes.instanceOf(Transaction),
+  transaction: Transaction.propTypes,
 };
 
 export default TransactionModalComponent;

@@ -41,7 +41,7 @@ CategoryList.defaultProps = {
 };
 
 CategoryList.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.instanceOf(Category)),
+  data: PropTypes.arrayOf(Category.propTypes),
   onPressItem: PropTypes.func,
 };
 

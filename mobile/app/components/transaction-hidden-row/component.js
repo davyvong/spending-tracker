@@ -35,7 +35,7 @@ TransactionHiddenRowComponent.propTypes = {
   onEditItem: PropTypes.func.isRequired,
   pendingDelete: PropTypes.bool.isRequired,
   theme: PropTypes.object.isRequired,
-  transaction: PropTypes.instanceOf(Transaction),
+  transaction: Transaction.propTypes,
 };
 
 export default TransactionHiddenRowComponent;

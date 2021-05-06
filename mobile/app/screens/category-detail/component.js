@@ -45,17 +45,17 @@ CategoryDetailScreenComponent.defaultProps = {
 };
 
 CategoryDetailScreenComponent.propTypes = {
-  category: PropTypes.instanceOf(Category),
+  category: Category.propTypes,
   getTransactions: PropTypes.func.isRequired,
   getTransactionsWithoutLoading: PropTypes.func.isRequired,
   navigateToEditTransaction: PropTypes.func.isRequired,
   pending: PropTypes.bool,
-  selectedTransaction: PropTypes.instanceOf(Transaction),
+  selectedTransaction: Transaction.propTypes,
   setSelectedTransaction: PropTypes.func.isRequired,
   skip: PropTypes.number.isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({
-      data: PropTypes.arrayOf(PropTypes.instanceOf(Transaction)).isRequired,
+      data: PropTypes.arrayOf(Transaction.propTypes).isRequired,
       section: PropTypes.string.isRequired,
     }),
   ).isRequired,

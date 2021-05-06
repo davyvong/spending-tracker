@@ -213,7 +213,7 @@ EditTransactionScreen.propTypes = {
   }),
   route: PropTypes.shape({
     params: PropTypes.shape({
-      transaction: PropTypes.instanceOf(Transaction),
+      transaction: Transaction.propTypes,
     }),
   }),
 };

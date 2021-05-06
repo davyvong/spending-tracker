@@ -1,6 +1,5 @@
 import useTheme from 'hooks/theme';
 import Category from 'models/category';
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
 import CategoryTileComponent from './component';
@@ -24,7 +23,7 @@ const CategoryTile = ({ category, ...props }) => {
 };
 
 CategoryTile.propTypes = {
-  category: PropTypes.instanceOf(Category).isRequired,
+  category: Category.propTypes.isRequired,
 };
 
 export default CategoryTile;

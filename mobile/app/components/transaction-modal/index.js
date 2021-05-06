@@ -1,7 +1,6 @@
 import useCache from 'hooks/cache';
 import useTheme from 'hooks/theme';
 import Transaction from 'models/transaction';
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
 import TransactionModalComponent from './component';
@@ -36,7 +35,7 @@ const TransactionModal = ({ transaction, ...props }) => {
 };
 
 TransactionModal.propTypes = {
-  transaction: PropTypes.instanceOf(Transaction),
+  transaction: Transaction.propTypes,
 };
 
 export default TransactionModal;
