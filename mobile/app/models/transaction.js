@@ -9,7 +9,7 @@ export default class Transaction {
     description: PropTypes.string,
     id: PropTypes.string,
     icon: PropTypes.string,
-    postTime: PropTypes.string,
+    postDate: PropTypes.string,
     type: PropTypes.string,
     vendor: PropTypes.string,
   });

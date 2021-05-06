@@ -24,10 +24,10 @@ const TransactionFormComponent = ({ cardOptions, categoryOptions, editable, erro
       />
       <DateInput
         editable={editable}
-        error={errors.postTime && locale.t(errors.postTime)}
+        error={errors.postDate && locale.t(errors.postDate)}
         label={locale.t('components.transaction-form.labels.date')}
-        onChange={updateValue('postTime')}
-        value={values.postTime}
+        onChange={updateValue('postDate')}
+        value={values.postDate}
       />
       <VendorAutoComplete
         editable={editable}

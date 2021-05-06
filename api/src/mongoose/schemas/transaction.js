@@ -52,7 +52,7 @@ export default new Schema(
     description: {
       type: String,
     },
-    postTime: {
+    postDate: {
       index: true,
       required: true,
       type: String,
