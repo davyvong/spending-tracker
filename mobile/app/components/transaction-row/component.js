@@ -36,9 +36,7 @@ const TransactionRowComponent = ({ card, category, theme, transaction, ...props 
         <Text numberOfLines={1} style={styles.transactionRowVendor}>
           {transaction.vendor}
         </Text>
-        <Text style={[styles.transactionRowCategory, theme.transactionRowMutedText]}>
-          {card.company} {card.name}
-        </Text>
+        <Text style={[styles.transactionRowCategory, theme.transactionRowMutedText]}>{card.name}</Text>
       </View>
       <View style={[styles.transactionRowColumn, styles.transactionRowColumn3]}>
         <Text style={[styles.transactionRowAmount, transaction.isCredit && theme.transactionRowAmountPositive]}>
