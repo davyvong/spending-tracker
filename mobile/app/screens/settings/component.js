@@ -2,12 +2,13 @@ import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
 import Header from 'components/header';
 import Spacer from 'components/spacer';
+import Text from 'components/text';
 import Title from 'components/title';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import styles from './styles';
 
@@ -38,7 +39,9 @@ const SettingsScreenComponent = ({
         />
       </Header>
       <ScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
-        <Button onPress={navigateToProfile} title="profile" />
+        <Pressable onPress={navigateToProfile} style={styles.ctaRow}>
+          <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.profile')}</Text>
+        </Pressable>
       </ScrollView>
       <ActionDialog
         onClose={closeLogoutDialog}

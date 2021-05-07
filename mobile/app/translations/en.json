@@ -86,6 +86,7 @@
   "screens.profile.messages.discard-changes": "Are you sure you want to discard your changes?",
   "screens.profile.messages.save-profile": "Are you sure you want to save your changes?",
   "screens.profile.title": "Profile",
+  "screens.settings.actions.profile": "Profile",
   "screens.settings.buttons.logout": "Logout",
   "screens.settings.messages.logout": "Are you sure you want to logout?",
   "screens.settings.title": "Settings",

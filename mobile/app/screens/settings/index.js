@@ -17,9 +17,6 @@ const SettingsScreen = ({ navigation, ...props }) => {
 
   const theme = useMemo(
     () => ({
-      discardButton: {
-        backgroundColor: palette.get('errorBackground'),
-      },
       logoutButton: {
         backgroundColor: palette.get('errorBackground'),
       },
