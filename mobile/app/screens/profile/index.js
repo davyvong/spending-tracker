@@ -1,25 +1,18 @@
-import { useApolloClient } from '@apollo/client';
 import useAPI from 'hooks/api';
-import useAuthentication from 'hooks/authentication';
 import useCache from 'hooks/cache';
 import useTheme from 'hooks/theme';
 import pick from 'lodash/pick';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import SecureJWT from 'storage/jwt';
-import hexToRGB from 'utils/hex-to-rgb';
 
 import ProfileScreenComponent from './component';
 
 const ProfileScreen = ({ navigation, ...props }) => {
   const api = useAPI();
-  const client = useApolloClient();
-  const [, setIsLoggedIn] = useAuthentication();
   const [cache] = useCache();
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
-  const [logoutDialog, setLogoutDialog] = useState(false);
   const [saveDialog, setSaveDialog] = useState(false);
   const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState({
@@ -38,14 +31,18 @@ const ProfileScreen = ({ navigation, ...props }) => {
 
   const theme = useMemo(
     () => ({
+      activityIndicator: palette.get('buttonText'),
+      cancelButton: {
+        backgroundColor: palette.get('cancelBackground'),
+      },
+      cancelButtonPressed: {
+        backgroundColor: palette.get('pressedBackground'),
+      },
       discardButton: {
         backgroundColor: palette.get('errorBackground'),
       },
-      logoutButton: {
-        backgroundColor: palette.get('errorBackground'),
-      },
-      logoutButtonPressed: {
-        backgroundColor: hexToRGB(palette.get('errorBackground'), 0.7),
+      serverError: {
+        color: palette.get('errorText'),
       },
     }),
     [palette],
@@ -96,20 +93,6 @@ const ProfileScreen = ({ navigation, ...props }) => {
       setPending(false);
     }
   }, [api.updateProfile, navigation, validateValues, values]);
-
-  const logout = useCallback(async () => {
-    await SecureJWT.delete();
-    client.resetStore();
-    setIsLoggedIn(false);
-  }, [client, setIsLoggedIn]);
-
-  const closeLogoutDialog = useCallback(() => {
-    setLogoutDialog(false);
-  }, []);
-
-  const openLogoutDialog = useCallback(() => {
-    setLogoutDialog(true);
-  }, []);
 
   const closeSaveDialog = useCallback(() => {
     setSaveDialog(false);
@@ -162,14 +145,10 @@ const ProfileScreen = ({ navigation, ...props }) => {
     <ProfileScreenComponent
       {...props}
       closeDiscardDialog={closeDiscardDialog}
-      closeLogoutDialog={closeLogoutDialog}
       closeSaveDialog={closeSaveDialog}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
-      logout={logout}
-      logoutDialog={logoutDialog}
       navigateBack={navigateBack}
-      openLogoutDialog={openLogoutDialog}
       openSaveDialog={openSaveDialog}
       pending={pending}
       saveDialog={saveDialog}

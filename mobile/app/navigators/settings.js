@@ -4,16 +4,17 @@ import Header from 'core/header';
 import useLocale from 'hooks/locale';
 import React from 'react';
 import ProfileScreen from 'screens/profile';
+import SettingsScreen from 'screens/settings';
 
 const Stack = createStackNavigator();
 
-const ProfileNavigator = () => {
+const SettingsNavigator = () => {
   const [locale] = useLocale();
 
   return (
     <Stack.Navigator
       headerMode="none"
-      initialRouteName={routeOptions.profileScreen.name}
+      initialRouteName={routeOptions.settingsScreen.name}
       screenOptions={{
         cardOverlayEnabled: false,
         cardShadowEnabled: false,
@@ -28,8 +29,16 @@ const ProfileNavigator = () => {
           title: locale.t(routeOptions.profileScreen.title),
         }}
       />
+      <Stack.Screen
+        component={SettingsScreen}
+        name={routeOptions.settingsScreen.name}
+        options={{
+          ...routeOptions.settingsScreen,
+          title: locale.t(routeOptions.settingsScreen.title),
+        }}
+      />
     </Stack.Navigator>
   );
 };
 
-export default ProfileNavigator;
+export default SettingsNavigator;
