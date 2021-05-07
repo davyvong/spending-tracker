@@ -25,6 +25,7 @@ const TransactionFormComponent = ({ cardOptions, categoryOptions, editable, erro
       <DateInput
         editable={editable}
         error={errors.postDate && locale.t(errors.postDate)}
+        format="MMMM D, YYYY"
         label={locale.t('components.transaction-form.labels.date')}
         onChange={updateValue('postDate')}
         value={values.postDate}
