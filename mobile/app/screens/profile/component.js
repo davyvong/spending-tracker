@@ -9,12 +9,26 @@ import { currencyOptions } from 'components/transaction-form/constants';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
-import React, { Fragment, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import styles from './styles';
 
-const ProfileScreenComponent = ({ account, closeLogoutDialog, logout, logoutDialog, openLogoutDialog, theme }) => {
+const ProfileScreenComponent = ({
+  closeDiscardDialog,
+  closeLogoutDialog,
+  closeSaveDialog,
+  discardDialog,
+  logout,
+  logoutDialog,
+  navigateBack,
+  openLogoutDialog,
+  saveDialog,
+  saveProfile,
+  theme,
+  updateValue,
+  values,
+}) => {
   const [locale] = useLocale();
 
   const getLogoutButtonStyle = useCallback(
@@ -34,36 +48,38 @@ const ProfileScreenComponent = ({ account, closeLogoutDialog, logout, logoutDial
         />
       </Header>
       <ScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
-        {account.id && (
-          <Fragment>
-            <TextInput
-              editable={false}
-              label={locale.t('screens.profile.labels.first-name')}
-              onChangeText={() => {}}
-              value={account.firstName}
-            />
-            <TextInput
-              editable={false}
-              label={locale.t('screens.profile.labels.last-name')}
-              onChangeText={() => {}}
-              value={account.lastName}
-            />
-            <TextInput
-              editable={false}
-              label={locale.t('screens.profile.labels.email')}
-              onChangeText={() => {}}
-              value={account.email}
-            />
-            <RadioPickerInput
-              editable={false}
-              label={locale.t('screens.profile.labels.preferred-currency')}
-              onChange={() => {}}
-              options={currencyOptions}
-              value={account.preferredCurrency}
-            />
-          </Fragment>
-        )}
+        <TextInput
+          label={locale.t('screens.profile.labels.first-name')}
+          onChangeText={updateValue('firstName')}
+          value={values.firstName}
+        />
+        <TextInput
+          label={locale.t('screens.profile.labels.last-name')}
+          onChangeText={updateValue('lastName')}
+          value={values.lastName}
+        />
+        <TextInput
+          label={locale.t('screens.profile.labels.email')}
+          onChangeText={updateValue('email')}
+          value={values.email}
+        />
+        <RadioPickerInput
+          label={locale.t('screens.profile.labels.preferred-currency')}
+          onChange={updateValue('preferredCurrency')}
+          options={currencyOptions}
+          value={values.preferredCurrency}
+        />
       </ScrollView>
+      <ActionDialog
+        onClose={closeDiscardDialog}
+        message={locale.t('screens.profile.messages.discard-changes')}
+        primaryAction={{
+          color: theme.discardButton.backgroundColor,
+          label: locale.t('screens.profile.buttons.discard'),
+          onPress: navigateBack,
+        }}
+        visible={discardDialog}
+      />
       <ActionDialog
         onClose={closeLogoutDialog}
         message={locale.t('screens.profile.messages.logout')}
@@ -74,17 +90,36 @@ const ProfileScreenComponent = ({ account, closeLogoutDialog, logout, logoutDial
         }}
         visible={logoutDialog}
       />
+      <ActionDialog
+        onClose={closeSaveDialog}
+        message={locale.t('screens.profile.messages.save-transaction')}
+        primaryAction={{
+          label: locale.t('screens.profile.buttons.save-changes'),
+          onPress: saveProfile,
+        }}
+        visible={saveDialog}
+      />
     </View>
   );
 };
 
 ProfileScreenComponent.propTypes = {
-  account: PropTypes.object,
+  closeDiscardDialog: PropTypes.func.isRequired,
   closeLogoutDialog: PropTypes.func.isRequired,
+  closeSaveDialog: PropTypes.func.isRequired,
+  discardDialog: PropTypes.bool.isRequired,
+  errors: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   logoutDialog: PropTypes.bool.isRequired,
+  navigateBack: PropTypes.func.isRequired,
   openLogoutDialog: PropTypes.func.isRequired,
+  openSaveDialog: PropTypes.func.isRequired,
+  pending: PropTypes.bool.isRequired,
+  saveDialog: PropTypes.bool.isRequired,
+  saveProfile: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
+  updateValue: PropTypes.func.isRequired,
+  values: PropTypes.object.isRequired,
 };
 
 export default ProfileScreenComponent;
