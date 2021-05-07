@@ -8,7 +8,7 @@ import LoginScreen from 'screens/login';
 
 import ActivityNavigator from './activity';
 import CategoriesNavigator from './categories';
-import ProfileNavigator from './profile';
+import SettingsNavigator from './settings';
 import WalletNavigator from './wallet';
 
 const BottomTab = createBottomTabNavigator();
@@ -51,11 +51,11 @@ const MainNavigator = () => {
         }}
       />
       <BottomTab.Screen
-        name={routeOptions.profileNavigator.name}
-        component={ProfileNavigator}
+        name={routeOptions.settingsNavigator.name}
+        component={SettingsNavigator}
         options={{
-          ...routeOptions.profileNavigator,
-          title: locale.t(routeOptions.profileNavigator.title),
+          ...routeOptions.settingsNavigator,
+          title: locale.t(routeOptions.settingsNavigator.title),
         }}
       />
     </BottomTab.Navigator>

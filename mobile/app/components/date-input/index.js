@@ -18,7 +18,7 @@ const DateInput = props => {
       cancelButtonPressed: {
         backgroundColor: palette.get('pressedBackground'),
       },
-      iconColor: palette.get('inputText'),
+      iconColor: palette.get('defaultIcon'),
       innerModal: {
         backgroundColor: palette.get('modalBackground'),
       },

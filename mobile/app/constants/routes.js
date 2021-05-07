@@ -28,14 +28,18 @@ export const routeOptions = {
     name: 'EditTransactionScreen',
     title: 'screens.edit-transaction.title',
   },
-  profileNavigator: {
-    icon: 'account-box',
-    name: 'ProfileNavigator',
-    title: 'navigators.profile.title',
-  },
   profileScreen: {
     name: 'ProfileScreen',
     title: 'screens.profile.title',
+  },
+  settingsNavigator: {
+    icon: 'cog',
+    name: 'SettingsNavigator',
+    title: 'navigators.settings.title',
+  },
+  settingsScreen: {
+    name: 'SettingsScreen',
+    title: 'screens.settings.title',
   },
   walletNavigator: {
     icon: 'wallet',

@@ -16,7 +16,7 @@ const CurrencyInput = props => {
       currencyValue: {
         borderLeftColor: palette.get('inputText'),
       },
-      iconColor: palette.get('inputText'),
+      iconColor: palette.get('defaultIcon'),
       innerModal: {
         backgroundColor: palette.get('modalBackground'),
       },

@@ -2,6 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Button from 'components/button';
 import Text from 'components/text';
 import useLocale from 'hooks/locale';
+import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
@@ -10,7 +11,7 @@ import Modal from 'react-native-modal';
 
 import styles from './styles';
 
-const DateInputComponent = ({ editable, onChange, theme, value, ...props }) => {
+const DateInputComponent = ({ editable, format, onChange, theme, value, ...props }) => {
   const [locale] = useLocale();
   const [selected, setSelected] = useState();
   const [visible, setVisible] = useState(false);
@@ -51,10 +52,20 @@ const DateInputComponent = ({ editable, onChange, theme, value, ...props }) => {
     [theme],
   );
 
+  const formattedValue = useMemo(() => {
+    if (!value) {
+      return '';
+    }
+    if (format) {
+      return moment(value).format(format);
+    }
+    return value;
+  }, [value]);
+
   return (
     <Fragment>
       <Pressable disabled={!editable} onPress={openModal}>
-        <TextInput {...props} editable={false} pointerEvents="none" value={value} />
+        <TextInput {...props} editable={false} pointerEvents="none" value={formattedValue} />
         <MaterialIcons color={theme.iconColor} name="calendar-today" size={20} style={styles.calendarIcon} />
       </Pressable>
       <Modal
@@ -88,6 +99,7 @@ const DateInputComponent = ({ editable, onChange, theme, value, ...props }) => {
 
 DateInputComponent.propTypes = {
   editable: PropTypes.bool.isRequired,
+  format: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   value: PropTypes.string,

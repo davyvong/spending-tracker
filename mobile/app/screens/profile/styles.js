@@ -5,16 +5,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
+    paddingBottom: 12,
     paddingHorizontal: 24,
   },
-  fieldRow: {
-    flex: 1,
-    flexDirection: 'row',
-    marginHorizontal: -12,
+  serverError: {
+    marginTop: 8,
   },
-  fieldColumn: {
+  ctaRow: {
+    flexDirection: 'row',
+    marginHorizontal: -9,
+  },
+  ctaButton: {
     flex: 1,
-    marginHorizontal: 12,
+    height: 40,
+    marginHorizontal: 9,
+    marginTop: 12,
   },
 });
 

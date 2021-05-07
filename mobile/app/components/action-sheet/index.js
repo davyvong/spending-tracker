@@ -8,7 +8,7 @@ const ActionSheet = props => {
 
   const theme = useMemo(
     () => ({
-      iconColor: palette.get('inputText'),
+      iconColor: palette.get('defaultIcon'),
       innerModal: {
         backgroundColor: palette.get('modalBackground'),
       },

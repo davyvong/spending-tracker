@@ -1,5 +1,5 @@
 import { useApolloClient } from '@apollo/client';
-import * as vendorQueries from 'graphql/queries/vendors';
+import * as vendorsQueries from 'graphql/queries/vendors';
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -34,7 +34,7 @@ const VendorAutoComplete = ({ onChange, value, ...props }) => {
     if (value) {
       const { data } = await client
         .query({
-          query: vendorQueries.vendors,
+          query: vendorsQueries.vendors,
           variables: { name: value },
         })
         .catch();
