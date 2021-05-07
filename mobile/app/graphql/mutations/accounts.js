@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const updateAccount = gql`
   mutation($data: UpdateAccountData!) {
-    updateAccount(data: $data)
+    updateAccount(data: $data) {
       email
       firstName
       id

@@ -77,7 +77,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
     if (validateValues()) {
       setPending(true);
       try {
-        await api.updateAccount(values.id, pick(values, 'email', 'firstName', 'lastName', 'preferredCurrency'));
+        await api.updateAccount(pick(values, 'email', 'firstName', 'lastName', 'preferredCurrency'));
         navigation.dispatch({
           ignoreDiscard: true,
           payload: { count: 1 },
