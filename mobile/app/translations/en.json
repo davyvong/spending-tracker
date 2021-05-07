@@ -89,6 +89,7 @@
   "screens.settings.actions.profile": "Profile",
   "screens.settings.buttons.logout": "Logout",
   "screens.settings.messages.logout": "Are you sure you want to logout?",
+  "screens.settings.sections.account": "Account",
   "screens.settings.title": "Settings",
   "screens.wallet.messages.recently-spent": "You have recently spent",
   "screens.wallet.title": "Wallet"

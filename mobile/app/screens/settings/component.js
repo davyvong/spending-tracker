@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
 import Header from 'components/header';
@@ -39,7 +40,13 @@ const SettingsScreenComponent = ({
         />
       </Header>
       <ScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
+        <View style={styles.sectionHeader}>
+          <Text style={theme.sectionHeaderText}>{locale.t('screens.settings.sections.account')}</Text>
+        </View>
         <Pressable onPress={navigateToProfile} style={styles.ctaRow}>
+          <View style={styles.ctaRowIcon}>
+            <MaterialCommunityIcons color={theme.iconColor} name="account-box" size={28} />
+          </View>
           <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.profile')}</Text>
         </Pressable>
       </ScrollView>

@@ -8,8 +8,17 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: 24,
   },
+  sectionHeader: {
+    paddingBottom: 6,
+    paddingTop: 12,
+  },
   ctaRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
     paddingVertical: 12,
+  },
+  ctaRowIcon: {
+    marginRight: 16,
   },
   ctaRowText: {
     fontSize: normalizeText(16),

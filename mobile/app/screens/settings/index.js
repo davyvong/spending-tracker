@@ -17,11 +17,15 @@ const SettingsScreen = ({ navigation, ...props }) => {
 
   const theme = useMemo(
     () => ({
+      iconColor: palette.get('defaultIcon'),
       logoutButton: {
         backgroundColor: palette.get('errorBackground'),
       },
       logoutButtonPressed: {
         backgroundColor: hexToRGB(palette.get('errorBackground'), 0.7),
+      },
+      sectionHeaderText: {
+        color: palette.get('primaryText'),
       },
     }),
     [palette],
