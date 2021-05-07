@@ -36,24 +36,18 @@ const ProfileScreenComponent = ({ account, closeLogoutDialog, logout, logoutDial
       <ScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
         {account.id && (
           <Fragment>
-            <View style={styles.fieldRow}>
-              <View style={styles.fieldColumn}>
-                <TextInput
-                  editable={false}
-                  label={locale.t('screens.profile.labels.firstName')}
-                  onChangeText={() => {}}
-                  value={account.firstName}
-                />
-              </View>
-              <View style={styles.fieldColumn}>
-                <TextInput
-                  editable={false}
-                  label={locale.t('screens.profile.labels.lastName')}
-                  onChangeText={() => {}}
-                  value={account.lastName}
-                />
-              </View>
-            </View>
+            <TextInput
+              editable={false}
+              label={locale.t('screens.profile.labels.first-name')}
+              onChangeText={() => {}}
+              value={account.firstName}
+            />
+            <TextInput
+              editable={false}
+              label={locale.t('screens.profile.labels.last-name')}
+              onChangeText={() => {}}
+              value={account.lastName}
+            />
             <TextInput
               editable={false}
               label={locale.t('screens.profile.labels.email')}
@@ -62,7 +56,7 @@ const ProfileScreenComponent = ({ account, closeLogoutDialog, logout, logoutDial
             />
             <RadioPickerInput
               editable={false}
-              label={locale.t('screens.profile.labels.preferredCurrency')}
+              label={locale.t('screens.profile.labels.preferred-currency')}
               onChange={() => {}}
               options={currencyOptions}
               value={account.preferredCurrency}
