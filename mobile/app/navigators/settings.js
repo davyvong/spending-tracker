@@ -13,7 +13,7 @@ const SettingsNavigator = () => {
 
   return (
     <Stack.Navigator
-      headerMode="none"
+      headerMode="screen"
       initialRouteName={routeOptions.settingsScreen.name}
       screenOptions={{
         cardOverlayEnabled: false,
@@ -22,20 +22,21 @@ const SettingsNavigator = () => {
       }}
     >
       <Stack.Screen
-        component={ProfileScreen}
-        name={routeOptions.profileScreen.name}
-        options={{
-          ...routeOptions.profileScreen,
-          title: locale.t(routeOptions.profileScreen.title),
-        }}
-      />
-      <Stack.Screen
         component={SettingsScreen}
         name={routeOptions.settingsScreen.name}
         options={{
           ...routeOptions.settingsScreen,
           title: locale.t(routeOptions.settingsScreen.title),
         }}
+      />
+      <Stack.Screen
+        component={ProfileScreen}
+        name={routeOptions.profileScreen.name}
+        options={{
+          ...routeOptions.profileScreen,
+          title: locale.t(routeOptions.profileScreen.title),
+        }}
+        unmountOnBlur
       />
     </Stack.Navigator>
   );
