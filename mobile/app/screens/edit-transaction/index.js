@@ -94,7 +94,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
       return false;
     }
     return true;
-  }, [cache.categoriesById, values]);
+  }, [values]);
 
   const saveTransaction = useCallback(async () => {
     if (validateValues()) {
@@ -192,9 +192,9 @@ const EditTransactionScreen = ({ route, ...props }) => {
       deleteTransaction={deleteTransaction}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
+      navigateBack={navigateBack}
       openDeleteDialog={openDeleteDialog}
       openSaveDialog={openSaveDialog}
-      navigateBack={navigateBack}
       pendingDelete={pendingDelete}
       pendingSave={pendingSave}
       saveDialog={saveDialog}
