@@ -17,7 +17,7 @@ const SettingsScreen = ({ navigation, ...props }) => {
 
   const theme = useMemo(
     () => ({
-      iconColor: palette.get('defaultIcon'),
+      iconColor: palette.get('activeIcon'),
       logoutButton: {
         backgroundColor: palette.get('errorBackground'),
       },

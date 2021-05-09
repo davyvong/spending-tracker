@@ -148,6 +148,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
       closeSaveDialog={closeSaveDialog}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
+      hasChanges={hasChanges}
       navigateBack={navigateBack}
       openSaveDialog={openSaveDialog}
       pending={pending}
