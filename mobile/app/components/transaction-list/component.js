@@ -73,7 +73,6 @@ const TransactionListComponent = ({
         renderSectionHeader={renderSectionHeader}
         scrollEventThrottle={200}
         stickySectionHeadersEnabled={false}
-        style={styles.sectionList}
       />
     </View>
   );

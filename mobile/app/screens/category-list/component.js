@@ -1,5 +1,4 @@
 import CategoryList from 'components/category-list';
-import Header from 'components/header';
 import Title from 'components/title';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
@@ -15,12 +14,10 @@ const CategoryListScreenComponent = ({ categories, getCategories, navigateToCate
 
   return (
     <View style={styles.container}>
-      <Header>
-        <Title>{locale.t(routeOptions.categoryListScreen.title)}</Title>
-      </Header>
       <CategoryList
         contentContainerStyle={styles.contentContainer}
         data={categories}
+        ListStickyHeaderComponent={<Title>{locale.t(routeOptions.categoryListScreen.title)}</Title>}
         onPressItem={navigateToCategoryDetail}
         onRefresh={getCategories}
         refreshing={pending}
