@@ -1,32 +1,27 @@
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
 import useTheme from 'hooks/theme';
-import pick from 'lodash/pick';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import ProfileScreenComponent from './component';
+import PasswordScreenComponent from './component';
 
-const ProfileScreen = ({ navigation, ...props }) => {
+const PasswordScreen = ({ navigation, ...props }) => {
   const api = useAPI();
-  const [cache] = useCache();
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
   const [saveDialog, setSaveDialog] = useState(false);
   const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState({
-    email: null,
-    firstName: null,
-    lastName: null,
-    preferredCurrency: null,
+    confirmPassword: null,
+    currentPassword: null,
+    newPassword: null,
+    server: null,
   });
   const [values, setValues] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-    preferredCurrency: '',
-    ...cache.account,
+    confirmPassword: '',
+    currentPassword: '',
+    newPassword: '',
   });
 
   const theme = useMemo(
@@ -59,25 +54,37 @@ const ProfileScreen = ({ navigation, ...props }) => {
   );
 
   const validateValues = useCallback(() => {
-    const { email, firstName, lastName, preferredCurrency } = values;
-    if (!email || !firstName || !lastName || !preferredCurrency) {
-      setErrors({
-        email: email ? null : 'screens.profile.errors.empty-email',
-        firstName: firstName ? null : 'screens.profile.errors.empty-first-name',
-        lastName: lastName ? null : 'screens.profile.errors.empty-last-name',
-        preferredCurrency: preferredCurrency ? null : 'screens.profile.errors.empty-preferred-currency',
-        server: null,
-      });
+    const { confirmPassword, currentPassword, newPassword } = values;
+    const validationErrors = {
+      confirmPassword: null,
+      currentPassword: null,
+      newPassword: null,
+      server: null,
+    };
+    if (confirmPassword !== newPassword) {
+      validationErrors.confirmPassword = 'screens.password.errors.mismatch-password';
+    }
+    if (!confirmPassword) {
+      validationErrors.confirmPassword = 'screens.password.errors.empty-confirm-password';
+    }
+    if (!currentPassword) {
+      validationErrors.confirmPassword = 'screens.password.errors.empty-current-password';
+    }
+    if (!newPassword) {
+      validationErrors.confirmPassword = 'screens.password.errors.empty-new-password';
+    }
+    if (validationErrors.some(field => field)) {
+      setErrors(validationErrors);
       return false;
     }
     return true;
   }, [values]);
 
-  const saveProfile = useCallback(async () => {
+  const changePassword = useCallback(async () => {
     if (validateValues()) {
       setPending(true);
       try {
-        await api.updateAccount(pick(values, 'email', 'firstName', 'lastName', 'preferredCurrency'));
+        await api.updatePassword(values.currentPassword, values.newPassword);
         navigation.dispatch({
           ignoreDiscard: true,
           payload: { count: 1 },
@@ -92,7 +99,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
       }
       setPending(false);
     }
-  }, [api.updateProfile, navigation, validateValues, values]);
+  }, [api.updatePassword, navigation, validateValues, values]);
 
   const closeSaveDialog = useCallback(() => {
     setSaveDialog(false);
@@ -119,15 +126,6 @@ const ProfileScreen = ({ navigation, ...props }) => {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      api.getAccount().catch();
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [api.getAccount, navigation]);
-
-  useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', event => {
       const { action } = event.data;
       if (!hasChanges || action.ignoreDiscard) {
@@ -142,8 +140,9 @@ const ProfileScreen = ({ navigation, ...props }) => {
   }, [hasChanges, navigation, openDiscardDialog]);
 
   return (
-    <ProfileScreenComponent
+    <PasswordScreenComponent
       {...props}
+      changePassword={changePassword}
       closeDiscardDialog={closeDiscardDialog}
       closeSaveDialog={closeSaveDialog}
       discardDialog={Boolean(discardDialog)}
@@ -152,7 +151,6 @@ const ProfileScreen = ({ navigation, ...props }) => {
       openSaveDialog={openSaveDialog}
       pending={pending}
       saveDialog={saveDialog}
-      saveProfile={saveProfile}
       theme={theme}
       updateValue={updateValue}
       values={values}
@@ -160,7 +158,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
   );
 };
 
-ProfileScreen.propTypes = {
+PasswordScreen.propTypes = {
   navigation: PropTypes.shape({
     addListener: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -168,4 +166,4 @@ ProfileScreen.propTypes = {
   }),
 };
 
-export default ProfileScreen;
+export default PasswordScreen;

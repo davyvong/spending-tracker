@@ -18,6 +18,7 @@ const SettingsScreenComponent = ({
   logout,
   logoutDialog,
   openLogoutDialog,
+  navigateToPassword,
   navigateToProfile,
   theme,
 }) => {
@@ -49,7 +50,7 @@ const SettingsScreenComponent = ({
           </View>
           <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.personal-information')}</Text>
         </Pressable>
-        <Pressable onPress={undefined} style={styles.ctaRow}>
+        <Pressable onPress={navigateToPassword} style={styles.ctaRow}>
           <View style={styles.ctaRowIcon}>
             <MaterialCommunityIcons color={theme.iconColor} name="lock-reset" size={28} />
           </View>
@@ -75,6 +76,7 @@ SettingsScreenComponent.propTypes = {
   logout: PropTypes.func.isRequired,
   logoutDialog: PropTypes.bool.isRequired,
   openLogoutDialog: PropTypes.func.isRequired,
+  navigateToPassword: PropTypes.func.isRequired,
   navigateToProfile: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
 };

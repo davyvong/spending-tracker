@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
+  disabled: {
+    opacity: 0.5,
+  },
 });
 
 export default styles;
