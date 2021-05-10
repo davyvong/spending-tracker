@@ -4,7 +4,7 @@ import { ScrollView, View } from 'react-native';
 
 import styles from './styles';
 
-const ScrollViewComponent = ({ children, renderStickyHeader, scrollReachedTop, theme, ...props }) => {
+const ScrollViewComponent = ({ children, scrollReachedTop, StickyHeaderComponent, theme, ...props }) => {
   const headerStyle = useMemo(() => {
     const baseHeaderStyle = [styles.headerContent, theme.headerContent];
     if (!scrollReachedTop) {
@@ -15,9 +15,9 @@ const ScrollViewComponent = ({ children, renderStickyHeader, scrollReachedTop, t
 
   return (
     <View style={styles.container}>
-      {renderStickyHeader && (
+      {StickyHeaderComponent && (
         <View style={styles.header}>
-          <View style={headerStyle}>{renderStickyHeader()}</View>
+          <View style={headerStyle}>{StickyHeaderComponent}</View>
         </View>
       )}
       <ScrollView
@@ -34,8 +34,8 @@ const ScrollViewComponent = ({ children, renderStickyHeader, scrollReachedTop, t
 
 ScrollViewComponent.propTypes = {
   children: PropTypes.node,
-  renderStickyHeader: PropTypes.func,
   scrollReachedTop: PropTypes.bool.isRequired,
+  StickyHeaderComponent: PropTypes.node,
   theme: PropTypes.object.isRequired,
 };
 

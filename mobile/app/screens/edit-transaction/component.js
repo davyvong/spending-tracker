@@ -43,8 +43,6 @@ const EditTransactionScreenComponent = ({
     [theme],
   );
 
-  const renderHeader = useCallback(() => <Title>{locale.t('screens.edit-transaction.title')}</Title>, [locale]);
-
   useEffect(() => {
     const renderHeaderRight = () => (
       <Button
@@ -61,7 +59,10 @@ const EditTransactionScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <ScrollView keyboardShouldPersistTaps="handled" renderStickyHeader={renderHeader}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        StickyHeaderComponent={<Title>{locale.t('screens.edit-transaction.title')}</Title>}
+      >
         <TransactionForm
           editable={!pendingDelete && !pendingSave}
           errors={errors}

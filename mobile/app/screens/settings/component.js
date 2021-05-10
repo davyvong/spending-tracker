@@ -29,24 +29,21 @@ const SettingsScreenComponent = ({
     [theme],
   );
 
-  const renderHeader = useCallback(
-    () => (
-      <Fragment>
-        <Title>{locale.t(routeOptions.settingsScreen.title)}</Title>
-        <Spacer />
-        <Button
-          onPress={openLogoutDialog}
-          style={getLogoutButtonStyle}
-          title={locale.t('screens.settings.buttons.logout')}
-        />
-      </Fragment>
-    ),
-    [getLogoutButtonStyle, locale, openLogoutDialog],
-  );
-
   return (
     <View style={styles.container}>
-      <ScrollView renderStickyHeader={renderHeader}>
+      <ScrollView
+        StickyHeaderComponent={
+          <Fragment>
+            <Title>{locale.t(routeOptions.settingsScreen.title)}</Title>
+            <Spacer />
+            <Button
+              onPress={openLogoutDialog}
+              style={getLogoutButtonStyle}
+              title={locale.t('screens.settings.buttons.logout')}
+            />
+          </Fragment>
+        }
+      >
         <View style={styles.sectionHeader}>
           <Text style={theme.sectionHeaderText}>{locale.t('screens.settings.sections.account')}</Text>
         </View>

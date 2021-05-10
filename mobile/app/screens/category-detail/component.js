@@ -1,4 +1,3 @@
-import Header from 'components/header';
 import Title from 'components/title';
 import TransactionList from 'components/transaction-list';
 import TransactionModal from 'components/transaction-modal';
@@ -22,10 +21,8 @@ const CategoryDetailScreenComponent = ({
   transactions,
 }) => (
   <View style={styles.container}>
-    <Header>
-      <Title>{category.name}</Title>
-    </Header>
     <TransactionList
+      ListStickyHeaderComponent={<Title>{category.name}</Title>}
       onEndReached={() => getTransactionsWithoutLoading(skip)}
       onPressItem={setSelectedTransaction}
       onRefresh={getTransactions}

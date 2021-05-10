@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  sectionBlock: {
+  spendingChart: {
     marginVertical: 12,
     paddingHorizontal: 24,
   },

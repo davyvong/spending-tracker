@@ -35,11 +35,9 @@ const ProfileScreenComponent = ({
     [theme],
   );
 
-  const renderHeader = useCallback(() => <Title>{locale.t(routeOptions.profileScreen.title)}</Title>, [locale]);
-
   return (
     <View style={styles.container}>
-      <ScrollView renderStickyHeader={renderHeader}>
+      <ScrollView StickyHeaderComponent={<Title>{locale.t(routeOptions.profileScreen.title)}</Title>}>
         <TextInput
           editable={!pending}
           label={locale.t('screens.profile.labels.first-name')}

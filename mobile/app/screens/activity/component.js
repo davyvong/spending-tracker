@@ -1,5 +1,4 @@
 import Button from 'components/button';
-import Header from 'components/header';
 import Spacer from 'components/spacer';
 import SpendingChart from 'components/spending-chart';
 import Title from 'components/title';
@@ -9,7 +8,7 @@ import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -30,18 +29,23 @@ const ActivityScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <Header>
-        <Title>{locale.t(routeOptions.activityScreen.title)}</Title>
-        <Spacer />
-        <Button onPress={navigateToCreateTransaction} title={locale.t('screens.activity.buttons.create')} />
-      </Header>
       <TransactionList
         ListHeaderComponent={
-          <View style={styles.sectionBlock}>
+          <View style={styles.spendingChart}>
             <SpendingChart data={dailySpending} />
           </View>
         }
-        onEndReached={() => getTransactionsWithoutLoading(skip)}
+        ListStickyHeaderComponent={
+          <Fragment>
+            <Title>{locale.t(routeOptions.activityScreen.title)}</Title>
+            <Spacer />
+            <Button onPress={navigateToCreateTransaction} title={locale.t('screens.activity.buttons.create')} />
+          </Fragment>
+        }
+        onEndReached={() => {
+          console.log(new Date(), `getTransactionsWithoutLoading(${skip})`);
+          return getTransactionsWithoutLoading(skip);
+        }}
         onPressItem={setSelectedTransaction}
         onRefresh={getSpendingAndTransactions}
         refreshing={pending}

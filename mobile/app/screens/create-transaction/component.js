@@ -33,13 +33,12 @@ const CreateTransactionScreenComponent = ({
     [theme],
   );
 
-  const renderHeader = useCallback(() => <Title>{locale.t(routeOptions.createTransactionScreen.title)}</Title>, [
-    locale,
-  ]);
-
   return (
     <View style={styles.container}>
-      <ScrollView keyboardShouldPersistTaps="handled" renderStickyHeader={renderHeader}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        StickyHeaderComponent={<Title>{locale.t(routeOptions.createTransactionScreen.title)}</Title>}
+      >
         <TransactionForm editable={!pending} errors={errors} updateValue={updateValue} values={values} />
         {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
         <View style={styles.ctaRow}>

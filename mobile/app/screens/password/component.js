@@ -33,11 +33,9 @@ const PasswordScreenComponent = ({
     [theme],
   );
 
-  const renderHeader = useCallback(() => <Title>{locale.t(routeOptions.passwordScreen.title)}</Title>, [locale]);
-
   return (
     <View style={styles.container}>
-      <ScrollView renderStickyHeader={renderHeader}>
+      <ScrollView StickyHeaderComponent={<Title>{locale.t(routeOptions.passwordScreen.title)}</Title>}>
         <TextInput
           autoCompleteType="password"
           editable={!pending}
