@@ -286,6 +286,18 @@ export const APIProvider = ({ children }) => {
     [client, updateCache],
   );
 
+  const updatePassword = useCallback(
+    async (currentPassword, newPassword) =>
+      client.mutate({
+        mutation: accountsMutations.updatePassword,
+        variables: {
+          currentPassword,
+          newPassword,
+        },
+      }),
+    [client],
+  );
+
   const updateTransaction = useCallback(
     async (transactionId, updateData) => {
       const { data } = await client.mutate({
@@ -322,6 +334,7 @@ export const APIProvider = ({ children }) => {
     signInWithEmail,
     updateAccount,
     updateCard,
+    updatePassword,
     updateTransaction,
   };
 

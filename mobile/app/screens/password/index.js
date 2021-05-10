@@ -73,7 +73,7 @@ const PasswordScreen = ({ navigation, ...props }) => {
     if (!newPassword) {
       validationErrors.confirmPassword = 'screens.password.errors.empty-new-password';
     }
-    if (validationErrors.some(field => field)) {
+    if (Object.values(validationErrors).some(field => field)) {
       setErrors(validationErrors);
       return false;
     }

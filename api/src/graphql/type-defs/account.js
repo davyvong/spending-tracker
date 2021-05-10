@@ -1,7 +1,7 @@
 export default `
   type Mutation {
     updateAccount(data: UpdateAccountData!): Account
-    updatePassword(oldPassword: String!, newPassword: String!): Boolean
+    updatePassword(currentPassword: String!, newPassword: String!): Boolean
   }
 
   type Query {
