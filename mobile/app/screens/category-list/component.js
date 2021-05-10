@@ -15,7 +15,6 @@ const CategoryListScreenComponent = ({ categories, getCategories, navigateToCate
   return (
     <View style={styles.container}>
       <CategoryList
-        contentContainerStyle={styles.contentContainer}
         data={categories}
         ListStickyHeaderComponent={<Title>{locale.t(routeOptions.categoryListScreen.title)}</Title>}
         onPressItem={navigateToCategoryDetail}

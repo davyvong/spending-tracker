@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useMemo } from 'react';
 import { FlatList, View } from 'react-native';
 
+import styles from './styles';
+
 const CategoryListComponent = ({ data, ListStickyHeaderComponent, onPressItem, scrollReachedTop, theme, ...props }) => {
   const headerStyle = useMemo(() => {
     const baseHeaderStyle = [ScrollViewStyles.headerContent, theme.headerContent];
@@ -43,6 +45,7 @@ const CategoryListComponent = ({ data, ListStickyHeaderComponent, onPressItem, s
       )}
       <FlatList
         {...props}
+        contentContainerStyle={styles.contentContainer}
         data={categoriesWithIcons}
         keyExtractor={(item, index) => item.id || index}
         numColumns={2}

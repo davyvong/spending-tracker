@@ -68,6 +68,7 @@ const TransactionListComponent = ({
       )}
       <SectionList
         {...props}
+        contentContainerStyle={styles.contentContainer}
         initialNumToRender={10}
         keyExtractor={item => item.id}
         renderItem={renderItem}

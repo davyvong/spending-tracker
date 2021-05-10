@@ -5,7 +5,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   spendingChart: {
-    marginVertical: 12,
+    marginBottom: 12,
+    marginTop: 6,
     paddingHorizontal: 24,
   },
 });
