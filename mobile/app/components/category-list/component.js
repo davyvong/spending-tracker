@@ -8,15 +8,7 @@ import { FlatList, View } from 'react-native';
 
 import styles from './styles';
 
-const CategoryListComponent = ({ data, ListStickyHeaderComponent, onPressItem, scrollReachedTop, theme, ...props }) => {
-  const headerStyle = useMemo(() => {
-    const baseHeaderStyle = [ScrollViewStyles.headerContent, theme.headerContent];
-    if (!scrollReachedTop) {
-      return baseHeaderStyle.concat([ScrollViewStyles.headerShadow, theme.headerShadow]);
-    }
-    return baseHeaderStyle;
-  }, [scrollReachedTop, theme]);
-
+const CategoryListComponent = ({ data, ListStickyHeaderComponent, onPressItem, ...props }) => {
   const renderItem = useCallback(
     ({ item }) => {
       if (!item || !item.id) {
@@ -38,11 +30,7 @@ const CategoryListComponent = ({ data, ListStickyHeaderComponent, onPressItem, s
 
   return (
     <View style={ScrollViewStyles.container}>
-      {ListStickyHeaderComponent && (
-        <View style={ScrollViewStyles.header}>
-          <View style={headerStyle}>{ListStickyHeaderComponent}</View>
-        </View>
-      )}
+      {ListStickyHeaderComponent && <View style={ScrollViewStyles.header}>{ListStickyHeaderComponent}</View>}
       <FlatList
         {...props}
         contentContainerStyle={styles.contentContainer}
@@ -64,8 +52,6 @@ CategoryListComponent.propTypes = {
   data: PropTypes.arrayOf(Category.propTypes),
   ListStickyHeaderComponent: PropTypes.node,
   onPressItem: PropTypes.func,
-  scrollReachedTop: PropTypes.bool.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
 export default CategoryListComponent;

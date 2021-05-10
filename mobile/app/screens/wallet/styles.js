@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   walletCarousel: {
+    marginBottom: 12,
     marginHorizontal: -24,
   },
 });

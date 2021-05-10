@@ -20,8 +20,12 @@ const WalletCarouselComponent = ({ data, dimensions, onChange, ...props }) => {
   );
 };
 
+WalletCarouselComponent.defaultProps = {
+  data: [],
+};
+
 WalletCarouselComponent.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   dimensions: PropTypes.shape({
     height: PropTypes.number,
     width: PropTypes.number,

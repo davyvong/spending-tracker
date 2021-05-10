@@ -6,8 +6,7 @@ const styles = StyleSheet.create({
   },
   spendingChart: {
     marginBottom: 12,
-    marginTop: 6,
-    paddingHorizontal: 24,
+    marginHorizontal: 24,
   },
 });
 
