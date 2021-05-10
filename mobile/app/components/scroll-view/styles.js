@@ -3,16 +3,29 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 53,
   },
-  contentContainer: {
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewContent: {
     paddingBottom: 12,
     paddingHorizontal: 24,
   },
   header: {
+    left: 0,
+    overflow: 'hidden',
+    paddingBottom: 8,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  headerContent: {
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 24,
     paddingVertical: 12,
+    zIndex: 1,
   },
   headerShadow: {
     elevation: 5,
@@ -22,6 +35,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    zIndex: 2,
   },
 });
 

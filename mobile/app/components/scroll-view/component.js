@@ -6,7 +6,7 @@ import styles from './styles';
 
 const ScrollViewComponent = ({ children, renderStickyHeader, scrollReachedTop, theme, ...props }) => {
   const headerStyle = useMemo(() => {
-    const baseHeaderStyle = [styles.header, theme.header];
+    const baseHeaderStyle = [styles.headerContent, theme.headerContent];
     if (!scrollReachedTop) {
       return baseHeaderStyle.concat([styles.headerShadow, theme.headerShadow]);
     }
@@ -15,10 +15,14 @@ const ScrollViewComponent = ({ children, renderStickyHeader, scrollReachedTop, t
 
   return (
     <View style={styles.container}>
-      {renderStickyHeader && <View style={headerStyle}>{renderStickyHeader()}</View>}
+      {renderStickyHeader && (
+        <View style={styles.header}>
+          <View style={headerStyle}>{renderStickyHeader()}</View>
+        </View>
+      )}
       <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        style={styles.container}
+        contentContainerStyle={styles.scrollViewContent}
+        style={styles.scrollView}
         {...props}
         scrollEventThrottle={200}
       >

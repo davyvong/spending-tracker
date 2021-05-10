@@ -11,7 +11,7 @@ const ScrollView = props => {
 
   const theme = useMemo(
     () => ({
-      header: {
+      headerContent: {
         backgroundColor: palette.get('appBackground'),
       },
       headerShadow: {
