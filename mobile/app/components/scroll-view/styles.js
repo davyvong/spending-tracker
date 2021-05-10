@@ -19,13 +19,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: 0,
+    zIndex: 1,
   },
   headerContent: {
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 24,
     paddingVertical: 12,
-    zIndex: 1,
   },
   headerShadow: {
     elevation: 5,
@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    zIndex: 2,
   },
 });
 
