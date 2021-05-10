@@ -5,9 +5,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  contentContainer: {
+    marginTop: -8,
+  },
   sectionHeader: {
-    paddingBottom: 6,
-    paddingTop: 12,
+    marginVertical: 8,
   },
   ctaRow: {
     alignItems: 'center',

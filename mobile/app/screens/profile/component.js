@@ -37,7 +37,10 @@ const ProfileScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <ScrollView StickyHeaderComponent={<Title>{locale.t(routeOptions.profileScreen.title)}</Title>}>
+      <ScrollView
+        contentContainerStyle={styles.contentContainer}
+        StickyHeaderComponent={<Title>{locale.t(routeOptions.profileScreen.title)}</Title>}
+      >
         <TextInput
           editable={!pending}
           label={locale.t('screens.profile.labels.first-name')}

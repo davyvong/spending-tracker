@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   suggestionList: {
     borderRadius: 5,
     elevation: 4,
-    paddingVertical: 8,
+    marginVertical: 8,
     shadowOffset: {
       height: 2,
       width: 0,

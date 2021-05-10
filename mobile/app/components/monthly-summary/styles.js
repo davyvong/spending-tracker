@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    minHeight: 70,
   },
   statisticRow: {
     flexDirection: 'row',

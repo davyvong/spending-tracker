@@ -32,6 +32,7 @@ const SettingsScreenComponent = ({
   return (
     <View style={styles.container}>
       <ScrollView
+        contentContainerStyle={styles.contentContainer}
         StickyHeaderComponent={
           <Fragment>
             <Title>{locale.t(routeOptions.settingsScreen.title)}</Title>

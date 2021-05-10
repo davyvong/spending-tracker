@@ -9,8 +9,6 @@ const styles = StyleSheet.create({
     paddingTop: 12,
   },
   emptyContainer: {
-    minHeight: 0,
-    paddingBottom: 0,
     paddingTop: 0,
   },
   leftButton: {

@@ -4,7 +4,6 @@ import normalizeText from 'utils/normalize-text';
 const styles = StyleSheet.create({
   categoryTile: {
     alignItems: 'flex-start',
-    backgroundColor: 'red',
     borderRadius: 5,
     flex: 1,
     flexDirection: 'column',

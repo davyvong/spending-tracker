@@ -32,9 +32,7 @@ const WalletScreenComponent = ({
       >
         {!pendingCards && cards.length > 0 && (
           <Fragment>
-            <View style={styles.sectionBlock}>
-              <WalletCarousel containerCustomStyle={styles.walletCarousel} data={cards} onChange={setSelectedCard} />
-            </View>
+            <WalletCarousel containerCustomStyle={styles.walletCarousel} data={cards} onChange={setSelectedCard} />
             <View style={styles.sectionBlock}>
               <MonthPicker onPress={setSelectedMonth} value={selectedMonth} />
             </View>

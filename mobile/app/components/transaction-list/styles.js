@@ -2,11 +2,11 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   contentContainer: {
-    paddingTop: 6,
+    marginTop: -8,
   },
   sectionHeader: {
-    paddingHorizontal: 24,
-    paddingVertical: 6,
+    marginHorizontal: 24,
+    marginVertical: 8,
   },
 });
 
