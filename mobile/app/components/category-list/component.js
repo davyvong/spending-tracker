@@ -1,17 +1,16 @@
 import CategoryTile from 'components/category-tile';
 import { getCategoryIcon } from 'components/category-tile/utils';
+import ScrollViewStyles from 'components/scroll-view/styles';
 import Category from 'models/category';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo } from 'react';
 import { FlatList, View } from 'react-native';
 
-import styles from './styles';
-
 const CategoryListComponent = ({ data, ListStickyHeaderComponent, onPressItem, scrollReachedTop, theme, ...props }) => {
   const headerStyle = useMemo(() => {
-    const baseHeaderStyle = [styles.headerContent, theme.headerContent];
+    const baseHeaderStyle = [ScrollViewStyles.headerContent, theme.headerContent];
     if (!scrollReachedTop) {
-      return baseHeaderStyle.concat([styles.headerShadow, theme.headerShadow]);
+      return baseHeaderStyle.concat([ScrollViewStyles.headerShadow, theme.headerShadow]);
     }
     return baseHeaderStyle;
   }, [scrollReachedTop, theme]);
@@ -36,9 +35,9 @@ const CategoryListComponent = ({ data, ListStickyHeaderComponent, onPressItem, s
   }, [data]);
 
   return (
-    <View style={styles.container}>
+    <View style={ScrollViewStyles.container}>
       {ListStickyHeaderComponent && (
-        <View style={styles.header}>
+        <View style={ScrollViewStyles.header}>
           <View style={headerStyle}>{ListStickyHeaderComponent}</View>
         </View>
       )}

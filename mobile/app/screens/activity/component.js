@@ -42,10 +42,7 @@ const ActivityScreenComponent = ({
             <Button onPress={navigateToCreateTransaction} title={locale.t('screens.activity.buttons.create')} />
           </Fragment>
         }
-        onEndReached={() => {
-          console.log(new Date(), `getTransactionsWithoutLoading(${skip})`);
-          return getTransactionsWithoutLoading(skip);
-        }}
+        onEndReached={() => getTransactionsWithoutLoading(skip)}
         onPressItem={setSelectedTransaction}
         onRefresh={getSpendingAndTransactions}
         refreshing={pending}

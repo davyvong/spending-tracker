@@ -1,3 +1,4 @@
+import ScrollViewStyles from 'components/scroll-view/styles';
 import Text from 'components/text';
 import TransactionRow from 'components/transaction-row';
 import useLocale from 'hooks/locale';
@@ -21,9 +22,9 @@ const TransactionListComponent = ({
   const [locale] = useLocale();
 
   const headerStyle = useMemo(() => {
-    const baseHeaderStyle = [styles.headerContent, theme.headerContent];
+    const baseHeaderStyle = [ScrollViewStyles.headerContent, theme.headerContent];
     if (!scrollReachedTop) {
-      return baseHeaderStyle.concat([styles.headerShadow, theme.headerShadow]);
+      return baseHeaderStyle.concat([ScrollViewStyles.headerShadow, theme.headerShadow]);
     }
     return baseHeaderStyle;
   }, [scrollReachedTop, theme]);
@@ -59,9 +60,9 @@ const TransactionListComponent = ({
   );
 
   return (
-    <View style={styles.container}>
+    <View style={ScrollViewStyles.container}>
       {ListStickyHeaderComponent && (
-        <View style={styles.header}>
+        <View style={ScrollViewStyles.header}>
           <View style={headerStyle}>{ListStickyHeaderComponent}</View>
         </View>
       )}

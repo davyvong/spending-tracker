@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   headerShadow: {
-    elevation: 5,
+    elevation: 4,
     shadowOffset: {
       height: 2,
       width: 0,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
   },
 });
 
