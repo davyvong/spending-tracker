@@ -1,13 +1,13 @@
-import Header from 'components/header';
 import MonthPicker from 'components/month-picker';
 import MonthlySummary from 'components/monthly-summary';
+import ScrollView from 'components/scroll-view';
 import Title from 'components/title';
 import WalletCarousel from 'components/wallet-carousel';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
-import { RefreshControl, ScrollView, View } from 'react-native';
+import React, { Fragment, useCallback } from 'react';
+import { RefreshControl, View } from 'react-native';
 
 import styles from './styles';
 
@@ -24,15 +24,13 @@ const WalletScreenComponent = ({
 }) => {
   const [locale] = useLocale();
 
+  const renderHeader = useCallback(() => <Title>{locale.t(routeOptions.walletScreen.title)}</Title>, [locale]);
+
   return (
     <View style={styles.container}>
-      <Header>
-        <Title>{locale.t(routeOptions.walletScreen.title)}</Title>
-      </Header>
       <ScrollView
-        contentContainerStyle={styles.contentContainer}
         refreshControl={<RefreshControl onRefresh={getCardsAndSummary} refreshing={refreshing} />}
-        style={styles.container}
+        renderStickyHeader={renderHeader}
       >
         {!pendingCards && cards.length > 0 && (
           <Fragment>

@@ -1,13 +1,13 @@
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
-import Header from 'components/header';
+import ScrollView from 'components/scroll-view';
 import Text from 'components/text';
 import Title from 'components/title';
 import TransactionForm from 'components/transaction-form';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect } from 'react';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 import styles from './styles';
 
@@ -43,6 +43,8 @@ const EditTransactionScreenComponent = ({
     [theme],
   );
 
+  const renderHeader = useCallback(() => <Title>{locale.t('screens.edit-transaction.title')}</Title>, [locale]);
+
   useEffect(() => {
     const renderHeaderRight = () => (
       <Button
@@ -59,14 +61,7 @@ const EditTransactionScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <Header>
-        <Title>{locale.t('screens.edit-transaction.title')}</Title>
-      </Header>
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        keyboardShouldPersistTaps="handled"
-        style={styles.container}
-      >
+      <ScrollView keyboardShouldPersistTaps="handled" renderStickyHeader={renderHeader}>
         <TransactionForm
           editable={!pendingDelete && !pendingSave}
           errors={errors}
