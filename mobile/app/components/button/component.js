@@ -6,19 +6,30 @@ import { Pressable, ViewPropTypes } from 'react-native';
 
 import styles from './styles';
 
-const ButtonComponent = ({ children, theme, title, style, ...props }) => {
+const ButtonComponent = ({ children, disabled, theme, title, style, ...props }) => {
   const getPressableStyle = useCallback(
     ({ pressed }) => {
-      if (isFunction(style)) {
-        return [styles.container, theme.container, style({ pressed })];
+      let pressableStyles = [styles.container];
+      if (disabled) {
+        pressableStyles.push(styles.disabled);
       }
-      return pressed ? [styles.container, theme.pressedContainer, style] : [styles.container, theme.container, style];
+      if (pressed) {
+        pressableStyles.push(theme.pressedContainer);
+      } else {
+        pressableStyles.push(theme.container);
+      }
+      if (isFunction(style)) {
+        pressableStyles = pressableStyles.concat(style({ pressed }));
+      } else {
+        pressableStyles = pressableStyles.concat(style);
+      }
+      return pressableStyles;
     },
-    [style, theme],
+    [disabled, style, theme],
   );
 
   return (
-    <Pressable {...props} style={getPressableStyle}>
+    <Pressable {...props} disabled={disabled} style={getPressableStyle}>
       {title ? <Text style={theme.text}>{title}</Text> : children}
     </Pressable>
   );
@@ -27,6 +38,7 @@ const ButtonComponent = ({ children, theme, title, style, ...props }) => {
 ButtonComponent.propTypes = {
   children: PropTypes.node,
   color: PropTypes.string,
+  disabled: PropTypes.bool,
   style: ViewPropTypes.style,
   theme: PropTypes.object,
   title: PropTypes.string,

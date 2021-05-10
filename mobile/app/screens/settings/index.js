@@ -17,7 +17,7 @@ const SettingsScreen = ({ navigation, ...props }) => {
 
   const theme = useMemo(
     () => ({
-      iconColor: palette.get('defaultIcon'),
+      iconColor: palette.get('activeIcon'),
       logoutButton: {
         backgroundColor: palette.get('errorBackground'),
       },
@@ -45,6 +45,10 @@ const SettingsScreen = ({ navigation, ...props }) => {
     setLogoutDialog(true);
   }, []);
 
+  const navigateToPassword = useCallback(() => {
+    navigation.navigate(routeOptions.passwordScreen.name);
+  }, [navigation]);
+
   const navigateToProfile = useCallback(() => {
     navigation.navigate(routeOptions.profileScreen.name);
   }, [navigation]);
@@ -55,6 +59,7 @@ const SettingsScreen = ({ navigation, ...props }) => {
       closeLogoutDialog={closeLogoutDialog}
       logout={logout}
       logoutDialog={logoutDialog}
+      navigateToPassword={navigateToPassword}
       navigateToProfile={navigateToProfile}
       theme={theme}
       openLogoutDialog={openLogoutDialog}

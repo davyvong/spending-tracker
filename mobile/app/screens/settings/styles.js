@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   ctaRowText: {
-    fontSize: normalizeText(16),
+    fontSize: normalizeText(14),
   },
 });
 

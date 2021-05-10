@@ -62,7 +62,7 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
         console.log(error.message);
         setErrors(prevState => ({
           ...prevState,
-          server: 'screens.create-transaction.errors.server-error',
+          server: 'common.unknown-error',
         }));
       }
       setPending(false);

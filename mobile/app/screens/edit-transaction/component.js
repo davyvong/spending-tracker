@@ -67,7 +67,12 @@ const EditTransactionScreenComponent = ({
         keyboardShouldPersistTaps="handled"
         style={styles.container}
       >
-        <TransactionForm errors={errors} updateValue={updateValue} values={values} />
+        <TransactionForm
+          editable={!pendingDelete && !pendingSave}
+          errors={errors}
+          updateValue={updateValue}
+          values={values}
+        />
         {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
         <View style={styles.ctaRow}>
           <Button disabled={pendingDelete || pendingSave} onPress={navigateBack} style={getCancelButtonStyle}>

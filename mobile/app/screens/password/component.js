@@ -1,11 +1,9 @@
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
 import Header from 'components/header';
-import RadioPickerInput from 'components/radio-picker-input';
 import Text from 'components/text';
 import TextInput from 'components/text-input';
 import Title from 'components/title';
-import { currencyOptions } from 'components/transaction-form/constants';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
@@ -14,7 +12,8 @@ import { ActivityIndicator, ScrollView, View } from 'react-native';
 
 import styles from './styles';
 
-const ProfileScreenComponent = ({
+const PasswordScreenComponent = ({
+  changePassword,
   closeDiscardDialog,
   closeSaveDialog,
   discardDialog,
@@ -23,7 +22,6 @@ const ProfileScreenComponent = ({
   navigateBack,
   pending,
   saveDialog,
-  saveProfile,
   theme,
   updateValue,
   values,
@@ -38,44 +36,44 @@ const ProfileScreenComponent = ({
   return (
     <View style={styles.container}>
       <Header>
-        <Title>{locale.t(routeOptions.profileScreen.title)}</Title>
+        <Title>{locale.t(routeOptions.passwordScreen.title)}</Title>
       </Header>
       <ScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
         <TextInput
+          autoCompleteType="password"
           editable={!pending}
-          label={locale.t('screens.profile.labels.first-name')}
-          onChangeText={updateValue('firstName')}
-          value={values.firstName}
+          label={locale.t('screens.password.labels.current-password')}
+          onChangeText={updateValue('currentPassword')}
+          secureTextEntry
+          textContentType="password"
+          value={values.currentPassword}
         />
         <TextInput
           editable={!pending}
-          label={locale.t('screens.profile.labels.last-name')}
-          onChangeText={updateValue('lastName')}
-          value={values.lastName}
+          label={locale.t('screens.password.labels.new-password')}
+          onChangeText={updateValue('newPassword')}
+          secureTextEntry
+          textContentType="password"
+          value={values.newPassword}
         />
         <TextInput
           editable={!pending}
-          label={locale.t('screens.profile.labels.email')}
-          onChangeText={updateValue('email')}
-          value={values.email}
-        />
-        <RadioPickerInput
-          editable={!pending}
-          label={locale.t('screens.profile.labels.preferred-currency')}
-          onChange={updateValue('preferredCurrency')}
-          options={currencyOptions}
-          value={values.preferredCurrency}
+          label={locale.t('screens.password.labels.confirm-password')}
+          onChangeText={updateValue('confirmPassword')}
+          secureTextEntry
+          textContentType="password"
+          value={values.confirmPassword}
         />
         {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
         <View style={styles.ctaRow}>
           <Button disabled={pending} onPress={navigateBack} style={getCancelButtonStyle}>
-            <Text>{locale.t('screens.profile.buttons.cancel')}</Text>
+            <Text>{locale.t('screens.password.buttons.cancel')}</Text>
           </Button>
           <Button
             disabled={pending}
             onPress={openSaveDialog}
             style={styles.ctaButton}
-            title={pending ? '' : locale.t('screens.profile.buttons.save-changes')}
+            title={pending ? '' : locale.t('screens.password.buttons.change-password')}
           >
             <ActivityIndicator color={theme.activityIndicator} />
           </Button>
@@ -83,7 +81,7 @@ const ProfileScreenComponent = ({
       </ScrollView>
       <ActionDialog
         onClose={closeDiscardDialog}
-        message={locale.t('screens.profile.messages.discard-changes')}
+        message={locale.t('screens.password.messages.discard-changes')}
         primaryAction={{
           color: theme.discardButton.backgroundColor,
           label: locale.t('screens.profile.buttons.discard'),
@@ -93,10 +91,10 @@ const ProfileScreenComponent = ({
       />
       <ActionDialog
         onClose={closeSaveDialog}
-        message={locale.t('screens.profile.messages.save-profile')}
+        message={locale.t('screens.password.messages.change-password')}
         primaryAction={{
-          label: locale.t('screens.profile.buttons.save-changes'),
-          onPress: saveProfile,
+          label: locale.t('screens.password.buttons.change'),
+          onPress: changePassword,
         }}
         visible={saveDialog}
       />
@@ -104,7 +102,8 @@ const ProfileScreenComponent = ({
   );
 };
 
-ProfileScreenComponent.propTypes = {
+PasswordScreenComponent.propTypes = {
+  changePassword: PropTypes.func.isRequired,
   closeDiscardDialog: PropTypes.func.isRequired,
   closeSaveDialog: PropTypes.func.isRequired,
   discardDialog: PropTypes.bool.isRequired,
@@ -113,10 +112,9 @@ ProfileScreenComponent.propTypes = {
   openSaveDialog: PropTypes.func.isRequired,
   pending: PropTypes.bool.isRequired,
   saveDialog: PropTypes.bool.isRequired,
-  saveProfile: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   updateValue: PropTypes.func.isRequired,
   values: PropTypes.object.isRequired,
 };
 
-export default ProfileScreenComponent;
+export default PasswordScreenComponent;

@@ -17,7 +17,7 @@ export default {
       if (!account) {
         throw new Unauthorized();
       }
-      const verifiedPassword = await verifyPassword(args.oldPassword, account.get('passwordHash'));
+      const verifiedPassword = await verifyPassword(args.currentPassword, account.get('passwordHash'));
       if (!verifiedPassword) {
         throw new Unauthorized();
       }
