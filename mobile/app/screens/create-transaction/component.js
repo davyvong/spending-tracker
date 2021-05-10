@@ -1,6 +1,6 @@
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
-import Header from 'components/header';
+import ScrollView from 'components/scroll-view';
 import Text from 'components/text';
 import TransactionForm from 'components/transaction-form';
 import Title from 'components/title';
@@ -8,7 +8,7 @@ import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 import styles from './styles';
 
@@ -35,13 +35,9 @@ const CreateTransactionScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <Header>
-        <Title>{locale.t(routeOptions.createTransactionScreen.title)}</Title>
-      </Header>
       <ScrollView
-        contentContainerStyle={styles.contentContainer}
         keyboardShouldPersistTaps="handled"
-        style={styles.container}
+        StickyHeaderComponent={<Title>{locale.t(routeOptions.createTransactionScreen.title)}</Title>}
       >
         <TransactionForm editable={!pending} errors={errors} updateValue={updateValue} values={values} />
         {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}

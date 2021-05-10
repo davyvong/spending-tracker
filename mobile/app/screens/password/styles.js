@@ -4,10 +4,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  contentContainer: {
-    paddingBottom: 12,
-    paddingHorizontal: 24,
-  },
   serverError: {
     marginTop: 8,
   },

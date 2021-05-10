@@ -4,8 +4,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  sectionBlock: {
-    marginVertical: 12,
+  spendingChart: {
+    marginBottom: 12,
+    marginTop: 6,
     paddingHorizontal: 24,
   },
 });

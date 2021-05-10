@@ -1,6 +1,6 @@
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
-import Header from 'components/header';
+import ScrollView from 'components/scroll-view';
 import Text from 'components/text';
 import TextInput from 'components/text-input';
 import Title from 'components/title';
@@ -8,7 +8,7 @@ import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 import styles from './styles';
 
@@ -35,10 +35,7 @@ const PasswordScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <Header>
-        <Title>{locale.t(routeOptions.passwordScreen.title)}</Title>
-      </Header>
-      <ScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
+      <ScrollView StickyHeaderComponent={<Title>{locale.t(routeOptions.passwordScreen.title)}</Title>}>
         <TextInput
           autoCompleteType="password"
           editable={!pending}

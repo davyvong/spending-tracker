@@ -1,13 +1,11 @@
-import useCache from 'hooks/cache';
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useState } from 'react';
 import isFunction from 'utils/is-function';
 
-import TransactionListComponent from './component';
+import CategoryListComponent from './component';
 
-const TransactionList = props => {
-  const [cache] = useCache();
+const CategoryList = props => {
   const { palette } = useTheme();
   const [scrollReachedTop, setScrollReachedTop] = useState(true);
 
@@ -18,9 +16,6 @@ const TransactionList = props => {
       },
       headerShadow: {
         shadowColor: palette.get('shadow'),
-      },
-      sectionHeaderText: {
-        color: palette.get('primaryText'),
       },
     }),
     [palette],
@@ -41,20 +36,11 @@ const TransactionList = props => {
     [props.onScroll, scrollReachedTop],
   );
 
-  return (
-    <TransactionListComponent
-      {...props}
-      cards={cache.cardsById}
-      categories={cache.categoriesById}
-      onScroll={onScroll}
-      scrollReachedTop={scrollReachedTop}
-      theme={theme}
-    />
-  );
+  return <CategoryListComponent {...props} onScroll={onScroll} scrollReachedTop={scrollReachedTop} theme={theme} />;
 };
 
-TransactionList.propTypes = {
+CategoryList.propTypes = {
   onScroll: PropTypes.func,
 };
 
-export default TransactionList;
+export default CategoryList;

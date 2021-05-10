@@ -1,15 +1,15 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
-import Header from 'components/header';
+import ScrollView from 'components/scroll-view';
 import Spacer from 'components/spacer';
 import Text from 'components/text';
 import Title from 'components/title';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import React, { Fragment, useCallback } from 'react';
+import { Pressable, View } from 'react-native';
 
 import styles from './styles';
 
@@ -31,16 +31,19 @@ const SettingsScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <Header>
-        <Title>{locale.t(routeOptions.settingsScreen.title)}</Title>
-        <Spacer />
-        <Button
-          onPress={openLogoutDialog}
-          style={getLogoutButtonStyle}
-          title={locale.t('screens.settings.buttons.logout')}
-        />
-      </Header>
-      <ScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
+      <ScrollView
+        StickyHeaderComponent={
+          <Fragment>
+            <Title>{locale.t(routeOptions.settingsScreen.title)}</Title>
+            <Spacer />
+            <Button
+              onPress={openLogoutDialog}
+              style={getLogoutButtonStyle}
+              title={locale.t('screens.settings.buttons.logout')}
+            />
+          </Fragment>
+        }
+      >
         <View style={styles.sectionHeader}>
           <Text style={theme.sectionHeaderText}>{locale.t('screens.settings.sections.account')}</Text>
         </View>
