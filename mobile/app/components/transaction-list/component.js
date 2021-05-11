@@ -15,7 +15,6 @@ const TransactionListComponent = ({
   cards,
   categories,
   contentContainerStyle,
-  ListHeaderComponent,
   ListStickyHeaderComponent,
   onPressItem,
   theme,
@@ -64,7 +63,6 @@ const TransactionListComponent = ({
         contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
         initialNumToRender={10}
         keyExtractor={item => item.id}
-        ListHeaderComponent={ListHeaderComponent}
         ref={ref}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
@@ -84,7 +82,6 @@ TransactionListComponent.propTypes = {
   cards: PropTypes.object.isRequired,
   categories: PropTypes.object.isRequired,
   contentContainerStyle: ViewPropTypes.style,
-  ListHeaderComponent: PropTypes.node,
   ListStickyHeaderComponent: PropTypes.node,
   onPressItem: PropTypes.func,
   theme: PropTypes.object.isRequired,

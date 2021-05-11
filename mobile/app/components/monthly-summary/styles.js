@@ -3,9 +3,11 @@ import normalizeText from 'utils/normalize-text';
 
 const styles = StyleSheet.create({
   container: {
+    minHeight: 74,
+  },
+  pendingContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 70,
   },
   statisticRow: {
     flexDirection: 'row',

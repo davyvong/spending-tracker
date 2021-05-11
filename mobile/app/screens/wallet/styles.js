@@ -5,12 +5,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  sectionBlock: {
-    marginVertical: 12,
-  },
   walletCarousel: {
     marginBottom: 12,
     marginHorizontal: -24,
+  },
+  sectionBlock: {
+    marginVertical: 12,
   },
   ctaRow: {
     alignItems: 'center',
