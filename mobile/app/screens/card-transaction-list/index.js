@@ -8,7 +8,7 @@ import buildTransactionSectionMap from 'utils/build-transaction-section-map';
 import CardTransactionListScreenComponent from './component';
 
 const CardTransactionListScreen = ({ navigation, route, ...props }) => {
-  const { cardId } = route.params;
+  const { cardId, endDate, startDate } = route.params;
 
   const api = useAPI();
   const [cache] = useCache();
@@ -25,14 +25,14 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
 
   const getTransactionsWithoutLoading = useCallback(
     async skip => {
-      const transactionsInCategory = await api.getTransactionsInCard(cardId, skip).catch();
+      const transactionsInCategory = await api.getTransactions({ cardId, endDate, startDate }, skip).catch();
       if (!skip) {
         setTransactions(new Set(transactionsInCategory.list));
       } else {
         setTransactions(prevState => new Set([...prevState, ...transactionsInCategory.list]));
       }
     },
-    [api.getTransactionsInCategory, cardId],
+    [api.getTransactions, cardId, endDate, startDate],
   );
 
   const getTransactions = useCallback(
@@ -79,6 +79,8 @@ CardTransactionListScreen.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       cardId: PropTypes.string.isRequired,
+      endDate: PropTypes.string.isRequired,
+      startDate: PropTypes.string.isRequired,
     }),
   }),
 };

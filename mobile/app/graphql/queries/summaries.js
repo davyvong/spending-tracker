@@ -12,8 +12,8 @@ export const dailySpending = gql`
 `;
 
 export const monthlySpending = gql`
-  query($startDate: String!, $endDate: String!, $filters: SpendingFilter) {
-    monthlySpending(startDate: $startDate, endDate: $endDate, filters: $filters) {
+  query($startMonth: String!, $endMonth: String!, $filters: SpendingFilter) {
+    monthlySpending(startMonth: $startMonth, endMonth: $endMonth, filters: $filters) {
       credit
       currencyCode
       date

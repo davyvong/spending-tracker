@@ -134,9 +134,9 @@ export const APIProvider = ({ children }) => {
       const { data } = await client.query({
         query: summariesQueries.monthlySpending,
         variables: {
-          endDate: month,
+          endMonth: month,
           filters: { cardId },
-          startDate: month,
+          startMonth: month,
         },
       });
       const monthlySpending = {};
@@ -177,12 +177,16 @@ export const APIProvider = ({ children }) => {
   );
 
   const getTransactions = useCallback(
-    async (skip = 0) => {
+    async (filters, skip = 0) => {
+      const variables = {
+        page: { skip },
+      };
+      if (filters) {
+        variables.filters = filters;
+      }
       const { data } = await client.query({
         query: transactionsQueries.transactions,
-        variables: {
-          page: { skip },
-        },
+        variables,
       });
       const categoriesById = {};
       data.categories.forEach(categoryData => {
@@ -198,66 +202,6 @@ export const APIProvider = ({ children }) => {
       });
       updateCache(prevState => ({
         categoriesById,
-        transactionsById: {
-          ...prevState.transactionsById,
-          ...transactionsById,
-        },
-      }));
-      return {
-        list: transactionList,
-        skip,
-      };
-    },
-    [client, updateCache],
-  );
-
-  const getTransactionsInCard = useCallback(
-    async (cardId, skip) => {
-      const { data } = await client.query({
-        query: transactionsQueries.transactions,
-        variables: {
-          filters: { cardId },
-          page: { skip },
-        },
-      });
-      const transactionsById = {};
-      const transactionList = [];
-      data.transactions.forEach(transactionData => {
-        const transaction = new Transaction(transactionData);
-        transactionsById[transaction.id] = transaction;
-        transactionList.push(transaction.id);
-      });
-      updateCache(prevState => ({
-        transactionsById: {
-          ...prevState.transactionsById,
-          ...transactionsById,
-        },
-      }));
-      return {
-        list: transactionList,
-        skip,
-      };
-    },
-    [client, updateCache],
-  );
-
-  const getTransactionsInCategory = useCallback(
-    async (categoryId, skip) => {
-      const { data } = await client.query({
-        query: transactionsQueries.transactions,
-        variables: {
-          filters: { categoryId },
-          page: { skip },
-        },
-      });
-      const transactionsById = {};
-      const transactionList = [];
-      data.transactions.forEach(transactionData => {
-        const transaction = new Transaction(transactionData);
-        transactionsById[transaction.id] = transaction;
-        transactionList.push(transaction.id);
-      });
-      updateCache(prevState => ({
         transactionsById: {
           ...prevState.transactionsById,
           ...transactionsById,
@@ -360,8 +304,6 @@ export const APIProvider = ({ children }) => {
     getMonthlySpending,
     getTransaction,
     getTransactions,
-    getTransactionsInCard,
-    getTransactionsInCategory,
     signInWithEmail,
     updateAccount,
     updateCard,
