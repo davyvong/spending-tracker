@@ -89,7 +89,13 @@ const WalletScreen = ({ navigation, ...props }) => {
   );
 
   const navigateToTransactions = useCallback(() => {
-    navigation.navigate(routeOptions.cardTransactionListScreen.name, { card: cache.cardsById[selectedCardId] });
+    const card = cache.cardsById[selectedCardId];
+    if (card) {
+      navigation.navigate(routeOptions.cardTransactionListScreen.name, {
+        cardId: card.id,
+        title: card.name,
+      });
+    }
   }, [cache.cardsById, navigation, selectedCardId]);
 
   useEffect(() => {

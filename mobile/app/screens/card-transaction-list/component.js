@@ -22,6 +22,7 @@ const CardTransactionListScreenComponent = ({
 }) => (
   <View style={styles.container}>
     <TransactionList
+      contentContainerStyle={styles.contentContainer}
       ListStickyHeaderComponent={<Title>{card?.name}</Title>}
       onEndReached={() => getTransactionsWithoutLoading(skip)}
       onPressItem={setSelectedTransaction}

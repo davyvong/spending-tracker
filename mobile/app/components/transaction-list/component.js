@@ -6,7 +6,7 @@ import useLocale from 'hooks/locale';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { useCallback, useRef } from 'react';
-import { SectionList, View } from 'react-native';
+import { SectionList, View, ViewPropTypes } from 'react-native';
 
 import styles from './styles';
 
@@ -14,6 +14,7 @@ const TransactionListComponent = ({
   activeRow,
   cards,
   categories,
+  contentContainerStyle,
   ListHeaderComponent,
   ListStickyHeaderComponent,
   onPressItem,
@@ -60,7 +61,7 @@ const TransactionListComponent = ({
       {ListStickyHeaderComponent && <View style={ScrollViewStyles.header}>{ListStickyHeaderComponent}</View>}
       <SectionList
         {...props}
-        contentContainerStyle={!ListHeaderComponent && styles.contentContainer}
+        contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
         initialNumToRender={10}
         keyExtractor={item => item.id}
         ListHeaderComponent={ListHeaderComponent}
@@ -82,6 +83,7 @@ TransactionListComponent.propTypes = {
   activeRow: PropTypes.string,
   cards: PropTypes.object.isRequired,
   categories: PropTypes.object.isRequired,
+  contentContainerStyle: ViewPropTypes.style,
   ListHeaderComponent: PropTypes.node,
   ListStickyHeaderComponent: PropTypes.node,
   onPressItem: PropTypes.func,
