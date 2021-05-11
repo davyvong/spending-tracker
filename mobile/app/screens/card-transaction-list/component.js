@@ -20,7 +20,7 @@ const CardTransactionListScreenComponent = ({
   skip,
   transactions,
 }) => (
-  <View style={styles.container}>
+  <View onMoveShouldSetResponderCapture={() => true} style={styles.container}>
     <TransactionList
       ListStickyHeaderComponent={<Title>{card?.name}</Title>}
       onEndReached={() => getTransactionsWithoutLoading(skip)}

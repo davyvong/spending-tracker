@@ -19,6 +19,7 @@ const ActivityNavigator = () => {
       screenOptions={{
         cardOverlayEnabled: false,
         cardShadowEnabled: false,
+        gestureEnabled: true,
         header: Header,
       }}
     >
