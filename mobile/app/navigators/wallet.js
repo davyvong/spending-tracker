@@ -14,7 +14,7 @@ const WalletNavigator = () => {
 
   return (
     <Stack.Navigator
-      headerMode="none"
+      headerMode="screen"
       initialRouteName={routeOptions.walletScreen.name}
       screenOptions={{
         cardOverlayEnabled: false,
