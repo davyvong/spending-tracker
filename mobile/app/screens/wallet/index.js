@@ -90,13 +90,16 @@ const WalletScreen = ({ navigation, ...props }) => {
 
   const navigateToTransactions = useCallback(() => {
     const card = cache.cardsById[selectedCardId];
+    const endDate = moment(selectedMonth).add(1, 'months');
     if (card) {
       navigation.navigate(routeOptions.cardTransactionListScreen.name, {
         cardId: card.id,
+        endDate: endDate.format('YYYY-MM'),
+        startDate: selectedMonth,
         title: card.name,
       });
     }
-  }, [cache.cardsById, navigation, selectedCardId]);
+  }, [cache.cardsById, selectedMonth, selectedCardId]);
 
   useEffect(() => {
     getCards();

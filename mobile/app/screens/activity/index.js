@@ -52,7 +52,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
   const getTransactionsWithoutLoading = useCallback(
     async skip => {
       try {
-        const transactionPage = await api.getTransactions(skip);
+        const transactionPage = await api.getTransactions(undefined, skip);
         if (!skip) {
           setTransactions(new Set(transactionPage.list));
         } else {

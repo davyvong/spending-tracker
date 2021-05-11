@@ -67,27 +67,27 @@ export default {
       if (!account || !getCurrency(account.preferredCurrency)) {
         throw new BadRequest();
       }
-      const startDate = moment(args.startDate, 'YYYY-MM', true);
-      if (!startDate.isValid()) {
+      const startMonth = moment(args.startMonth, 'YYYY-MM', true);
+      if (!startMonth.isValid()) {
         throw new BadRequest();
       }
-      const endDate = moment(args.endDate, 'YYYY-MM', true);
-      if (!endDate.isValid()) {
+      const endMonth = moment(args.endMonth, 'YYYY-MM', true);
+      if (!endMonth.isValid()) {
         throw new BadRequest();
       }
-      const countOfMonths = endDate.diff(startDate, 'months');
+      const countOfMonths = endMonth.diff(startMonth, 'months');
       if (countOfMonths > 6) {
         throw new BadRequest();
       }
       const query = {
         accountId: context.accountId,
         postDate: {
-          $gte: args.startDate,
+          $gte: args.startMonth,
         },
       };
-      endDate.add(1, 'months');
-      query.postDate.$lte = getMonthStringFromMoment(endDate);
-      endDate.subtract(1, 'months');
+      endMonth.add(1, 'months');
+      query.postDate.$lte = getMonthStringFromMoment(endMonth);
+      endMonth.subtract(1, 'months');
       if (args.filters) {
         const { cardId } = args.filters;
         if (cardId) {
@@ -101,7 +101,7 @@ export default {
       const monthlySpending = Array(countOfMonths + 1)
         .fill(null)
         .reduce((map, item, index) => {
-          let monthString = moment(endDate);
+          let monthString = moment(endMonth);
           monthString.subtract(countOfMonths - index, 'months');
           monthString = getMonthStringFromMoment(monthString);
           map[monthString] = {

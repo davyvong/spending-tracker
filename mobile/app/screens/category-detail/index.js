@@ -25,14 +25,14 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
 
   const getTransactionsWithoutLoading = useCallback(
     async skip => {
-      const transactionsInCategory = await api.getTransactionsInCategory(categoryId, skip).catch();
+      const transactionsInCategory = await api.getTransactions({ categoryId }, skip).catch();
       if (!skip) {
         setTransactions(new Set(transactionsInCategory.list));
       } else {
         setTransactions(prevState => new Set([...prevState, ...transactionsInCategory.list]));
       }
     },
-    [api.getTransactionsInCategory, categoryId],
+    [api.getTransactions, categoryId],
   );
 
   const getTransactions = useCallback(

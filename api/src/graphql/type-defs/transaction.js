@@ -25,6 +25,8 @@ export default `
   input TransactionFilters {
     cardId: ID
     categoryId: ID
+    endDate: String
+    startDate: String
   }
 
   input CreateTransactionData {
