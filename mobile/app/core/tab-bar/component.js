@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { TabActions } from '@react-navigation/native';
 import Text from 'components/text';
-import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 import { Pressable, View } from 'react-native';
@@ -13,10 +13,16 @@ const TabBarComponent = ({ descriptors, navigation, state, theme }) => {
       const descriptor = descriptors[route.key];
       const active = state.index === index;
       const onPress = () => {
-        if (get(route, 'state.index', 0) > 0) {
-          navigation.navigate(route.state.routeNames[0]);
-        } else {
-          navigation.navigate(route.name);
+        const event = navigation.emit({
+          canPreventDefault: true,
+          target: route.key,
+          type: 'tabPress',
+        });
+        if (!event.defaultPrevented) {
+          navigation.dispatch({
+            ...TabActions.jumpTo(route.name),
+            target: state.key,
+          });
         }
       };
       const { icon, title } = descriptor.options;
@@ -41,7 +47,8 @@ const TabBarComponent = ({ descriptors, navigation, state, theme }) => {
 TabBarComponent.propTypes = {
   descriptors: PropTypes.object,
   navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    emit: PropTypes.func.isRequired,
   }),
   state: PropTypes.object,
   theme: PropTypes.object,

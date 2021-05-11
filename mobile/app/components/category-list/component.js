@@ -1,14 +1,19 @@
+import { useScrollToTop } from '@react-navigation/native';
 import CategoryTile from 'components/category-tile';
 import { getCategoryIcon } from 'components/category-tile/utils';
 import ScrollViewStyles from 'components/scroll-view/styles';
 import Category from 'models/category';
 import PropTypes from 'prop-types';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { FlatList, View } from 'react-native';
 
 import styles from './styles';
 
 const CategoryListComponent = ({ data, ListStickyHeaderComponent, onPressItem, ...props }) => {
+  const ref = useRef();
+
+  useScrollToTop(ref);
+
   const renderItem = useCallback(
     ({ item }) => {
       if (!item || !item.id) {
@@ -37,6 +42,7 @@ const CategoryListComponent = ({ data, ListStickyHeaderComponent, onPressItem, .
         data={categoriesWithIcons}
         keyExtractor={(item, index) => item.id || index}
         numColumns={2}
+        ref={ref}
         renderItem={renderItem}
         scrollEventThrottle={200}
       />

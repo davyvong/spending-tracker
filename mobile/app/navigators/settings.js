@@ -19,7 +19,7 @@ const SettingsNavigator = () => {
       screenOptions={{
         cardOverlayEnabled: false,
         cardShadowEnabled: false,
-        gestureEnabled: true,
+        gestureEnabled: false,
         header: Header,
       }}
     >
