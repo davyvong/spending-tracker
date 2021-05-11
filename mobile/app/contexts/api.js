@@ -211,6 +211,36 @@ export const APIProvider = ({ children }) => {
     [client, updateCache],
   );
 
+  const getTransactionsInCard = useCallback(
+    async (cardId, skip) => {
+      const { data } = await client.query({
+        query: transactionsQueries.transactions,
+        variables: {
+          filters: { cardId },
+          page: { skip },
+        },
+      });
+      const transactionsById = {};
+      const transactionList = [];
+      data.transactions.forEach(transactionData => {
+        const transaction = new Transaction(transactionData);
+        transactionsById[transaction.id] = transaction;
+        transactionList.push(transaction.id);
+      });
+      updateCache(prevState => ({
+        transactionsById: {
+          ...prevState.transactionsById,
+          ...transactionsById,
+        },
+      }));
+      return {
+        list: transactionList,
+        skip,
+      };
+    },
+    [client, updateCache],
+  );
+
   const getTransactionsInCategory = useCallback(
     async (categoryId, skip) => {
       const { data } = await client.query({
@@ -330,6 +360,7 @@ export const APIProvider = ({ children }) => {
     getMonthlySpending,
     getTransaction,
     getTransactions,
+    getTransactionsInCard,
     getTransactionsInCategory,
     signInWithEmail,
     updateAccount,

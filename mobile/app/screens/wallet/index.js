@@ -1,5 +1,7 @@
+import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useCache from 'hooks/cache';
+import useTheme from 'hooks/theme';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -9,14 +11,19 @@ import WalletScreenComponent from './component';
 const WalletScreen = ({ navigation, ...props }) => {
   const api = useAPI();
   const [cache] = useCache();
-
+  const { palette } = useTheme();
   const [pendingCards, setPendingCards] = useState(false);
   const [pendingSummary, setPendingSummary] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(moment().format('YYYY-MM'));
 
-  const theme = useMemo(() => ({}), []);
+  const theme = useMemo(
+    () => ({
+      iconColor: palette.get('activeIcon'),
+    }),
+    [palette],
+  );
 
   const cards = useMemo(() => Object.values(cache.cardsById), [cache.cardsById]);
 
@@ -81,6 +88,10 @@ const WalletScreen = ({ navigation, ...props }) => {
     [getCardSummary, selectedCardId],
   );
 
+  const navigateToTransactions = useCallback(() => {
+    navigation.navigate(routeOptions.cardTransactionListScreen.name, { card: cache.cardsById[selectedCardId] });
+  }, [cache.cardsById, navigation, selectedCardId]);
+
   useEffect(() => {
     getCards();
   }, []);
@@ -100,6 +111,7 @@ const WalletScreen = ({ navigation, ...props }) => {
       cards={cards}
       getCardsAndSummary={getCardsAndSummary}
       monthlySpending={monthlySpending}
+      navigateToTransactions={navigateToTransactions}
       pendingCards={pendingCards}
       pendingSummary={pendingSummary}
       refreshing={refreshing}
@@ -114,6 +126,7 @@ const WalletScreen = ({ navigation, ...props }) => {
 WalletScreen.propTypes = {
   navigation: PropTypes.shape({
     addListener: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
   }),
 };
 
