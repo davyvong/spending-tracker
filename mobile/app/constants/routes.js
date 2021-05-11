@@ -8,6 +8,9 @@ export const routeOptions = {
     name: 'ActivityScreen',
     title: 'screens.activity.title',
   },
+  cardTransactionListScreen: {
+    name: 'CardTransactionListScreen',
+  },
   categoriesNavigator: {
     icon: 'collage',
     name: 'CategoriesNavigator',

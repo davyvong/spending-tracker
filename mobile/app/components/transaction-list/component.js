@@ -1,10 +1,11 @@
+import { useScrollToTop } from '@react-navigation/native';
 import ScrollViewStyles from 'components/scroll-view/styles';
 import Text from 'components/text';
 import TransactionRow from 'components/transaction-row';
 import useLocale from 'hooks/locale';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { SectionList, View } from 'react-native';
 
 import styles from './styles';
@@ -20,6 +21,9 @@ const TransactionListComponent = ({
   ...props
 }) => {
   const [locale] = useLocale();
+  const ref = useRef();
+
+  useScrollToTop(ref);
 
   const renderItem = useCallback(
     ({ item }) => (
@@ -60,6 +64,7 @@ const TransactionListComponent = ({
         initialNumToRender={10}
         keyExtractor={item => item.id}
         ListHeaderComponent={ListHeaderComponent}
+        ref={ref}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         scrollEventThrottle={200}

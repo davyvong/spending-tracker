@@ -4,6 +4,7 @@ import useCache from 'hooks/cache';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import buildTransactionSectionMap from 'utils/build-transaction-section-map';
 
 import ActivityScreenComponent from './component';
 
@@ -36,26 +37,10 @@ const ActivityScreen = ({ navigation, ...props }) => {
     return dailySpending;
   }, [cache.account.preferredCurrency, cache.dailySpending]);
 
-  const transactionList = useMemo(() => {
-    const transactionMap = Array.from(transactions).reduce((map, id) => {
-      const item = cache.transactionsById[id];
-      if (!item) {
-        return map;
-      }
-      const { postDate } = item;
-      const section = moment(postDate, 'YYYY-MM-DD').isAfter(moment()) ? 'PENDING' : postDate;
-      if (map[section]) {
-        map[section].data.push(item);
-      } else {
-        map[section] = {
-          data: [item],
-          section,
-        };
-      }
-      return map;
-    }, {});
-    return Object.values(transactionMap);
-  }, [cache.transactionsById, transactions]);
+  const transactionList = useMemo(() => buildTransactionSectionMap(transactions, cache.transactionsById), [
+    cache.transactionsById,
+    transactions,
+  ]);
 
   const getDailySpending = useCallback(() => {
     const tempDate = moment();
@@ -95,10 +80,10 @@ const ActivityScreen = ({ navigation, ...props }) => {
   }, [navigation]);
 
   const navigateToEditTransaction = useCallback(() => {
-    const targetTransaction = selectedTransaction;
+    const transaction = selectedTransaction;
     setSelectedTransaction(null);
     setTimeout(() => {
-      navigation.navigate(routeOptions.editTransactionScreen.name, { transaction: targetTransaction });
+      navigation.navigate(routeOptions.editTransactionScreen.name, { transaction });
     }, 500);
   }, [navigation, selectedTransaction]);
 

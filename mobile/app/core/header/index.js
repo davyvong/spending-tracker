@@ -1,5 +1,6 @@
-import HeaderIcon from 'components/header-icon';
+import { MaterialIcons } from '@expo/vector-icons';
 import Text from 'components/text';
+import useTheme from 'hooks/theme';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
@@ -11,6 +12,15 @@ import HeaderComponent from './component';
 import styles from './styles';
 
 const Header = ({ navigation, previous, scene }) => {
+  const { palette } = useTheme();
+
+  const theme = useMemo(
+    () => ({
+      iconColor: palette.get('normalText'),
+    }),
+    [palette],
+  );
+
   const prevOptions = useMemo(() => get(previous, 'descriptor.options', {}), [previous]);
   const currOptions = useMemo(() => get(scene, 'descriptor.options', {}), [scene]);
 
@@ -22,7 +32,7 @@ const Header = ({ navigation, previous, scene }) => {
     const title = previous?.route.params?.title || prevOptions.title;
     return (
       <TouchableOpacity onPress={onPress} style={styles.leftButton}>
-        <HeaderIcon name="keyboard-arrow-left" size={24} style={styles.icon} />
+        <MaterialIcons color={theme.iconColor} name="keyboard-arrow-left" size={24} style={styles.icon} />
         <Text style={styles.leftButtonText}>{title}</Text>
       </TouchableOpacity>
     );

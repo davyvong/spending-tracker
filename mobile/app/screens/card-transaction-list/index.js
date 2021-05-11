@@ -1,22 +1,21 @@
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useCache from 'hooks/cache';
+import Card from 'models/card';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import buildTransactionSectionMap from 'utils/build-transaction-section-map';
 
-import CategoryDetailScreenComponent from './component';
+import CardTransactionListScreenComponent from './component';
 
-const CategoryDetailScreen = ({ navigation, route, ...props }) => {
+const CardTransactionListScreen = ({ navigation, route, ...props }) => {
   const api = useAPI();
   const [cache] = useCache();
   const [pending, setPending] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [transactions, setTransactions] = useState(new Set());
 
-  const { categoryId } = route.params;
-
-  const category = useMemo(() => cache.categoriesById[categoryId], [cache.categoriesById, categoryId]);
+  const { card } = route.params;
 
   const transactionList = useMemo(() => buildTransactionSectionMap(transactions, cache.transactionsById), [
     cache.transactionsById,
@@ -25,14 +24,14 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
 
   const getTransactionsWithoutLoading = useCallback(
     async skip => {
-      const transactionsInCategory = await api.getTransactionsInCategory(categoryId, skip).catch();
+      const transactionsInCategory = await api.getTransactionsInCard(card?.id, skip).catch();
       if (!skip) {
         setTransactions(new Set(transactionsInCategory.list));
       } else {
         setTransactions(prevState => new Set([...prevState, ...transactionsInCategory.list]));
       }
     },
-    [api.getTransactionsInCategory, categoryId],
+    [api.getTransactionsInCategory, card],
   );
 
   const getTransactions = useCallback(
@@ -57,9 +56,9 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
   }, [getTransactionsWithoutLoading]);
 
   return (
-    <CategoryDetailScreenComponent
+    <CardTransactionListScreenComponent
       {...props}
-      category={category}
+      card={card}
       getTransactions={getTransactions}
       getTransactionsWithoutLoading={getTransactionsWithoutLoading}
       navigateToEditTransaction={navigateToEditTransaction}
@@ -72,15 +71,15 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
   );
 };
 
-CategoryDetailScreen.propTypes = {
+CardTransactionListScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }),
   route: PropTypes.shape({
     params: PropTypes.shape({
-      categoryId: PropTypes.string.isRequired,
+      card: Card.propTypes.isRequired,
     }),
   }),
 };
 
-export default CategoryDetailScreen;
+export default CardTransactionListScreen;

@@ -1,13 +1,15 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import MonthPicker from 'components/month-picker';
 import MonthlySummary from 'components/monthly-summary';
 import ScrollView from 'components/scroll-view';
+import Text from 'components/text';
 import Title from 'components/title';
 import WalletCarousel from 'components/wallet-carousel';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { RefreshControl, View } from 'react-native';
+import { Pressable, RefreshControl, View } from 'react-native';
 
 import styles from './styles';
 
@@ -15,12 +17,14 @@ const WalletScreenComponent = ({
   cards,
   getCardsAndSummary,
   monthlySpending,
+  navigateToTransactions,
   pendingCards,
   pendingSummary,
   refreshing,
   selectedMonth,
   setSelectedCard,
   setSelectedMonth,
+  theme,
 }) => {
   const [locale] = useLocale();
 
@@ -39,6 +43,12 @@ const WalletScreenComponent = ({
             <View style={styles.sectionBlock}>
               <MonthlySummary pending={pendingSummary} spending={monthlySpending} />
             </View>
+            <Pressable onPress={navigateToTransactions} style={styles.ctaRow}>
+              <View style={styles.ctaRowIcon}>
+                <MaterialCommunityIcons color={theme.iconColor} name="credit-card-outline" size={28} />
+              </View>
+              <Text style={styles.ctaRowText}>{locale.t('screens.wallet.actions.transactions')}</Text>
+            </Pressable>
           </Fragment>
         )}
       </ScrollView>
@@ -55,7 +65,7 @@ WalletScreenComponent.propTypes = {
     date: PropTypes.string.isRequired,
     debit: PropTypes.number.isRequired,
   }),
-
+  navigateToTransactions: PropTypes.func.isRequired,
   pendingCards: PropTypes.bool.isRequired,
   pendingSummary: PropTypes.bool.isRequired,
   refreshing: PropTypes.bool.isRequired,

@@ -1,22 +1,30 @@
+import { useScrollToTop } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useRef } from 'react';
 import { ScrollView, View, ViewPropTypes } from 'react-native';
 
 import styles from './styles';
 
-const ScrollViewComponent = ({ children, contentContainerStyle, StickyHeaderComponent, ...props }) => (
-  <View style={styles.container}>
-    {StickyHeaderComponent && <View style={styles.header}>{StickyHeaderComponent}</View>}
-    <ScrollView
-      contentContainerStyle={[styles.scrollViewContent, contentContainerStyle]}
-      style={styles.scrollView}
-      {...props}
-      scrollEventThrottle={200}
-    >
-      {children}
-    </ScrollView>
-  </View>
-);
+const ScrollViewComponent = ({ children, contentContainerStyle, StickyHeaderComponent, ...props }) => {
+  const ref = useRef();
+
+  useScrollToTop(ref);
+
+  return (
+    <View style={styles.container}>
+      {StickyHeaderComponent && <View style={styles.header}>{StickyHeaderComponent}</View>}
+      <ScrollView
+        contentContainerStyle={[styles.scrollViewContent, contentContainerStyle]}
+        style={styles.scrollView}
+        {...props}
+        ref={ref}
+        scrollEventThrottle={200}
+      >
+        {children}
+      </ScrollView>
+    </View>
+  );
+};
 
 ScrollViewComponent.propTypes = {
   children: PropTypes.node,
