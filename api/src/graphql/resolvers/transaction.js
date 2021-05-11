@@ -40,12 +40,21 @@ export default {
         accountId: context.accountId,
       };
       if (args.filters) {
-        const { cardId, categoryId } = args.filters;
+        const { cardId, categoryId, endDate, startDate } = args.filters;
         if (cardId) {
           query.cardId = cardId;
         }
         if (categoryId) {
           query.categoryId = categoryId;
+        }
+        if (endDate || startDate) {
+          query.postDate = {};
+        }
+        if (endDate) {
+          query.postDate.$lte = endDate;
+        }
+        if (startDate) {
+          query.postDate.$gte = startDate;
         }
       }
       const options = {
