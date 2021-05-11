@@ -8,13 +8,13 @@ import buildTransactionSectionMap from 'utils/build-transaction-section-map';
 import CategoryDetailScreenComponent from './component';
 
 const CategoryDetailScreen = ({ navigation, route, ...props }) => {
+  const { categoryId } = route.params;
+
   const api = useAPI();
   const [cache] = useCache();
   const [pending, setPending] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [transactions, setTransactions] = useState(new Set());
-
-  const { categoryId } = route.params;
 
   const category = useMemo(() => cache.categoriesById[categoryId], [cache.categoriesById, categoryId]);
 

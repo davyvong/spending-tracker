@@ -22,7 +22,8 @@ const CategoryDetailScreenComponent = ({
 }) => (
   <View style={styles.container}>
     <TransactionList
-      ListStickyHeaderComponent={<Title>{category.name}</Title>}
+      contentContainerStyle={styles.contentContainer}
+      ListStickyHeaderComponent={<Title>{category?.name}</Title>}
       onEndReached={() => getTransactionsWithoutLoading(skip)}
       onPressItem={setSelectedTransaction}
       onRefresh={getTransactions}

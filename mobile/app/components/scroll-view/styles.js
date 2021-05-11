@@ -10,13 +10,13 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     paddingBottom: 12,
     paddingHorizontal: 24,
+    paddingTop: 6,
   },
   header: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingBottom: 18,
     paddingHorizontal: 24,
-    paddingTop: 12,
+    paddingVertical: 12,
   },
 });
 
