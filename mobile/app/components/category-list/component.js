@@ -26,7 +26,7 @@ const CategoryListComponent = ({ contentContainerStyle, data, ListStickyHeaderCo
   );
 
   const categoriesWithIcons = useMemo(() => {
-    const categories = data.filter(c => getCategoryIcon(c.icon));
+    const categories = data.filter(category => getCategoryIcon(category.name));
     if (categories.length % 2 === 1) {
       return [...categories, {}];
     }
