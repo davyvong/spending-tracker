@@ -1,47 +1,47 @@
 // Source: https://undraw.co/
 
+import DroneSurveillance from 'assets/svg/drone-surveillance.svg';
 import Education from 'assets/svg/education.svg';
 import EverydayLife from 'assets/svg/everyday-life.svg';
-import DroneSurveillance from 'assets/svg/drone-surveillance.svg';
+import FastCar from 'assets/svg/fast-car.svg';
 import GiftBox from 'assets/svg/gift-box.svg';
 import HavingFun from 'assets/svg/having-fun.svg';
 import Journey from 'assets/svg/journey.svg';
 import Medicine from 'assets/svg/medicine.svg';
 import Payments from 'assets/svg/payments.svg';
-import ProfileData from 'assets/svg/profile-data.svg';
 import Savings from 'assets/svg/savings.svg';
 import SmartHome from 'assets/svg/smart-home.svg';
 import Subway from 'assets/svg/subway.svg';
 import SweetHome from 'assets/svg/sweet-home.svg';
 
-export const getCategoryIcon = icon => {
-  switch (icon) {
-    case 'airplane':
-      return Journey;
-    case 'car':
-      return ProfileData;
-    case 'cash':
-      return Savings;
-    case 'credit-card-outline':
-      return Payments;
-    case 'file-document':
+export const getCategoryIcon = name => {
+  switch (name?.toLowerCase()) {
+    case 'automobile':
+      return FastCar;
+    case 'bills':
       return SmartHome;
-    case 'food-apple':
-      return EverydayLife;
-    case 'gamepad-square':
+    case 'debt':
+      return Payments;
+    case 'education':
+      return Education;
+    case 'entertainment':
       return HavingFun;
-    case 'gift':
+    case 'food':
+      return EverydayLife;
+    case 'gifts':
       return GiftBox;
+    case 'health':
+      return Medicine;
     case 'home':
       return SweetHome;
-    case 'medical-bag':
-      return Medicine;
-    case 'school':
-      return Education;
+    case 'income':
+      return Savings;
     case 'shopping':
       return DroneSurveillance;
-    case 'train':
+    case 'transportation':
       return Subway;
+    case 'travel':
+      return Journey;
     default:
       return null;
   }

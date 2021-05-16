@@ -8,7 +8,7 @@ import styles from './styles';
 import { getCategoryIcon } from './utils';
 
 const CategoryTileComponent = ({ category, theme, ...props }) => {
-  const ImageComponent = useMemo(() => getCategoryIcon(category.icon), [category.icon]);
+  const ImageComponent = useMemo(() => getCategoryIcon(category.name), [category]);
 
   if (!ImageComponent) {
     return null;
