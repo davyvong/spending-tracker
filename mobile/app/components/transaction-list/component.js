@@ -1,22 +1,25 @@
 import { useScrollToTop } from '@react-navigation/native';
+import ActionSheet from 'components/action-sheet';
 import ScrollViewStyles from 'components/scroll-view/styles';
 import Text from 'components/text';
 import TransactionRow from 'components/transaction-row';
 import useLocale from 'hooks/locale';
+import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useCallback, useRef } from 'react';
+import React, { Fragment, useCallback, useRef } from 'react';
 import { SectionList, View, ViewPropTypes } from 'react-native';
 
 import styles from './styles';
 
 const TransactionListComponent = ({
-  activeRow,
+  actions,
   cards,
   categories,
   contentContainerStyle,
   ListStickyHeaderComponent,
-  onPressItem,
+  selectedTransaction,
+  setSelectedTransaction,
   theme,
   ...props
 }) => {
@@ -31,12 +34,13 @@ const TransactionListComponent = ({
         card={cards[item.cardId]}
         category={categories[item.categoryId]}
         key={item.id}
-        onPress={() => onPressItem(item)}
+        onLongPress={() => setSelectedTransaction(item)}
         transaction={item}
       />
     ),
-    [activeRow, categories, onPressItem],
+    [categories, setSelectedTransaction],
   );
+
   const renderSectionHeader = useCallback(
     ({ section: { section } }) => {
       if (!section) {
@@ -56,34 +60,48 @@ const TransactionListComponent = ({
   );
 
   return (
-    <View style={ScrollViewStyles.container}>
-      {ListStickyHeaderComponent && <View style={ScrollViewStyles.header}>{ListStickyHeaderComponent}</View>}
-      <SectionList
-        {...props}
-        contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
-        initialNumToRender={10}
-        keyExtractor={item => item.id}
-        ref={ref}
-        renderItem={renderItem}
-        renderSectionHeader={renderSectionHeader}
-        scrollEventThrottle={200}
-        stickySectionHeadersEnabled={false}
+    <Fragment>
+      <View style={ScrollViewStyles.container}>
+        {ListStickyHeaderComponent && <View style={ScrollViewStyles.header}>{ListStickyHeaderComponent}</View>}
+        <SectionList
+          {...props}
+          contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
+          initialNumToRender={10}
+          keyExtractor={item => item.id}
+          ref={ref}
+          renderItem={renderItem}
+          renderSectionHeader={renderSectionHeader}
+          scrollEventThrottle={200}
+          stickySectionHeadersEnabled={false}
+        />
+      </View>
+      <ActionSheet
+        onClose={() => setSelectedTransaction(null)}
+        options={actions}
+        visible={Boolean(selectedTransaction)}
       />
-    </View>
+    </Fragment>
   );
 };
 
 TransactionListComponent.defaultProps = {
-  onPressItem: () => {},
+  actions: [],
 };
 
 TransactionListComponent.propTypes = {
-  activeRow: PropTypes.string,
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({
+      callback: PropTypes.func.isRequired,
+      icon: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }),
+  ),
   cards: PropTypes.object.isRequired,
   categories: PropTypes.object.isRequired,
   contentContainerStyle: ViewPropTypes.style,
   ListStickyHeaderComponent: PropTypes.node,
-  onPressItem: PropTypes.func,
+  selectedTransaction: Transaction.propTypes,
+  setSelectedTransaction: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
 };
 

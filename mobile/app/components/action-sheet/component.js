@@ -10,7 +10,7 @@ import isFunction from 'utils/is-function';
 
 import styles from './styles';
 
-const ActionSheetComponent = ({ actions, onClose, theme, visible }) => {
+const ActionSheetComponent = ({ onClose, options, theme, visible }) => {
   const [locale] = useLocale();
 
   const getActionButtonStyle = useCallback(
@@ -24,22 +24,22 @@ const ActionSheetComponent = ({ actions, onClose, theme, visible }) => {
   );
 
   const renderAction = useCallback(
-    ({ item: action }) => {
+    ({ item: option }) => {
       const onPress = () => {
         onClose();
-        if (isFunction(action.callback)) {
-          setTimeout(action.callback, 500);
+        if (isFunction(option.callback)) {
+          setTimeout(option.callback, 500);
         }
       };
       return (
-        <Pressable key={action.label} onPress={onPress} style={getActionButtonStyle}>
+        <Pressable key={option.label} onPress={onPress} style={getActionButtonStyle}>
           <MaterialIcons
-            color={action.color || theme.iconColor}
-            name={action.icon}
+            color={option.color || theme.iconColor}
+            name={option.icon}
             size={20}
             style={styles.actionIcon}
           />
-          <Text style={[theme.actionText, action.color && { color: action.color }]}>{action.label}</Text>
+          <Text style={[theme.actionText, option.color && { color: option.color }]}>{option.label}</Text>
         </Pressable>
       );
     },
@@ -58,13 +58,13 @@ const ActionSheetComponent = ({ actions, onClose, theme, visible }) => {
       <View style={[styles.innerModal, theme.innerModal]}>
         <FlatList
           bounces={false}
-          data={actions}
+          data={options}
           keyExtractor={option => option.label}
           removeClippedSubviews
           renderItem={renderAction}
         />
         <Button onPress={onClose} style={getCancelButtonStyle}>
-          <Text>{locale.t('components.action-sheet.buttons.cancel')}</Text>
+          <Text>{locale.t('components.action-sheet.buttons.close')}</Text>
         </Button>
       </View>
     </Modal>
@@ -72,20 +72,20 @@ const ActionSheetComponent = ({ actions, onClose, theme, visible }) => {
 };
 
 ActionSheetComponent.defaultProps = {
-  actions: [],
   onClose: () => {},
+  options: [],
   visible: false,
 };
 
 ActionSheetComponent.propTypes = {
-  actions: PropTypes.arrayOf(
+  onClose: PropTypes.func,
+  options: PropTypes.arrayOf(
     PropTypes.shape({
       callback: PropTypes.func.isRequired,
       icon: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
     }),
   ),
-  onClose: PropTypes.func,
   theme: PropTypes.object.isRequired,
   visible: PropTypes.bool,
 };

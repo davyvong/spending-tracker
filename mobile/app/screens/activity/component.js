@@ -3,7 +3,6 @@ import Spacer from 'components/spacer';
 import SpendingChart from 'components/spending-chart';
 import Title from 'components/title';
 import TransactionList from 'components/transaction-list';
-import TransactionModal from 'components/transaction-modal';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import Transaction from 'models/transaction';
@@ -18,10 +17,7 @@ const ActivityScreenComponent = ({
   getSpendingAndTransactions,
   getTransactionsWithoutLoading,
   navigateToCreateTransaction,
-  navigateToEditTransaction,
   pending,
-  selectedTransaction,
-  setSelectedTransaction,
   skip,
   transactions,
 }) => {
@@ -43,15 +39,9 @@ const ActivityScreenComponent = ({
           </Fragment>
         }
         onEndReached={() => getTransactionsWithoutLoading(skip)}
-        onPressItem={setSelectedTransaction}
         onRefresh={getSpendingAndTransactions}
         refreshing={pending}
         sections={transactions}
-      />
-      <TransactionModal
-        onClose={() => setSelectedTransaction(null)}
-        onEdit={navigateToEditTransaction}
-        transaction={selectedTransaction}
       />
     </View>
   );
@@ -66,10 +56,7 @@ ActivityScreenComponent.propTypes = {
   getSpendingAndTransactions: PropTypes.func.isRequired,
   getTransactionsWithoutLoading: PropTypes.func.isRequired,
   navigateToCreateTransaction: PropTypes.func.isRequired,
-  navigateToEditTransaction: PropTypes.func.isRequired,
   pending: PropTypes.bool.isRequired,
-  selectedTransaction: Transaction.propTypes,
-  setSelectedTransaction: PropTypes.func.isRequired,
   skip: PropTypes.number.isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({
