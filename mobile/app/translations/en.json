@@ -10,7 +10,7 @@
   "common.unknown-error": "Something went wrong.",
   "components.action-dialog.buttons.cancel": "Cancel",
   "components.action-dialog.buttons.confirm": "Confirm",
-  "components.action-sheet.buttons.cancel": "Cancel",
+  "components.action-sheet.buttons.close": "Close",
   "components.date-input.buttons.apply": "Apply",
   "components.date-input.buttons.cancel": "Cancel",
   "components.monthly-summary.labels.credit": "Credit",

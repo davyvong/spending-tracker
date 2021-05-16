@@ -12,7 +12,6 @@ const ActivityScreen = ({ navigation, ...props }) => {
   const api = useAPI();
   const [cache] = useCache();
   const [pending, setPending] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [transactions, setTransactions] = useState(new Set());
 
   const dailySpending = useMemo(() => {
@@ -79,14 +78,6 @@ const ActivityScreen = ({ navigation, ...props }) => {
     navigation.navigate(routeOptions.createTransactionScreen.name);
   }, [navigation]);
 
-  const navigateToEditTransaction = useCallback(() => {
-    const transaction = selectedTransaction;
-    setSelectedTransaction(null);
-    setTimeout(() => {
-      navigation.navigate(routeOptions.editTransactionScreen.name, { transaction });
-    }, 500);
-  }, [navigation, selectedTransaction]);
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getTransactionsWithoutLoading();
@@ -104,10 +95,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
       getSpendingAndTransactions={getSpendingAndTransactions}
       getTransactionsWithoutLoading={getTransactionsWithoutLoading}
       navigateToCreateTransaction={navigateToCreateTransaction}
-      navigateToEditTransaction={navigateToEditTransaction}
       pending={pending}
-      selectedTransaction={selectedTransaction}
-      setSelectedTransaction={setSelectedTransaction}
       skip={transactions.size}
       transactions={transactionList}
     />
