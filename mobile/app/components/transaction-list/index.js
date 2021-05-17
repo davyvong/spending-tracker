@@ -32,11 +32,7 @@ const TransactionList = props => {
   );
 
   const navigateToEditTransaction = useCallback(() => {
-    const transaction = selectedTransaction;
-    setSelectedTransaction(null);
-    setTimeout(() => {
-      navigation.navigate(routeOptions.editTransactionScreen.name, { transaction });
-    }, 500);
+    navigation.navigate(routeOptions.editTransactionScreen.name, { transaction: selectedTransaction });
   }, [navigation, selectedTransaction]);
 
   const closeDeleteDialog = useCallback(() => {
@@ -48,10 +44,9 @@ const TransactionList = props => {
   }, []);
 
   const deleteTransaction = useCallback(async () => {
-    const transaction = selectedTransaction;
     setPendingDelete(true);
     try {
-      await api.deleteTransaction(transaction.id).catch();
+      await api.deleteTransaction(selectedTransaction.id).catch();
       setPendingDelete(false);
     } catch (error) {
       console.log(error.message);
