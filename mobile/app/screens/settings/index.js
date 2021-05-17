@@ -19,10 +19,10 @@ const SettingsScreen = ({ navigation, ...props }) => {
     () => ({
       activeIcon: palette.get('icons.active'),
       logoutButton: {
-        backgroundColor: palette.get('backgrounds.red-button'),
+        backgroundColor: palette.get('backgrounds.alternate-button'),
       },
       logoutButtonPressed: {
-        backgroundColor: hexToRGB(palette.get('backgrounds.red-button'), 0.7),
+        backgroundColor: hexToRGB(palette.get('backgrounds.alternate-button'), 0.7),
       },
       sectionHeaderText: {
         color: palette.get('texts.primary'),

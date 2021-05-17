@@ -34,7 +34,7 @@ const PasswordScreen = ({ navigation, ...props }) => {
         backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
       discardButton: {
-        backgroundColor: palette.get('backgrounds.red-button'),
+        backgroundColor: palette.get('backgrounds.alternate-button'),
       },
       serverError: {
         color: palette.get('texts.error'),

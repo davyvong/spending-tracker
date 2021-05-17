@@ -26,7 +26,7 @@ const TransactionList = props => {
         color: palette.get('texts.primary'),
       },
       deleteButton: {
-        backgroundColor: palette.get('backgrounds.red-button'),
+        backgroundColor: palette.get('backgrounds.alternate-button'),
       },
     }),
     [palette],

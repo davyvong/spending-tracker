@@ -96,7 +96,7 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
         backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
       deleteButton: {
-        backgroundColor: palette.get('backgrounds.red-button'),
+        backgroundColor: palette.get('backgrounds.alternate-button'),
       },
       serverError: {
         color: palette.get('texts.error'),

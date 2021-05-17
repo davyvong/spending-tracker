@@ -2,12 +2,12 @@ import hexToRGB from 'utils/hex-to-rgb';
 
 export default new Map(
   Object.entries({
+    'backgrounds.alternate-button': '#d63031',
     'backgrounds.app': '#ffffff',
     'backgrounds.icon': hexToRGB('#0984e3', 0.25),
     'backgrounds.input': hexToRGB('#5f6368', 0.25),
     'backgrounds.modal': '#ffffff',
     'backgrounds.primary-button': '#0984e3',
-    'backgrounds.red-button': '#d63031',
     'backgrounds.secondary-button': hexToRGB('#000000', 0.25),
     'backgrounds.secondary-button-pressed': hexToRGB('#000000', 0.15),
     'backgrounds.selected-tab': hexToRGB('#0984e3', 0.25),
