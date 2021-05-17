@@ -5,10 +5,12 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flexDirection: 'row',
+    minHeight: 41,
     paddingHorizontal: 24,
     paddingTop: 12,
   },
   emptyContainer: {
+    minHeight: 0,
     paddingTop: 0,
   },
   leftButton: {

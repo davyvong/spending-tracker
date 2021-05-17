@@ -32,12 +32,6 @@ const ProfileScreen = ({ navigation, ...props }) => {
   const theme = useMemo(
     () => ({
       activityIndicator: palette.get('texts.button'),
-      cancelButton: {
-        backgroundColor: palette.get('backgrounds.secondary-button'),
-      },
-      cancelButtonPressed: {
-        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
-      },
       discardButton: {
         backgroundColor: palette.get('backgrounds.alternate-button'),
       },
@@ -148,11 +142,13 @@ const ProfileScreen = ({ navigation, ...props }) => {
       closeSaveDialog={closeSaveDialog}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
+      hasChanges={hasChanges}
       navigateBack={navigateBack}
       openSaveDialog={openSaveDialog}
       pending={pending}
       saveDialog={saveDialog}
       saveProfile={saveProfile}
+      setNavigationOptions={navigation.setOptions}
       theme={theme}
       updateValue={updateValue}
       values={values}
@@ -165,6 +161,7 @@ ProfileScreen.propTypes = {
     addListener: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }),
 };
 
