@@ -9,7 +9,7 @@ import { currencyOptions } from 'components/transaction-form/constants';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import styles from './styles';
@@ -19,21 +19,27 @@ const ProfileScreenComponent = ({
   closeSaveDialog,
   discardDialog,
   errors,
+  hasChanges,
   openSaveDialog,
   navigateBack,
   pending,
   saveDialog,
   saveProfile,
+  setNavigationOptions,
   theme,
   updateValue,
   values,
 }) => {
   const [locale] = useLocale();
 
-  const getCancelButtonStyle = useCallback(
-    ({ pressed }) => (pressed ? [styles.ctaButton, theme.cancelButtonPressed] : [styles.ctaButton, theme.cancelButton]),
-    [theme],
-  );
+  useEffect(() => {
+    const renderHeaderRight = () => (
+      <Button onPress={openSaveDialog} title={pending ? '' : locale.t('screens.profile.buttons.save')}>
+        <ActivityIndicator color={theme.activityIndicator} />
+      </Button>
+    );
+    setNavigationOptions({ headerRight: hasChanges ? renderHeaderRight : null });
+  }, [hasChanges, locale, openSaveDialog, pending, setNavigationOptions, theme]);
 
   return (
     <View style={styles.container}>
@@ -72,19 +78,6 @@ const ProfileScreenComponent = ({
           value={values.preferredCurrency}
         />
         {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
-        <View style={styles.ctaRow}>
-          <Button disabled={pending} onPress={navigateBack} style={getCancelButtonStyle}>
-            <Text>{locale.t('screens.profile.buttons.cancel')}</Text>
-          </Button>
-          <Button
-            disabled={pending}
-            onPress={openSaveDialog}
-            style={styles.ctaButton}
-            title={pending ? '' : locale.t('screens.profile.buttons.save')}
-          >
-            <ActivityIndicator color={theme.activityIndicator} />
-          </Button>
-        </View>
       </ScrollView>
       <ActionDialog
         onClose={closeDiscardDialog}
@@ -114,11 +107,13 @@ ProfileScreenComponent.propTypes = {
   closeSaveDialog: PropTypes.func.isRequired,
   discardDialog: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
+  hasChanges: PropTypes.bool.isRequired,
   navigateBack: PropTypes.func.isRequired,
   openSaveDialog: PropTypes.func.isRequired,
   pending: PropTypes.bool.isRequired,
   saveDialog: PropTypes.bool.isRequired,
   saveProfile: PropTypes.func.isRequired,
+  setNavigationOptions: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   updateValue: PropTypes.func.isRequired,
   values: PropTypes.object.isRequired,
