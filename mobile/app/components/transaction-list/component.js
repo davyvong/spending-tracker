@@ -72,7 +72,6 @@ const TransactionListComponent = ({
         {ListStickyHeaderComponent && <View style={ScrollViewStyles.header}>{ListStickyHeaderComponent}</View>}
         <SectionList
           {...props}
-          bounces={false}
           contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
           initialNumToRender={10}
           keyExtractor={item => item.id}

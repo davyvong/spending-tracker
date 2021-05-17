@@ -38,7 +38,6 @@ const CategoryListComponent = ({ contentContainerStyle, data, ListStickyHeaderCo
       {ListStickyHeaderComponent && <View style={ScrollViewStyles.header}>{ListStickyHeaderComponent}</View>}
       <FlatList
         {...props}
-        bounces={false}
         contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
         data={categoriesWithIcons}
         keyExtractor={(item, index) => item.id || index}

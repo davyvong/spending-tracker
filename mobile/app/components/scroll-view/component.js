@@ -14,7 +14,6 @@ const ScrollViewComponent = ({ children, contentContainerStyle, StickyHeaderComp
     <View style={styles.container}>
       {StickyHeaderComponent && <View style={styles.header}>{StickyHeaderComponent}</View>}
       <ScrollView
-        bounces={false}
         contentContainerStyle={[styles.scrollViewContent, contentContainerStyle]}
         style={styles.scrollView}
         {...props}
