@@ -156,6 +156,7 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
       openCreateDialog={openCreateDialog}
       navigateBack={navigateBack}
       pending={pending}
+      setNavigationOptions={navigation.setOptions}
       theme={theme}
       updateValue={updateValue}
       values={values}
@@ -168,6 +169,7 @@ CreateTransactionScreen.propTypes = {
     addListener: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }),
 };
 

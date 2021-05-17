@@ -45,7 +45,7 @@ const TransactionListComponent = ({
         transaction={item}
       />
     ),
-    [categories, setSelectedTransaction],
+    [categories],
   );
 
   const renderSectionHeader = useCallback(

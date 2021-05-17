@@ -7,7 +7,7 @@ import Title from 'components/title';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import styles from './styles';
@@ -22,16 +22,21 @@ const CreateTransactionScreenComponent = ({
   navigateBack,
   pending,
   createDialog,
+  setNavigationOptions,
   theme,
   updateValue,
   values,
 }) => {
   const [locale] = useLocale();
 
-  const getCancelButtonStyle = useCallback(
-    ({ pressed }) => (pressed ? [styles.ctaButton, theme.cancelButtonPressed] : [styles.ctaButton, theme.cancelButton]),
-    [theme],
-  );
+  useEffect(() => {
+    const renderHeaderRight = () => (
+      <Button onPress={openCreateDialog} title={pending ? '' : locale.t('screens.create-transaction.buttons.save')}>
+        <ActivityIndicator color={theme.activityIndicator} />
+      </Button>
+    );
+    setNavigationOptions({ headerRight: renderHeaderRight });
+  }, [locale, openCreateDialog, pending, setNavigationOptions, theme]);
 
   return (
     <View style={styles.container}>
@@ -41,19 +46,6 @@ const CreateTransactionScreenComponent = ({
       >
         <TransactionForm editable={!pending} errors={errors} updateValue={updateValue} values={values} />
         {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
-        <View style={styles.ctaRow}>
-          <Button disabled={pending} onPress={navigateBack} style={getCancelButtonStyle}>
-            <Text>{locale.t('screens.create-transaction.buttons.cancel')}</Text>
-          </Button>
-          <Button
-            disabled={pending}
-            onPress={openCreateDialog}
-            style={styles.ctaButton}
-            title={pending ? '' : locale.t('screens.create-transaction.buttons.save')}
-          >
-            <ActivityIndicator color={theme.activityIndicator} />
-          </Button>
-        </View>
       </ScrollView>
       <ActionDialog
         onClose={closeCreateDialog}
@@ -88,6 +80,7 @@ CreateTransactionScreenComponent.propTypes = {
   openCreateDialog: PropTypes.func.isRequired,
   navigateBack: PropTypes.func.isRequired,
   pending: PropTypes.bool.isRequired,
+  setNavigationOptions: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   updateValue: PropTypes.func.isRequired,
   values: PropTypes.object.isRequired,

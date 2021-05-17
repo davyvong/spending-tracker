@@ -10,7 +10,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import EditTransactionScreenComponent from './component';
 
 const EditTransactionScreen = ({ route, ...props }) => {
-  const { transaction } = route.params;
+  const { transaction = {} } = route.params;
 
   const api = useAPI();
   const [cache] = useCache();
@@ -31,7 +31,6 @@ const EditTransactionScreen = ({ route, ...props }) => {
     vendor: null,
   });
   const [values, setValues] = useState({
-    amount: '',
     cardId: null,
     categoryId: null,
     currencyCode: cache.account.preferredCurrency,
@@ -40,7 +39,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
     type: 'debit',
     vendor: '',
     ...transaction,
-    amount: transaction.amount === undefined ? '' : String(transaction.amount),
+    amount: !transaction.amount && transaction.amount !== 0 ? '' : String(transaction.amount),
   });
 
   const theme = useMemo(
