@@ -8,7 +8,7 @@ import useLocale from 'hooks/locale';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback, useRef } from 'react';
-import { SectionList, View, ViewPropTypes } from 'react-native';
+import { RefreshControl, SectionList, View, ViewPropTypes } from 'react-native';
 
 import styles from './styles';
 
@@ -22,6 +22,8 @@ const TransactionListComponent = ({
   deleteDialog,
   deleteTransaction,
   ListStickyHeaderComponent,
+  onRefresh,
+  refreshing,
   setActionSheet,
   setSelectedTransaction,
   theme,
@@ -76,6 +78,14 @@ const TransactionListComponent = ({
           initialNumToRender={10}
           keyExtractor={item => item.id}
           ref={ref}
+          refreshControl={
+            <RefreshControl
+              color={[theme.refreshControl]}
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              tintColor={theme.refreshControl}
+            />
+          }
           renderItem={renderItem}
           renderSectionHeader={renderSectionHeader}
           scrollEventThrottle={200}
@@ -117,6 +127,8 @@ TransactionListComponent.propTypes = {
   deleteDialog: PropTypes.bool.isRequired,
   deleteTransaction: PropTypes.func.isRequired,
   ListStickyHeaderComponent: PropTypes.node,
+  onRefresh: PropTypes.func,
+  refreshing: PropTypes.bool,
   setActionSheet: PropTypes.func.isRequired,
   setSelectedTransaction: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,

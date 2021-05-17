@@ -35,9 +35,11 @@ const darkPalette = {
 
   shadow: '#000000',
 
-  chartPrimary: '#0984e3',
+  primaryChart: '#0984e3',
 
   walletCardGradient: hexToRGB('#000000', 0.5),
+
+  refreshControl: '#0984e3',
 };
 
 export default new Map(Object.entries(darkPalette));

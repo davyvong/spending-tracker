@@ -38,6 +38,7 @@ const CreateTransactionScreenComponent = ({
   return (
     <View style={styles.container}>
       <ScrollView
+        bounces={false}
         contentContainerStyle={styles.contentContainer}
         keyboardShouldPersistTaps="handled"
         StickyHeaderComponent={<Title>{locale.t(routeOptions.createTransactionScreen.title)}</Title>}

@@ -66,7 +66,6 @@
   "screens.password.title": "Change Password",
   "screens.password.buttons.cancel": "Cancel",
   "screens.password.buttons.change": "Change",
-  "screens.password.buttons.change-password": "Change Password",
   "screens.password.buttons.discard": "Discard",
   "screens.password.errors.empty-confirm-password": "The confirm password cannot be empty.",
   "screens.password.errors.empty-current-password": "The current password cannot be empty.",

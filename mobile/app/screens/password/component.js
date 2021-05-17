@@ -36,6 +36,7 @@ const PasswordScreenComponent = ({
   return (
     <View style={styles.container}>
       <ScrollView
+        bounces={false}
         contentContainerStyle={styles.contentContainer}
         StickyHeaderComponent={<Title>{locale.t(routeOptions.passwordScreen.title)}</Title>}
       >
@@ -76,7 +77,7 @@ const PasswordScreenComponent = ({
             disabled={pending}
             onPress={openSaveDialog}
             style={styles.ctaButton}
-            title={pending ? '' : locale.t('screens.password.buttons.change-password')}
+            title={pending ? '' : locale.t('screens.password.buttons.change')}
           >
             <ActivityIndicator color={theme.activityIndicator} />
           </Button>

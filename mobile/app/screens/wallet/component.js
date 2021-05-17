@@ -31,7 +31,14 @@ const WalletScreenComponent = ({
   return (
     <View style={styles.container}>
       <ScrollView
-        refreshControl={<RefreshControl onRefresh={getCardsAndSummary} refreshing={refreshing} />}
+        refreshControl={
+          <RefreshControl
+            color={[theme.refreshControl]}
+            onRefresh={getCardsAndSummary}
+            refreshing={refreshing}
+            tintColor={theme.refreshControl}
+          />
+        }
         StickyHeaderComponent={<Title>{locale.t(routeOptions.walletScreen.title)}</Title>}
       >
         {!pendingCards && cards.length > 0 && (
@@ -45,7 +52,7 @@ const WalletScreenComponent = ({
             </View>
             <Pressable onPress={navigateToTransactions} style={styles.ctaRow}>
               <View style={styles.ctaRowIcon}>
-                <MaterialCommunityIcons color={theme.iconColor} name="credit-card-outline" size={28} />
+                <MaterialCommunityIcons color={theme.actionIcon} name="credit-card-outline" size={28} />
               </View>
               <Text style={styles.ctaRowText}>{locale.t('screens.wallet.actions.transactions')}</Text>
             </Pressable>

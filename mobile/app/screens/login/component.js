@@ -13,7 +13,7 @@ const LoginScreenComponent = ({ errors, pending, setEmail, setPassword, signInWi
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-      <ScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
+      <ScrollView bounces={false} contentContainerStyle={styles.contentContainer} style={styles.container}>
         <View style={styles.savingsImage}>
           <Savings height={200} width="100%" />
         </View>

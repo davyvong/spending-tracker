@@ -12,7 +12,7 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
   if (pending || !spending) {
     return (
       <View style={[styles.container, styles.pendingContainer]}>
-        <ActivityIndicator />
+        <ActivityIndicator color={theme.activityIndicator} />
       </View>
     );
   }

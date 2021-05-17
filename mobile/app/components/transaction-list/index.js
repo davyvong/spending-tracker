@@ -21,6 +21,7 @@ const TransactionList = props => {
 
   const theme = useMemo(
     () => ({
+      refreshControl: palette.get('refreshControl'),
       sectionHeaderText: {
         color: palette.get('primaryText'),
       },

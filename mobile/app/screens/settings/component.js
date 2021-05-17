@@ -32,6 +32,7 @@ const SettingsScreenComponent = ({
   return (
     <View style={styles.container}>
       <ScrollView
+        bounces={false}
         contentContainerStyle={styles.contentContainer}
         StickyHeaderComponent={
           <Fragment>
