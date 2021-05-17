@@ -39,7 +39,7 @@ const lightPalette = {
 
   walletCardGradient: hexToRGB('#ffffff', 0.5),
 
-  refreshControl: '#0984e3',
+  refreshControl: '#9e9ea7',
 };
 
 export default new Map(Object.entries(lightPalette));
