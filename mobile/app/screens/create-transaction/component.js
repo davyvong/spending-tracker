@@ -13,15 +13,12 @@ import { ActivityIndicator, View } from 'react-native';
 import styles from './styles';
 
 const CreateTransactionScreenComponent = ({
-  closeCreateDialog,
   closeDiscardDialog,
   createTransaction,
   discardDialog,
   errors,
-  openCreateDialog,
   navigateBack,
   pending,
-  createDialog,
   setNavigationOptions,
   theme,
   updateValue,
@@ -31,12 +28,12 @@ const CreateTransactionScreenComponent = ({
 
   useEffect(() => {
     const renderHeaderRight = () => (
-      <Button onPress={openCreateDialog} title={pending ? '' : locale.t('screens.create-transaction.buttons.save')}>
+      <Button onPress={createTransaction} title={pending ? '' : locale.t('screens.create-transaction.buttons.save')}>
         <ActivityIndicator color={theme.activityIndicator} />
       </Button>
     );
     setNavigationOptions({ headerRight: renderHeaderRight });
-  }, [locale, openCreateDialog, pending, setNavigationOptions, theme]);
+  }, [locale, createTransaction, pending, setNavigationOptions, theme]);
 
   return (
     <View style={styles.container}>
@@ -48,15 +45,6 @@ const CreateTransactionScreenComponent = ({
         <TransactionForm editable={!pending} errors={errors} updateValue={updateValue} values={values} />
         {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
       </ScrollView>
-      <ActionDialog
-        onClose={closeCreateDialog}
-        message={locale.t('screens.create-transaction.messages.create-transaction')}
-        primaryAction={{
-          label: locale.t('screens.create-transaction.buttons.save'),
-          onPress: createTransaction,
-        }}
-        visible={createDialog}
-      />
       <ActionDialog
         onClose={closeDiscardDialog}
         message={locale.t('screens.create-transaction.messages.discard-changes')}
@@ -72,13 +60,10 @@ const CreateTransactionScreenComponent = ({
 };
 
 CreateTransactionScreenComponent.propTypes = {
-  closeCreateDialog: PropTypes.func.isRequired,
   closeDiscardDialog: PropTypes.func.isRequired,
-  createDialog: PropTypes.bool.isRequired,
   createTransaction: PropTypes.func.isRequired,
   discardDialog: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
-  openCreateDialog: PropTypes.func.isRequired,
   navigateBack: PropTypes.func.isRequired,
   pending: PropTypes.bool.isRequired,
   setNavigationOptions: PropTypes.func.isRequired,

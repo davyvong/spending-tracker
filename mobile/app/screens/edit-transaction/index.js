@@ -90,36 +90,36 @@ const EditTransactionScreen = ({ route, ...props }) => {
   }, [values]);
 
   const saveTransaction = useCallback(async () => {
-    if (validateValues()) {
-      setPendingSave(true);
-      try {
-        await api.updateTransaction(values.id, {
-          ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postDate', 'type', 'vendor'),
-          amount: Number(values.amount),
-        });
-        navigation.dispatch({
-          ignoreDiscard: true,
-          payload: { count: 1 },
-          type: 'POP',
-        });
-      } catch (error) {
-        console.log(error.message);
-        setErrors(prevState => ({
-          ...prevState,
-          server: 'common.unknown-error',
-        }));
-      }
-      setPendingSave(false);
+    setPendingSave(true);
+    try {
+      await api.updateTransaction(values.id, {
+        ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postDate', 'type', 'vendor'),
+        amount: Number(values.amount),
+      });
+      navigation.dispatch({
+        ignoreDiscard: true,
+        payload: { count: 1 },
+        type: 'POP',
+      });
+    } catch (error) {
+      console.log(error.message);
+      setErrors(prevState => ({
+        ...prevState,
+        server: 'common.unknown-error',
+      }));
     }
-  }, [api.updateTransaction, navigation, validateValues, values]);
+    setPendingSave(false);
+  }, [api.updateTransaction, navigation, values]);
 
   const closeSaveDialog = useCallback(() => {
     setSaveDialog(false);
   }, []);
 
   const openSaveDialog = useCallback(() => {
-    setSaveDialog(true);
-  }, []);
+    if (validateValues()) {
+      setSaveDialog(true);
+    }
+  }, [validateValues]);
 
   const navigateBack = useCallback(() => {
     if (discardDialog) {

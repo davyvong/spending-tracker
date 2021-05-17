@@ -11,7 +11,6 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
   const [cache] = useCache();
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
-  const [createDialog, setCreateDialog] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
   const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState({
@@ -68,14 +67,6 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
       setPending(false);
     }
   }, [api.createTransaction, navigation, validateValues, values]);
-
-  const closeCreateDialog = useCallback(() => {
-    setCreateDialog(false);
-  }, []);
-
-  const openCreateDialog = useCallback(() => {
-    setCreateDialog(true);
-  }, []);
 
   const validateValues = useCallback(() => {
     const { amount, cardId, categoryId, currencyCode, postDate, type, vendor } = values;
@@ -147,13 +138,10 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
   return (
     <CreateTransactionScreenComponent
       {...props}
-      closeCreateDialog={closeCreateDialog}
       closeDiscardDialog={closeDiscardDialog}
-      createDialog={createDialog}
       createTransaction={createTransaction}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
-      openCreateDialog={openCreateDialog}
       navigateBack={navigateBack}
       pending={pending}
       setNavigationOptions={navigation.setOptions}
