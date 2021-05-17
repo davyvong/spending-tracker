@@ -30,6 +30,8 @@ const ActionDialogComponent = ({
 
   return (
     <Modal
+      animationIn="zoomIn"
+      animationOut="zoomOut"
       backdropTransitionOutTiming={0}
       isVisible={visible}
       onBackButtonPress={onClose}
