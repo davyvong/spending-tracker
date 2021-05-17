@@ -12,13 +12,13 @@ const styles = StyleSheet.create({
     maxHeight: '70%',
     paddingVertical: 18,
   },
-  action: {
+  actionButton: {
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 24,
     paddingVertical: 12,
   },
-  actionIcon: {
+  actionButtonIcon: {
     marginRight: 12,
   },
   closeButton: {

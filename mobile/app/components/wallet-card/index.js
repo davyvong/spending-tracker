@@ -9,18 +9,18 @@ const WalletCard = ({ color, ...props }) => {
 
   const theme = useMemo(
     () => ({
-      walletCardGradient: ['transparent', palette.get('walletCardGradient')],
+      walletCardGradient: ['transparent', palette.get('gradients.wallet-card')],
       walletCardPrimaryText: {
-        color: palette.get('walletPrimaryText'),
+        color: palette.get('texts.wallet-primary'),
       },
       walletCardSecondaryText: {
-        color: palette.get('walletSecondaryText'),
+        color: palette.get('texts.wallet-secondary'),
       },
     }),
     [palette],
   );
 
-  return <WalletCardComponent {...props} color={color || palette.get('walletBackgroundColor')} theme={theme} />;
+  return <WalletCardComponent {...props} color={color || palette.get('backgrounds.wallet-card')} theme={theme} />;
 };
 
 WalletCard.propTypes = {

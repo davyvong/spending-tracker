@@ -24,7 +24,7 @@ const ActionDialogComponent = ({
 
   const getSecondaryButtonStyle = useCallback(
     ({ pressed }) =>
-      pressed ? [styles.ctaButton, theme.secondaryCTAButtonPressed] : [styles.ctaButton, theme.secondaryCTAButton],
+      pressed ? [styles.ctaButton, theme.secondaryButtonPressed] : [styles.ctaButton, theme.secondaryButton],
     [theme],
   );
 
@@ -53,11 +53,11 @@ const ActionDialogComponent = ({
             onPress={onPressPrimary}
             style={[
               styles.ctaButton,
-              theme.primaryCTAButton,
+              theme.primaryButton,
               primaryAction.color && { backgroundColor: primaryAction.color },
             ]}
           >
-            <Text style={theme.primaryCTAButtonText}>
+            <Text style={theme.primaryButtonText}>
               {primaryAction.label || locale.t('components.action-dialog.buttons.confirm')}
             </Text>
           </TouchableOpacity>

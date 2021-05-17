@@ -70,7 +70,7 @@ const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...
       const onPress = active ? () => onDeselect(option) : () => onSelect(option);
       return (
         <TouchableOpacity activeOpacity={1} onPress={onPress} style={styles.option}>
-          <MaterialIcons color={theme.iconColor} name={icon} size={20} style={styles.optionIcon} />
+          <MaterialIcons color={theme.defaultIcon} name={icon} size={20} style={styles.optionIcon} />
           <Text style={theme.optionText}>{option.label}</Text>
         </TouchableOpacity>
       );
@@ -106,7 +106,7 @@ const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...
     <Fragment>
       <TouchableOpacity activeOpacity={1} disabled={!editable} onPress={openModal}>
         <TextInput {...props} editable={false} pointerEvents="none" value={prettifiedValue} />
-        <MaterialIcons color={theme.iconColor} name="expand-more" size={20} style={styles.expandIcon} />
+        <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} style={styles.expandIcon} />
       </TouchableOpacity>
       <Modal
         backdropTransitionOutTiming={0}

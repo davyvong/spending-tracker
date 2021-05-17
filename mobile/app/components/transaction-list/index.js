@@ -21,12 +21,12 @@ const TransactionList = props => {
 
   const theme = useMemo(
     () => ({
-      refreshControl: palette.get('refreshControl'),
+      refreshControl: palette.get('refresh-control'),
       sectionHeaderText: {
-        color: palette.get('primaryText'),
+        color: palette.get('texts.primary'),
       },
       deleteButton: {
-        backgroundColor: palette.get('errorBackground'),
+        backgroundColor: palette.get('backgrounds.alternate-button'),
       },
     }),
     [palette],
@@ -64,7 +64,7 @@ const TransactionList = props => {
       },
       {
         callback: openDeleteDialog,
-        color: palette.get('errorText'),
+        color: palette.get('texts.error'),
         icon: 'delete',
         label: locale.t('components.transaction-list.actions.delete'),
       },

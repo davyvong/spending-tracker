@@ -66,7 +66,7 @@ const DateInputComponent = ({ editable, format, onChange, theme, value, ...props
     <Fragment>
       <Pressable disabled={!editable} onPress={openModal}>
         <TextInput {...props} editable={false} pointerEvents="none" value={formattedValue} />
-        <MaterialIcons color={theme.iconColor} name="calendar-today" size={20} style={styles.calendarIcon} />
+        <MaterialIcons color={theme.defaultIcon} name="calendar-today" size={20} style={styles.calendarIcon} />
       </Pressable>
       <Modal
         backdropTransitionOutTiming={0}

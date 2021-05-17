@@ -47,7 +47,7 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
           style={styles.option}
         >
           <MaterialIcons
-            color={theme.iconColor}
+            color={theme.defaultIcon}
             name={active ? 'radio-button-checked' : 'radio-button-unchecked'}
             size={20}
             style={styles.optionIcon}
@@ -73,7 +73,7 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
           pointerEvents="none"
           value={selected > -1 ? String(options[selected].label) : ''}
         />
-        <MaterialIcons color={theme.iconColor} name="expand-more" size={20} style={styles.expandIcon} />
+        <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} style={styles.expandIcon} />
       </TouchableOpacity>
       <Modal
         backdropTransitionOutTiming={0}

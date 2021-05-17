@@ -20,8 +20,8 @@ const WalletScreen = ({ navigation, ...props }) => {
 
   const theme = useMemo(
     () => ({
-      actionIcon: palette.get('activeIcon'),
-      refreshControl: palette.get('refreshControl'),
+      actionIcon: palette.get('icons.active'),
+      refreshControl: palette.get('refresh-control'),
     }),
     [palette],
   );

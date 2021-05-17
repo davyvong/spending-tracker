@@ -10,21 +10,21 @@ const ActionSheet = props => {
 
   const theme = useMemo(
     () => ({
-      iconColor: palette.get('defaultIcon'),
       innerModal: {
-        backgroundColor: palette.get('modalBackground'),
+        backgroundColor: palette.get('backgrounds.modal'),
       },
-      actionText: {
-        color: palette.get('normalText'),
-      },
+      actionButtonIcon: palette.get('icons.default'),
       actionButtonPressed: {
-        backgroundColor: palette.get('pressedBackground'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
+      },
+      actionButtonText: {
+        color: palette.get('texts.normal'),
       },
       closeButton: {
-        backgroundColor: palette.get('cancelBackground'),
+        backgroundColor: palette.get('backgrounds.secondary-button'),
       },
       closeButtonPressed: {
-        backgroundColor: palette.get('pressedBackground'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
     }),
     [palette],

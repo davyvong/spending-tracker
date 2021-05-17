@@ -13,7 +13,7 @@ const ActionSheetComponent = ({ onClose, onModalHide, options, setCallback, them
   const [locale] = useLocale();
 
   const getActionButtonStyle = useCallback(
-    ({ pressed }) => (pressed ? [styles.action, theme.actionButtonPressed] : [styles.action]),
+    ({ pressed }) => (pressed ? [styles.actionButton, theme.actionButtonPressed] : [styles.actionButton]),
     [theme],
   );
 
@@ -32,12 +32,12 @@ const ActionSheetComponent = ({ onClose, onModalHide, options, setCallback, them
       return (
         <Pressable key={option.label} onPress={onPress} style={getActionButtonStyle}>
           <MaterialIcons
-            color={option.color || theme.iconColor}
+            color={option.color || theme.actionButtonIcon}
             name={option.icon}
             size={20}
-            style={styles.actionIcon}
+            style={styles.actionButtonIcon}
           />
-          <Text style={[theme.actionText, option.color && { color: option.color }]}>{option.label}</Text>
+          <Text style={[theme.actionButtonText, option.color && { color: option.color }]}>{option.label}</Text>
         </Pressable>
       );
     },

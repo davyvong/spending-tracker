@@ -10,7 +10,7 @@ const Text = ({ style, ...props }) => {
 
   const theme = useMemo(
     () => ({
-      color: palette.get('normalText'),
+      color: palette.get('texts.normal'),
     }),
     [palette],
   );

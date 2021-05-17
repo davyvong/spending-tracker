@@ -22,7 +22,7 @@ const TransactionRowComponent = ({ card, category, theme, transaction, ...props 
   }, [locale, transaction]);
 
   return (
-    <Pressable {...props} style={[styles.transactionRow, theme.transactionRow]}>
+    <Pressable {...props} style={styles.transactionRow}>
       <View style={[styles.transactionRowColumn, styles.transactionRowColumn1]}>
         <View style={[styles.transactionRowIcon, theme.transactionRowIcon]}>
           <MaterialCommunityIcons

@@ -10,18 +10,18 @@ const MultiSelectInput = props => {
 
   const theme = useMemo(
     () => ({
-      iconColor: palette.get('defaultIcon'),
+      defaultIcon: palette.get('icons.default'),
       innerModal: {
-        backgroundColor: palette.get('modalBackground'),
+        backgroundColor: palette.get('backgrounds.modal'),
       },
       optionText: {
-        color: palette.get('normalText'),
+        color: palette.get('texts.normal'),
       },
       cancelButton: {
-        backgroundColor: palette.get('cancelBackground'),
+        backgroundColor: palette.get('backgrounds.secondary-button'),
       },
       cancelButtonPressed: {
-        backgroundColor: palette.get('pressedBackground'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
     }),
     [palette],

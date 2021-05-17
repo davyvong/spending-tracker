@@ -10,16 +10,16 @@ const TextInput = props => {
   const theme = useMemo(
     () => ({
       inputComponent: {
-        color: palette.get('normalText'),
-        backgroundColor: palette.get('inputBackground'),
+        color: palette.get('texts.normal'),
+        backgroundColor: palette.get('backgrounds.input'),
       },
       inputError: {
-        color: palette.get('errorText'),
+        color: palette.get('texts.error'),
       },
       inputLabel: {
-        color: palette.get('primaryText'),
+        color: palette.get('texts.primary'),
       },
-      inputPlaceholder: palette.get('inputText'),
+      inputPlaceholder: palette.get('texts.input'),
     }),
     [palette],
   );

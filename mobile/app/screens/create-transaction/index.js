@@ -88,18 +88,18 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
 
   const theme = useMemo(
     () => ({
-      activityIndicator: palette.get('buttonText'),
+      activityIndicator: palette.get('texts.button'),
       cancelButton: {
-        backgroundColor: palette.get('cancelBackground'),
+        backgroundColor: palette.get('backgrounds.secondary-button'),
       },
       cancelButtonPressed: {
-        backgroundColor: palette.get('pressedBackground'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
       deleteButton: {
-        backgroundColor: palette.get('errorBackground'),
+        backgroundColor: palette.get('backgrounds.alternate-button'),
       },
       serverError: {
-        color: palette.get('errorText'),
+        color: palette.get('texts.error'),
       },
     }),
     [palette],

@@ -8,15 +8,15 @@ const MonthlySummary = props => {
 
   const theme = useMemo(
     () => ({
-      activityIndicator: palette.get('activeIcon'),
+      activityIndicator: palette.get('icons.active'),
       statisticCard: {
-        backgroundColor: palette.get('tileBackground'),
+        backgroundColor: palette.get('backgrounds.tile'),
       },
       statisticLabel: {
-        color: palette.get('primaryText'),
+        color: palette.get('texts.primary'),
       },
       statisticCurrency: {
-        color: palette.get('inputText'),
+        color: palette.get('texts.input'),
       },
     }),
     [palette],

@@ -58,7 +58,7 @@ const CurrencyInputComponent = ({
           style={styles.currencyOption}
         >
           <MaterialIcons
-            color={theme.iconColor}
+            color={theme.defaultIcon}
             name={active ? 'radio-button-checked' : 'radio-button-unchecked'}
             size={20}
             style={styles.currencyIcon}
@@ -87,7 +87,7 @@ const CurrencyInputComponent = ({
         />
         <View style={[styles.currencyValue, theme.currencyValue]}>
           <Text style={styles.currencyValueText}>{valueCurrency}</Text>
-          <MaterialIcons color={theme.iconColor} name="expand-more" size={20} />
+          <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} />
         </View>
       </Pressable>
       <Modal
