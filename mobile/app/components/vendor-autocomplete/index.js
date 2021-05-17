@@ -20,7 +20,7 @@ const VendorAutoComplete = ({ onChange, value, ...props }) => {
         shadowColor: palette.get('shadow'),
       },
       suggestionRowPressed: {
-        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
     }),
     [palette],

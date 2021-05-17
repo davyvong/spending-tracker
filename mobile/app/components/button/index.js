@@ -10,10 +10,10 @@ const Button = props => {
   const theme = useMemo(
     () => ({
       container: {
-        backgroundColor: palette.get('backgrounds.primaryButton'),
+        backgroundColor: palette.get('backgrounds.primary-button'),
       },
       pressedContainer: {
-        backgroundColor: hexToRGB(palette.get('backgrounds.primaryButton'), 0.7),
+        backgroundColor: hexToRGB(palette.get('backgrounds.primary-button'), 0.7),
       },
       text: {
         color: palette.get('texts.button'),

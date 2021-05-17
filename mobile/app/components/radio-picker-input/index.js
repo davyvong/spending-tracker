@@ -18,10 +18,10 @@ const RadioPickerInput = props => {
         color: palette.get('texts.normal'),
       },
       cancelButton: {
-        backgroundColor: palette.get('backgrounds.secondaryButton'),
+        backgroundColor: palette.get('backgrounds.secondary-button'),
       },
       cancelButtonPressed: {
-        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
     }),
     [palette],

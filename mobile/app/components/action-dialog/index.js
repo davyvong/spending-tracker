@@ -15,16 +15,16 @@ const ActionDialog = ({ onClose, primaryAction, secondaryAction, ...props }) => 
         backgroundColor: palette.get('backgrounds.modal'),
       },
       primaryButton: {
-        backgroundColor: palette.get('backgrounds.primaryButton'),
+        backgroundColor: palette.get('backgrounds.primary-button'),
       },
       primaryButtonText: {
         color: palette.get('texts.button'),
       },
       secondaryButton: {
-        backgroundColor: palette.get('backgrounds.secondaryButton'),
+        backgroundColor: palette.get('backgrounds.secondary-button'),
       },
       secondaryButtonPressed: {
-        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
     }),
     [palette],

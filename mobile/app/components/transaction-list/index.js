@@ -21,12 +21,12 @@ const TransactionList = props => {
 
   const theme = useMemo(
     () => ({
-      refreshControl: palette.get('refreshControl'),
+      refreshControl: palette.get('refresh-control'),
       sectionHeaderText: {
         color: palette.get('texts.primary'),
       },
       deleteButton: {
-        backgroundColor: palette.get('backgrounds.redButton'),
+        backgroundColor: palette.get('backgrounds.red-button'),
       },
     }),
     [palette],

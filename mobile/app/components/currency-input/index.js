@@ -21,10 +21,10 @@ const CurrencyInput = props => {
         backgroundColor: palette.get('backgrounds.modal'),
       },
       cancelButton: {
-        backgroundColor: palette.get('backgrounds.secondaryButton'),
+        backgroundColor: palette.get('backgrounds.secondary-button'),
       },
       cancelButtonPressed: {
-        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
     }),
     [palette],

@@ -28,13 +28,13 @@ const PasswordScreen = ({ navigation, ...props }) => {
     () => ({
       activityIndicator: palette.get('texts.button'),
       cancelButton: {
-        backgroundColor: palette.get('backgrounds.secondaryButton'),
+        backgroundColor: palette.get('backgrounds.secondary-button'),
       },
       cancelButtonPressed: {
-        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
       discardButton: {
-        backgroundColor: palette.get('backgrounds.redButton'),
+        backgroundColor: palette.get('backgrounds.red-button'),
       },
       serverError: {
         color: palette.get('texts.error'),

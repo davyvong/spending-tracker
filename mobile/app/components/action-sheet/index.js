@@ -15,16 +15,16 @@ const ActionSheet = props => {
       },
       actionButtonIcon: palette.get('icons.default'),
       actionButtonPressed: {
-        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
       actionButtonText: {
         color: palette.get('texts.normal'),
       },
       closeButton: {
-        backgroundColor: palette.get('backgrounds.secondaryButton'),
+        backgroundColor: palette.get('backgrounds.secondary-button'),
       },
       closeButtonPressed: {
-        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
     }),
     [palette],

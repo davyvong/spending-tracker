@@ -8,7 +8,7 @@ const CategoryList = props => {
 
   const theme = useMemo(
     () => ({
-      refreshControl: palette.get('refreshControl'),
+      refreshControl: palette.get('refresh-control'),
     }),
     [palette],
   );

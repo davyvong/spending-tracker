@@ -13,10 +13,10 @@ const DateInput = props => {
     () => ({
       calendar: getCalendarTheme(palette),
       cancelButton: {
-        backgroundColor: palette.get('backgrounds.secondaryButton'),
+        backgroundColor: palette.get('backgrounds.secondary-button'),
       },
       cancelButtonPressed: {
-        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
       },
       defaultIcon: palette.get('icons.default'),
       innerModal: {
