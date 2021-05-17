@@ -40,6 +40,7 @@
   "screens.activity.title": "Recent Activity",
   "screens.category-list.title": "Categories",
   "screens.create-transaction.buttons.discard": "Discard",
+  "screens.create-transaction.buttons.save": "Save",
   "screens.create-transaction.errors.empty-amount": "The amount cannot be empty.",
   "screens.create-transaction.errors.empty-card": "A card must be selected.",
   "screens.create-transaction.errors.empty-category": "A category must be selected.",

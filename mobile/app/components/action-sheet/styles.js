@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   actionIcon: {
     marginRight: 12,
   },
-  button: {
+  closeButton: {
     alignItems: 'center',
     borderRadius: 100,
     justifyContent: 'center',

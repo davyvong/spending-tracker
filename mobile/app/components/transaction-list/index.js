@@ -16,7 +16,7 @@ const TransactionList = props => {
   const { palette } = useTheme();
   const [actionSheet, setActionSheet] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [pendingDelete, setPendingDelete] = useState(false);
+  const [, setPendingDelete] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const theme = useMemo(
@@ -63,12 +63,12 @@ const TransactionList = props => {
       },
       {
         callback: openDeleteDialog,
+        color: palette.get('errorText'),
         icon: 'delete',
         label: locale.t('components.transaction-list.actions.delete'),
-        pending: pendingDelete,
       },
     ],
-    [locale, openDeleteDialog, navigateToEditTransaction, pendingDelete],
+    [locale, navigateToEditTransaction, openDeleteDialog, palette],
   );
 
   return (

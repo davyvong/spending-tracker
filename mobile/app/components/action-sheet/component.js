@@ -18,7 +18,8 @@ const ActionSheetComponent = ({ onClose, onModalHide, options, setCallback, them
   );
 
   const getCloseButtonStyle = useCallback(
-    ({ pressed }) => (pressed ? [styles.button, theme.closeButtonPressed] : [styles.button, theme.closeButton]),
+    ({ pressed }) =>
+      pressed ? [styles.closeButton, theme.closeButtonPressed] : [styles.closeButton, theme.closeButton],
     [theme],
   );
 
