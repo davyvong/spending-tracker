@@ -42,6 +42,7 @@ const PasswordScreenComponent = ({
         <TextInput
           autoCompleteType="password"
           editable={!pending}
+          error={errors.currentPassword && locale.t(errors.currentPassword)}
           label={locale.t('screens.password.labels.current-password')}
           onChangeText={updateValue('currentPassword')}
           secureTextEntry
@@ -50,6 +51,7 @@ const PasswordScreenComponent = ({
         />
         <TextInput
           editable={!pending}
+          error={errors.newPassword && locale.t(errors.newPassword)}
           label={locale.t('screens.password.labels.new-password')}
           onChangeText={updateValue('newPassword')}
           secureTextEntry
@@ -58,6 +60,7 @@ const PasswordScreenComponent = ({
         />
         <TextInput
           editable={!pending}
+          error={errors.confirmPassword && locale.t(errors.confirmPassword)}
           label={locale.t('screens.password.labels.confirm-password')}
           onChangeText={updateValue('confirmPassword')}
           secureTextEntry

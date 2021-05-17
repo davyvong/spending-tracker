@@ -43,24 +43,28 @@ const ProfileScreenComponent = ({
       >
         <TextInput
           editable={!pending}
+          error={errors.firstName && locale.t(errors.firstName)}
           label={locale.t('screens.profile.labels.first-name')}
           onChangeText={updateValue('firstName')}
           value={values.firstName}
         />
         <TextInput
           editable={!pending}
+          error={errors.lastName && locale.t(errors.lastName)}
           label={locale.t('screens.profile.labels.last-name')}
           onChangeText={updateValue('lastName')}
           value={values.lastName}
         />
         <TextInput
           editable={!pending}
+          error={errors.email && locale.t(errors.email)}
           label={locale.t('screens.profile.labels.email')}
           onChangeText={updateValue('email')}
           value={values.email}
         />
         <RadioPickerInput
           editable={!pending}
+          error={errors.preferredCurrency && locale.t(errors.preferredCurrency)}
           label={locale.t('screens.profile.labels.preferred-currency')}
           onChange={updateValue('preferredCurrency')}
           options={currencyOptions}

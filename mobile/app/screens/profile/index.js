@@ -74,29 +74,23 @@ const ProfileScreen = ({ navigation, ...props }) => {
   }, [values]);
 
   const saveProfile = useCallback(async () => {
-    if (validateValues()) {
-      setPending(true);
-      try {
-        await api.updateAccount(pick(values, 'email', 'firstName', 'lastName', 'preferredCurrency'));
-        navigation.dispatch({
-          ignoreDiscard: true,
-          payload: { count: 1 },
-          type: 'POP',
-        });
-      } catch (error) {
-        console.log(error.message);
-        setErrors(prevState => ({
-          ...prevState,
-          server: 'common.unknown-error',
-        }));
-      }
-      setPending(false);
+    setPending(true);
+    try {
+      await api.updateAccount(pick(values, 'email', 'firstName', 'lastName', 'preferredCurrency'));
+      navigation.dispatch({
+        ignoreDiscard: true,
+        payload: { count: 1 },
+        type: 'POP',
+      });
+    } catch (error) {
+      console.log(error.message);
+      setErrors(prevState => ({
+        ...prevState,
+        server: 'common.unknown-error',
+      }));
     }
+    setPending(false);
   }, [api.updateProfile, navigation, validateValues, values]);
-
-  const closeSaveDialog = useCallback(() => {
-    setSaveDialog(false);
-  }, []);
 
   const navigateBack = useCallback(() => {
     if (discardDialog) {
@@ -106,9 +100,15 @@ const ProfileScreen = ({ navigation, ...props }) => {
     }
   }, [discardDialog, navigation]);
 
-  const openSaveDialog = useCallback(() => {
-    setSaveDialog(true);
+  const closeSaveDialog = useCallback(() => {
+    setSaveDialog(false);
   }, []);
+
+  const openSaveDialog = useCallback(() => {
+    if (validateValues()) {
+      setSaveDialog(true);
+    }
+  }, [validateValues]);
 
   const closeDiscardDialog = useCallback(() => {
     setDiscardDialog(false);
