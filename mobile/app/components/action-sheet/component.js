@@ -18,8 +18,8 @@ const ActionSheetComponent = ({ onClose, options, theme, visible }) => {
     [theme],
   );
 
-  const getCancelButtonStyle = useCallback(
-    ({ pressed }) => (pressed ? [styles.button, theme.cancelButtonPressed] : [styles.button, theme.cancelButton]),
+  const getCloseButtonStyle = useCallback(
+    ({ pressed }) => (pressed ? [styles.button, theme.closeButtonPressed] : [styles.button, theme.closeButton]),
     [theme],
   );
 
@@ -63,7 +63,7 @@ const ActionSheetComponent = ({ onClose, options, theme, visible }) => {
           removeClippedSubviews
           renderItem={renderAction}
         />
-        <Button onPress={onClose} style={getCancelButtonStyle}>
+        <Button onPress={onClose} style={getCloseButtonStyle}>
           <Text>{locale.t('components.action-sheet.buttons.close')}</Text>
         </Button>
       </View>

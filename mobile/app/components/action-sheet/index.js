@@ -18,10 +18,10 @@ const ActionSheet = props => {
       actionButtonPressed: {
         backgroundColor: palette.get('pressedBackground'),
       },
-      cancelButton: {
+      closeButton: {
         backgroundColor: palette.get('cancelBackground'),
       },
-      cancelButtonPressed: {
+      closeButtonPressed: {
         backgroundColor: palette.get('pressedBackground'),
       },
     }),

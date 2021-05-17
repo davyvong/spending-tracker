@@ -22,7 +22,7 @@ export const APIConsumer = APIContext.Consumer;
 
 export const APIProvider = ({ children }) => {
   const client = useApolloClient();
-  const [, updateCache] = useCache();
+  const [cache, updateCache] = useCache();
 
   const createCard = useCallback(
     async cardData => {
@@ -59,21 +59,33 @@ export const APIProvider = ({ children }) => {
   );
 
   const deleteCard = useCallback(
-    async cardId =>
-      client.mutate({
+    async cardId => {
+      const response = client.mutate({
         mutation: cardsMutations.deleteCard,
         variables: { id: cardId },
-      }),
+      });
+      if (response.data?.deleteCard) {
+        const cardsById = Object.assign({}, cache.cardsById);
+        delete cardsById[cardId];
+        updateCache({ cardsById });
+      }
+    },
     [client, updateCache],
   );
 
   const deleteTransaction = useCallback(
-    async transactionId =>
-      client.mutate({
+    async transactionId => {
+      const response = await client.mutate({
         mutation: transactionsMutations.deleteTransaction,
         variables: { id: transactionId },
-      }),
-    [client, updateCache],
+      });
+      if (response.data?.deleteTransaction) {
+        const transactionsById = Object.assign({}, cache.transactionsById);
+        delete transactionsById[transactionId];
+        updateCache({ transactionsById });
+      }
+    },
+    [cache, client, updateCache],
   );
 
   const getAccount = useCallback(async () => {
@@ -140,13 +152,15 @@ export const APIProvider = ({ children }) => {
         },
       });
       const monthlySpending = {};
-      data.monthlySpending.forEach(month => {
-        if (cardId) {
-          monthlySpending[`${month.date}-${cardId}`] = month;
-        } else {
-          monthlySpending[month.date] = month;
-        }
-      });
+      if (Array.isArray(data.monthlySpending)) {
+        data.monthlySpending.forEach(month => {
+          if (cardId) {
+            monthlySpending[`${month.date}-${cardId}`] = month;
+          } else {
+            monthlySpending[month.date] = month;
+          }
+        });
+      }
       updateCache(prevState => {
         prevState.monthlySpending = {
           ...prevState.monthlySpending,

@@ -6,7 +6,6 @@ import pick from 'lodash/pick';
 import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import hexToRGB from 'utils/hex-to-rgb';
 
 import EditTransactionScreenComponent from './component';
 
@@ -18,10 +17,8 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const navigation = useNavigation();
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
   const [saveDialog, setSaveDialog] = useState(false);
-  const [pendingDelete, setPendingDelete] = useState(false);
   const [pendingSave, setPendingSave] = useState(false);
   const [errors, setErrors] = useState({
     amount: null,
@@ -55,11 +52,8 @@ const EditTransactionScreen = ({ route, ...props }) => {
       cancelButtonPressed: {
         backgroundColor: palette.get('pressedBackground'),
       },
-      deleteButton: {
+      discardButton: {
         backgroundColor: palette.get('errorBackground'),
-      },
-      deleteButtonPressed: {
-        backgroundColor: hexToRGB(palette.get('errorBackground'), 0.7),
       },
       serverError: {
         color: palette.get('errorText'),
@@ -128,30 +122,6 @@ const EditTransactionScreen = ({ route, ...props }) => {
     setSaveDialog(true);
   }, []);
 
-  const deleteTransaction = useCallback(async () => {
-    setPendingDelete(true);
-    try {
-      await api.deleteTransaction(transaction.id).catch();
-      setPendingDelete(false);
-      navigation.dispatch({
-        ignoreDiscard: true,
-        payload: { count: 1 },
-        type: 'POP',
-      });
-    } catch (error) {
-      console.log(error.message);
-      setPendingDelete(false);
-    }
-  }, [api.deleteTransaction, navigation, transaction]);
-
-  const closeDeleteDialog = useCallback(() => {
-    setDeleteDialog(false);
-  }, []);
-
-  const openDeleteDialog = useCallback(() => {
-    setDeleteDialog(true);
-  }, []);
-
   const navigateBack = useCallback(() => {
     if (discardDialog) {
       navigation.dispatch(discardDialog);
@@ -185,17 +155,12 @@ const EditTransactionScreen = ({ route, ...props }) => {
   return (
     <EditTransactionScreenComponent
       {...props}
-      closeDeleteDialog={closeDeleteDialog}
       closeDiscardDialog={closeDiscardDialog}
       closeSaveDialog={closeSaveDialog}
-      deleteDialog={deleteDialog}
-      deleteTransaction={deleteTransaction}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
       navigateBack={navigateBack}
-      openDeleteDialog={openDeleteDialog}
       openSaveDialog={openSaveDialog}
-      pendingDelete={pendingDelete}
       pendingSave={pendingSave}
       saveDialog={saveDialog}
       saveTransaction={saveTransaction}

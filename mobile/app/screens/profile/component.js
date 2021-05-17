@@ -75,7 +75,7 @@ const ProfileScreenComponent = ({
             disabled={pending}
             onPress={openSaveDialog}
             style={styles.ctaButton}
-            title={pending ? '' : locale.t('screens.profile.buttons.save-changes')}
+            title={pending ? '' : locale.t('screens.profile.buttons.save')}
           >
             <ActivityIndicator color={theme.activityIndicator} />
           </Button>
@@ -95,7 +95,7 @@ const ProfileScreenComponent = ({
         onClose={closeSaveDialog}
         message={locale.t('screens.profile.messages.save-profile')}
         primaryAction={{
-          label: locale.t('screens.profile.buttons.save-changes'),
+          label: locale.t('screens.profile.buttons.save'),
           onPress: saveProfile,
         }}
         visible={saveDialog}
