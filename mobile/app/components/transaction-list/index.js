@@ -36,7 +36,7 @@ const TransactionList = props => {
     setSelectedTransaction(null);
     setTimeout(() => {
       navigation.navigate(routeOptions.editTransactionScreen.name, { transaction });
-    }, 300);
+    }, 500);
   }, [navigation, selectedTransaction]);
 
   const closeDeleteDialog = useCallback(() => {

@@ -11,6 +11,7 @@ import styles from './styles';
 const ActionDialogComponent = ({
   children,
   onClose,
+  onModalHide,
   onPressPrimary,
   onPressSecondary,
   message,
@@ -33,6 +34,7 @@ const ActionDialogComponent = ({
       isVisible={visible}
       onBackButtonPress={onClose}
       onBackdropPress={onClose}
+      onModalHide={onModalHide}
       style={styles.modal}
       useNativeDriverForBackdrop={false}
     >
@@ -66,6 +68,7 @@ const ActionDialogComponent = ({
 ActionDialogComponent.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
+  onModalHide: PropTypes.func.isRequired,
   onPressPrimary: PropTypes.func.isRequired,
   onPressSecondary: PropTypes.func.isRequired,
   message: PropTypes.string,
