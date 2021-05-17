@@ -23,10 +23,10 @@ const TransactionList = props => {
     () => ({
       refreshControl: palette.get('refreshControl'),
       sectionHeaderText: {
-        color: palette.get('primaryText'),
+        color: palette.get('texts.primary'),
       },
       deleteButton: {
-        backgroundColor: palette.get('errorBackground'),
+        backgroundColor: palette.get('backgrounds.redButton'),
       },
     }),
     [palette],
@@ -64,7 +64,7 @@ const TransactionList = props => {
       },
       {
         callback: openDeleteDialog,
-        color: palette.get('errorText'),
+        color: palette.get('texts.error'),
         icon: 'delete',
         label: locale.t('components.transaction-list.actions.delete'),
       },

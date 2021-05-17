@@ -10,10 +10,10 @@ const CategoryTile = ({ category, ...props }) => {
   const theme = useMemo(
     () => ({
       categoryTile: {
-        backgroundColor: palette.get('inputBackground'),
+        backgroundColor: palette.get('backgrounds.input'),
       },
       categoryTileName: {
-        color: palette.get('primaryText'),
+        color: palette.get('texts.primary'),
       },
     }),
     [palette],

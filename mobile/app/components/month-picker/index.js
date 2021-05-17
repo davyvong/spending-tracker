@@ -10,16 +10,16 @@ const MonthPicker = props => {
   const theme = useMemo(
     () => ({
       optionMonthActive: {
-        backgroundColor: palette.get('selectedBackground'),
+        backgroundColor: palette.get('backgrounds.selectedTab'),
       },
       optionMonthActiveText: {
-        color: palette.get('primaryText'),
+        color: palette.get('texts.primary'),
       },
       optionMonthText: {
-        color: palette.get('normalText'),
+        color: palette.get('texts.normal'),
       },
       optionYearText: {
-        color: palette.get('mutedText'),
+        color: palette.get('texts.muted'),
       },
     }),
     [palette],

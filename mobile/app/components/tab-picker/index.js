@@ -9,13 +9,13 @@ const TabPicker = props => {
   const theme = useMemo(
     () => ({
       optionActive: {
-        backgroundColor: palette.get('selectedBackground'),
+        backgroundColor: palette.get('backgrounds.selectedTab'),
       },
       optionActiveText: {
-        color: palette.get('primaryText'),
+        color: palette.get('texts.primary'),
       },
       optionDefaultText: {
-        color: palette.get('normalText'),
+        color: palette.get('texts.normal'),
       },
     }),
     [palette],

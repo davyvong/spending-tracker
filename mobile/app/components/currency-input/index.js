@@ -10,21 +10,21 @@ const CurrencyInput = props => {
 
   const theme = useMemo(
     () => ({
+      defaultIcon: palette.get('icons.default'),
       currencyText: {
-        color: palette.get('normalText'),
+        color: palette.get('texts.normal'),
       },
       currencyValue: {
-        borderLeftColor: palette.get('inputText'),
+        borderLeftColor: palette.get('texts.input'),
       },
-      iconColor: palette.get('defaultIcon'),
       innerModal: {
-        backgroundColor: palette.get('modalBackground'),
+        backgroundColor: palette.get('backgrounds.modal'),
       },
       cancelButton: {
-        backgroundColor: palette.get('cancelBackground'),
+        backgroundColor: palette.get('backgrounds.secondaryButton'),
       },
       cancelButtonPressed: {
-        backgroundColor: palette.get('pressedBackground'),
+        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
       },
     }),
     [palette],

@@ -26,18 +26,18 @@ const PasswordScreen = ({ navigation, ...props }) => {
 
   const theme = useMemo(
     () => ({
-      activityIndicator: palette.get('buttonText'),
+      activityIndicator: palette.get('texts.button'),
       cancelButton: {
-        backgroundColor: palette.get('cancelBackground'),
+        backgroundColor: palette.get('backgrounds.secondaryButton'),
       },
       cancelButtonPressed: {
-        backgroundColor: palette.get('pressedBackground'),
+        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
       },
       discardButton: {
-        backgroundColor: palette.get('errorBackground'),
+        backgroundColor: palette.get('backgrounds.redButton'),
       },
       serverError: {
-        color: palette.get('errorText'),
+        color: palette.get('texts.error'),
       },
     }),
     [palette],

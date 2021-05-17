@@ -28,11 +28,11 @@ const App = () => {
   const theme = useMemo(
     () => ({
       container: {
-        backgroundColor: palette.get('appBackground'),
+        backgroundColor: palette.get('backgrounds.app'),
       },
       navigationContainer: {
         colors: {
-          background: palette.get('appBackground'),
+          background: palette.get('backgrounds.app'),
         },
       },
     }),

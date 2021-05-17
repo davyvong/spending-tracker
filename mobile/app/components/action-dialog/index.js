@@ -12,19 +12,19 @@ const ActionDialog = ({ onClose, primaryAction, secondaryAction, ...props }) => 
   const theme = useMemo(
     () => ({
       innerModal: {
-        backgroundColor: palette.get('modalBackground'),
+        backgroundColor: palette.get('backgrounds.modal'),
       },
-      primaryCTAButton: {
-        backgroundColor: palette.get('buttonBackground'),
+      primaryButton: {
+        backgroundColor: palette.get('backgrounds.primaryButton'),
       },
-      primaryCTAButtonText: {
-        color: palette.get('buttonText'),
+      primaryButtonText: {
+        color: palette.get('texts.button'),
       },
-      secondaryCTAButton: {
-        backgroundColor: palette.get('cancelBackground'),
+      secondaryButton: {
+        backgroundColor: palette.get('backgrounds.secondaryButton'),
       },
-      secondaryCTAButtonPressed: {
-        backgroundColor: palette.get('pressedBackground'),
+      secondaryButtonPressed: {
+        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
       },
     }),
     [palette],

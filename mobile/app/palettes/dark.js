@@ -1,45 +1,36 @@
 import hexToRGB from 'utils/hex-to-rgb';
 
 const darkPalette = {
-  appBackground: '#000000',
-  buttonBackground: '#0984e3',
-  inputBackground: hexToRGB('#a09c97', 0.15),
-  modalBackground: '#242423',
-  cancelBackground: hexToRGB('#ffffff', 0.15),
-  pressedBackground: hexToRGB('#ffffff', 0.1),
-  errorBackground: '#d63031',
-  rowBackground: '#000000',
-  tileBackground: hexToRGB('#a09c97', 0.15),
-  selectedBackground: hexToRGB('#0984e3', 0.15),
-  iconBackground: hexToRGB('#0984e3', 0.15),
-  walletBackgroundColor: '#ffffff',
-
-  appForeground: '#f7f9ff',
-
-  buttonText: '#000000',
-  errorText: '#d63031',
-  mutedText: '#616158',
-  normalText: '#ffffff',
-  primaryText: '#0984e3',
-  secondaryText: '#ff6b6b',
-  positiveText: '#00b894',
-  negativeText: '#d63031',
-  inputText: '#616158',
-  walletPrimaryText: '#000000',
-  walletSecondaryText: hexToRGB('#000000', 0.75),
-
-  activeIcon: '#0984e3',
-  defaultIcon: '#616158',
-
+  'backgrounds.app': '#000000',
+  'backgrounds.icon': hexToRGB('#0984e3', 0.15),
+  'backgrounds.input': hexToRGB('#a09c97', 0.15),
+  'backgrounds.modal': '#242423',
+  'backgrounds.primaryButton': '#0984e3',
+  'backgrounds.redButton': '#d63031',
+  'backgrounds.secondaryButton': hexToRGB('#ffffff', 0.15),
+  'backgrounds.secondaryButtonPressed': hexToRGB('#ffffff', 0.1),
+  'backgrounds.selectedTab': hexToRGB('#0984e3', 0.15),
+  'backgrounds.tile': hexToRGB('#a09c97', 0.15),
+  'backgrounds.walletCard': '#ffffff',
   border: hexToRGB('#a09c97', 0.25),
-
-  shadow: '#000000',
-
-  primaryChart: '#0984e3',
-
-  walletCardGradient: hexToRGB('#000000', 0.5),
-
+  'charts.primaryBar': '#0984e3',
+  'foregrounds.app': '#f7f9ff',
+  'gradients.walletCard': hexToRGB('#000000', 0.5),
+  'icons.active': '#0984e3',
+  'icons.default': '#616158',
   refreshControl: '#9e9ea7',
+  shadow: '#000000',
+  'texts.button': '#000000',
+  'texts.error': '#d63031',
+  'texts.input': '#616158',
+  'texts.muted': '#616158',
+  'texts.negative': '#d63031',
+  'texts.normal': '#ffffff',
+  'texts.positive': '#00b894',
+  'texts.primary': '#0984e3',
+  'texts.secondary': '#ff6b6b',
+  'texts.walletPrimary': '#000000',
+  'texts.walletSecondary': hexToRGB('#000000', 0.75),
 };
 
 export default new Map(Object.entries(darkPalette));

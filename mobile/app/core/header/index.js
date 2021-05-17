@@ -16,7 +16,7 @@ const Header = ({ navigation, previous, scene }) => {
 
   const theme = useMemo(
     () => ({
-      iconColor: palette.get('normalText'),
+      backIcon: palette.get('texts.normal'),
     }),
     [palette],
   );
@@ -32,7 +32,7 @@ const Header = ({ navigation, previous, scene }) => {
     const title = previous?.route.params?.title || prevOptions.title;
     return (
       <TouchableOpacity onPress={onPress} style={styles.leftButton}>
-        <MaterialIcons color={theme.iconColor} name="keyboard-arrow-left" size={24} style={styles.icon} />
+        <MaterialIcons color={theme.backIcon} name="keyboard-arrow-left" size={24} style={styles.icon} />
         <Text style={styles.leftButtonText}>{title}</Text>
       </TouchableOpacity>
     );

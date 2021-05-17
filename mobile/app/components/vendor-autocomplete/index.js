@@ -16,11 +16,11 @@ const VendorAutoComplete = ({ onChange, value, ...props }) => {
   const theme = useMemo(
     () => ({
       suggestionList: {
-        backgroundColor: palette.get('modalBackground'),
+        backgroundColor: palette.get('backgrounds.modal'),
         shadowColor: palette.get('shadow'),
       },
-      pressedSuggestionRow: {
-        backgroundColor: palette.get('pressedBackground'),
+      suggestionRowPressed: {
+        backgroundColor: palette.get('backgrounds.secondaryButtonPressed'),
       },
     }),
     [palette],

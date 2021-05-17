@@ -9,19 +9,19 @@ const TabBar = props => {
   const theme = useMemo(
     () => ({
       container: {
-        backgroundColor: palette.get('appBackground'),
+        backgroundColor: palette.get('backgrounds.app'),
       },
       activeItemIcon: {
-        color: palette.get('activeIcon'),
+        color: palette.get('icons.active'),
       },
       defaultItemIcon: {
-        color: palette.get('defaultIcon'),
+        color: palette.get('icons.default'),
       },
       activeItemText: {
-        color: palette.get('primaryText'),
+        color: palette.get('texts.primary'),
       },
       defaultItemText: {
-        color: palette.get('mutedText'),
+        color: palette.get('texts.muted'),
       },
     }),
     [palette],

@@ -13,7 +13,7 @@ const SpendingChart = ({ data, ...props }) => {
         borderTopColor: palette.get('border'),
       },
       filledBar: {
-        backgroundColor: palette.get('primaryChart'),
+        backgroundColor: palette.get('charts.primaryBar'),
       },
     }),
     [palette],

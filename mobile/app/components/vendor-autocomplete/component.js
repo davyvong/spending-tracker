@@ -20,7 +20,7 @@ const VendorAutoCompleteComponent = ({
   ...props
 }) => {
   const getPressableStyle = useCallback(
-    ({ pressed }) => (pressed ? [styles.suggestionRow, theme.pressedSuggestionRow] : [styles.suggestionRow]),
+    ({ pressed }) => (pressed ? [styles.suggestionRow, theme.suggestionRowPressed] : [styles.suggestionRow]),
     [theme],
   );
 

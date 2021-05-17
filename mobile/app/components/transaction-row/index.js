@@ -8,18 +8,15 @@ const TransactionRow = props => {
 
   const theme = useMemo(
     () => ({
-      transactionRow: {
-        backgroundColor: palette.get('rowBackground'),
-      },
       transactionRowAmountPositive: {
-        color: palette.get('positiveText'),
+        color: palette.get('texts.positive'),
       },
       transactionRowIcon: {
-        backgroundColor: palette.get('iconBackground'),
-        color: palette.get('primaryText'),
+        backgroundColor: palette.get('backgrounds.icon'),
+        color: palette.get('texts.primary'),
       },
       transactionRowMutedText: {
-        color: palette.get('mutedText'),
+        color: palette.get('texts.muted'),
       },
     }),
     [palette],

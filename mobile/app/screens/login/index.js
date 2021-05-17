@@ -51,7 +51,7 @@ const LoginScreen = props => {
 
   const theme = useMemo(
     () => ({
-      activityIndicator: palette.get('buttonText'),
+      activityIndicator: palette.get('texts.button'),
     }),
     [palette],
   );

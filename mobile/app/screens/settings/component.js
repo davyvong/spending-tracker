@@ -51,13 +51,13 @@ const SettingsScreenComponent = ({
         </View>
         <Pressable onPress={navigateToProfile} style={styles.ctaRow}>
           <View style={styles.ctaRowIcon}>
-            <MaterialCommunityIcons color={theme.iconColor} name="account-box" size={28} />
+            <MaterialCommunityIcons color={theme.activeIcon} name="account-box" size={28} />
           </View>
           <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.personal-information')}</Text>
         </Pressable>
         <Pressable onPress={navigateToPassword} style={styles.ctaRow}>
           <View style={styles.ctaRowIcon}>
-            <MaterialCommunityIcons color={theme.iconColor} name="lock-reset" size={28} />
+            <MaterialCommunityIcons color={theme.activeIcon} name="lock-reset" size={28} />
           </View>
           <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.change-password')}</Text>
         </Pressable>
