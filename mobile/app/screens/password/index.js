@@ -68,10 +68,10 @@ const PasswordScreen = ({ navigation, ...props }) => {
       validationErrors.confirmPassword = 'screens.password.errors.empty-confirm-password';
     }
     if (!currentPassword) {
-      validationErrors.confirmPassword = 'screens.password.errors.empty-current-password';
+      validationErrors.currentPassword = 'screens.password.errors.empty-current-password';
     }
     if (!newPassword) {
-      validationErrors.confirmPassword = 'screens.password.errors.empty-new-password';
+      validationErrors.newPassword = 'screens.password.errors.empty-new-password';
     }
     if (Object.values(validationErrors).some(field => field)) {
       setErrors(validationErrors);
@@ -81,29 +81,23 @@ const PasswordScreen = ({ navigation, ...props }) => {
   }, [values]);
 
   const changePassword = useCallback(async () => {
-    if (validateValues()) {
-      setPending(true);
-      try {
-        await api.updatePassword(values.currentPassword, values.newPassword);
-        navigation.dispatch({
-          ignoreDiscard: true,
-          payload: { count: 1 },
-          type: 'POP',
-        });
-      } catch (error) {
-        console.log(error.message);
-        setErrors(prevState => ({
-          ...prevState,
-          server: 'common.unknown-error',
-        }));
-      }
-      setPending(false);
+    setPending(true);
+    try {
+      await api.updatePassword(values.currentPassword, values.newPassword);
+      navigation.dispatch({
+        ignoreDiscard: true,
+        payload: { count: 1 },
+        type: 'POP',
+      });
+    } catch (error) {
+      console.log(error.message);
+      setErrors(prevState => ({
+        ...prevState,
+        server: 'common.unknown-error',
+      }));
     }
+    setPending(false);
   }, [api.updatePassword, navigation, validateValues, values]);
-
-  const closeSaveDialog = useCallback(() => {
-    setSaveDialog(false);
-  }, []);
 
   const navigateBack = useCallback(() => {
     if (discardDialog) {
@@ -113,9 +107,15 @@ const PasswordScreen = ({ navigation, ...props }) => {
     }
   }, [discardDialog, navigation]);
 
-  const openSaveDialog = useCallback(() => {
-    setSaveDialog(true);
+  const closeSaveDialog = useCallback(() => {
+    setSaveDialog(false);
   }, []);
+
+  const openSaveDialog = useCallback(() => {
+    if (validateValues()) {
+      setSaveDialog(true);
+    }
+  }, [validateValues]);
 
   const closeDiscardDialog = useCallback(() => {
     setDiscardDialog(false);

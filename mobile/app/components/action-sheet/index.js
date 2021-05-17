@@ -1,9 +1,11 @@
 import useTheme from 'hooks/theme';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import isFunction from 'utils/is-function';
 
 import ActionSheetComponent from './component';
 
 const ActionSheet = props => {
+  const [callback, setCallback] = useState();
   const { palette } = useTheme();
 
   const theme = useMemo(
@@ -18,17 +20,24 @@ const ActionSheet = props => {
       actionButtonPressed: {
         backgroundColor: palette.get('pressedBackground'),
       },
-      cancelButton: {
+      closeButton: {
         backgroundColor: palette.get('cancelBackground'),
       },
-      cancelButtonPressed: {
+      closeButtonPressed: {
         backgroundColor: palette.get('pressedBackground'),
       },
     }),
     [palette],
   );
 
-  return <ActionSheetComponent {...props} theme={theme} />;
+  const onModalHide = useCallback(() => {
+    if (isFunction(callback)) {
+      callback();
+      setCallback();
+    }
+  }, [callback]);
+
+  return <ActionSheetComponent {...props} onModalHide={onModalHide} setCallback={setCallback} theme={theme} />;
 };
 
 export default ActionSheet;

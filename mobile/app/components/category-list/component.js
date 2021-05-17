@@ -5,11 +5,20 @@ import ScrollViewStyles from 'components/scroll-view/styles';
 import Category from 'models/category';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useRef } from 'react';
-import { FlatList, View, ViewPropTypes } from 'react-native';
+import { FlatList, RefreshControl, View, ViewPropTypes } from 'react-native';
 
 import styles from './styles';
 
-const CategoryListComponent = ({ contentContainerStyle, data, ListStickyHeaderComponent, onPressItem, ...props }) => {
+const CategoryListComponent = ({
+  contentContainerStyle,
+  data,
+  ListStickyHeaderComponent,
+  onPressItem,
+  onRefresh,
+  refreshing,
+  theme,
+  ...props
+}) => {
   const ref = useRef();
 
   useScrollToTop(ref);
@@ -43,6 +52,14 @@ const CategoryListComponent = ({ contentContainerStyle, data, ListStickyHeaderCo
         keyExtractor={(item, index) => item.id || index}
         numColumns={2}
         ref={ref}
+        refreshControl={
+          <RefreshControl
+            color={[theme.refreshControl]}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            tintColor={theme.refreshControl}
+          />
+        }
         renderItem={renderItem}
         scrollEventThrottle={200}
       />
@@ -59,6 +76,9 @@ CategoryListComponent.propTypes = {
   data: PropTypes.arrayOf(Category.propTypes),
   ListStickyHeaderComponent: PropTypes.node,
   onPressItem: PropTypes.func,
+  onRefresh: PropTypes.func,
+  refreshing: PropTypes.bool,
+  theme: PropTypes.object.isRequired,
 };
 
 export default CategoryListComponent;

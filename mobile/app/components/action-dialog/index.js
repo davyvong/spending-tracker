@@ -1,12 +1,13 @@
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import isFunction from 'utils/is-function';
 
 import ActionDialogComponent from './component';
 
 const ActionDialog = ({ onClose, primaryAction, secondaryAction, ...props }) => {
   const { palette } = useTheme();
+  const [callback, setCallback] = useState();
 
   const theme = useMemo(
     () => ({
@@ -30,23 +31,31 @@ const ActionDialog = ({ onClose, primaryAction, secondaryAction, ...props }) => 
   );
 
   const onPressPrimary = useCallback(() => {
-    onClose();
     if (isFunction(primaryAction.onPress)) {
-      setTimeout(primaryAction.onPress, 500);
+      setCallback(() => primaryAction.onPress);
     }
+    onClose();
   }, [onClose, primaryAction]);
 
   const onPressSecondary = useCallback(() => {
-    onClose();
     if (isFunction(secondaryAction.onPress)) {
-      setTimeout(secondaryAction.onPress, 500);
+      setCallback(() => secondaryAction.onPress);
     }
+    onClose();
   }, [onClose, secondaryAction]);
+
+  const onModalHide = useCallback(() => {
+    if (isFunction(callback)) {
+      callback();
+      setCallback();
+    }
+  }, [callback]);
 
   return (
     <ActionDialogComponent
       {...props}
       onClose={onClose}
+      onModalHide={onModalHide}
       onPressPrimary={onPressPrimary}
       onPressSecondary={onPressSecondary}
       primaryAction={primaryAction}

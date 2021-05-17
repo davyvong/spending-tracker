@@ -6,22 +6,19 @@ import pick from 'lodash/pick';
 import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import hexToRGB from 'utils/hex-to-rgb';
 
 import EditTransactionScreenComponent from './component';
 
 const EditTransactionScreen = ({ route, ...props }) => {
-  const { transaction } = route.params;
+  const { transaction = {} } = route.params;
 
   const api = useAPI();
   const [cache] = useCache();
   const navigation = useNavigation();
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
   const [saveDialog, setSaveDialog] = useState(false);
-  const [pendingDelete, setPendingDelete] = useState(false);
   const [pendingSave, setPendingSave] = useState(false);
   const [errors, setErrors] = useState({
     amount: null,
@@ -34,7 +31,6 @@ const EditTransactionScreen = ({ route, ...props }) => {
     vendor: null,
   });
   const [values, setValues] = useState({
-    amount: '',
     cardId: null,
     categoryId: null,
     currencyCode: cache.account.preferredCurrency,
@@ -43,7 +39,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
     type: 'debit',
     vendor: '',
     ...transaction,
-    amount: transaction.amount === undefined ? '' : String(transaction.amount),
+    amount: !transaction.amount && transaction.amount !== 0 ? '' : String(transaction.amount),
   });
 
   const theme = useMemo(
@@ -55,11 +51,8 @@ const EditTransactionScreen = ({ route, ...props }) => {
       cancelButtonPressed: {
         backgroundColor: palette.get('pressedBackground'),
       },
-      deleteButton: {
+      discardButton: {
         backgroundColor: palette.get('errorBackground'),
-      },
-      deleteButtonPressed: {
-        backgroundColor: hexToRGB(palette.get('errorBackground'), 0.7),
       },
       serverError: {
         color: palette.get('errorText'),
@@ -97,42 +90,12 @@ const EditTransactionScreen = ({ route, ...props }) => {
   }, [values]);
 
   const saveTransaction = useCallback(async () => {
-    if (validateValues()) {
-      setPendingSave(true);
-      try {
-        await api.updateTransaction(values.id, {
-          ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postDate', 'type', 'vendor'),
-          amount: Number(values.amount),
-        });
-        navigation.dispatch({
-          ignoreDiscard: true,
-          payload: { count: 1 },
-          type: 'POP',
-        });
-      } catch (error) {
-        console.log(error.message);
-        setErrors(prevState => ({
-          ...prevState,
-          server: 'common.unknown-error',
-        }));
-      }
-      setPendingSave(false);
-    }
-  }, [api.updateTransaction, navigation, validateValues, values]);
-
-  const closeSaveDialog = useCallback(() => {
-    setSaveDialog(false);
-  }, []);
-
-  const openSaveDialog = useCallback(() => {
-    setSaveDialog(true);
-  }, []);
-
-  const deleteTransaction = useCallback(async () => {
-    setPendingDelete(true);
+    setPendingSave(true);
     try {
-      await api.deleteTransaction(transaction.id).catch();
-      setPendingDelete(false);
+      await api.updateTransaction(values.id, {
+        ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postDate', 'type', 'vendor'),
+        amount: Number(values.amount),
+      });
       navigation.dispatch({
         ignoreDiscard: true,
         payload: { count: 1 },
@@ -140,17 +103,23 @@ const EditTransactionScreen = ({ route, ...props }) => {
       });
     } catch (error) {
       console.log(error.message);
-      setPendingDelete(false);
+      setErrors(prevState => ({
+        ...prevState,
+        server: 'common.unknown-error',
+      }));
     }
-  }, [api.deleteTransaction, navigation, transaction]);
+    setPendingSave(false);
+  }, [api.updateTransaction, navigation, values]);
 
-  const closeDeleteDialog = useCallback(() => {
-    setDeleteDialog(false);
+  const closeSaveDialog = useCallback(() => {
+    setSaveDialog(false);
   }, []);
 
-  const openDeleteDialog = useCallback(() => {
-    setDeleteDialog(true);
-  }, []);
+  const openSaveDialog = useCallback(() => {
+    if (validateValues()) {
+      setSaveDialog(true);
+    }
+  }, [validateValues]);
 
   const navigateBack = useCallback(() => {
     if (discardDialog) {
@@ -185,17 +154,12 @@ const EditTransactionScreen = ({ route, ...props }) => {
   return (
     <EditTransactionScreenComponent
       {...props}
-      closeDeleteDialog={closeDeleteDialog}
       closeDiscardDialog={closeDiscardDialog}
       closeSaveDialog={closeSaveDialog}
-      deleteDialog={deleteDialog}
-      deleteTransaction={deleteTransaction}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
       navigateBack={navigateBack}
-      openDeleteDialog={openDeleteDialog}
       openSaveDialog={openSaveDialog}
-      pendingDelete={pendingDelete}
       pendingSave={pendingSave}
       saveDialog={saveDialog}
       saveTransaction={saveTransaction}

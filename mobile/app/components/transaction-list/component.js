@@ -1,24 +1,30 @@
 import { useScrollToTop } from '@react-navigation/native';
+import ActionDialog from 'components/action-dialog';
 import ActionSheet from 'components/action-sheet';
 import ScrollViewStyles from 'components/scroll-view/styles';
 import Text from 'components/text';
 import TransactionRow from 'components/transaction-row';
 import useLocale from 'hooks/locale';
-import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback, useRef } from 'react';
-import { SectionList, View, ViewPropTypes } from 'react-native';
+import { RefreshControl, SectionList, View, ViewPropTypes } from 'react-native';
 
 import styles from './styles';
 
 const TransactionListComponent = ({
-  actions,
+  actionSheet,
+  actionSheetOptions,
   cards,
   categories,
+  closeDeleteDialog,
   contentContainerStyle,
+  deleteDialog,
+  deleteTransaction,
   ListStickyHeaderComponent,
-  selectedTransaction,
+  onRefresh,
+  refreshing,
+  setActionSheet,
   setSelectedTransaction,
   theme,
   ...props
@@ -34,11 +40,14 @@ const TransactionListComponent = ({
         card={cards[item.cardId]}
         category={categories[item.categoryId]}
         key={item.id}
-        onLongPress={() => setSelectedTransaction(item)}
+        onLongPress={() => {
+          setSelectedTransaction(item);
+          setActionSheet(true);
+        }}
         transaction={item}
       />
     ),
-    [categories, setSelectedTransaction],
+    [categories],
   );
 
   const renderSectionHeader = useCallback(
@@ -69,16 +78,30 @@ const TransactionListComponent = ({
           initialNumToRender={10}
           keyExtractor={item => item.id}
           ref={ref}
+          refreshControl={
+            <RefreshControl
+              color={[theme.refreshControl]}
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              tintColor={theme.refreshControl}
+            />
+          }
           renderItem={renderItem}
           renderSectionHeader={renderSectionHeader}
           scrollEventThrottle={200}
           stickySectionHeadersEnabled={false}
         />
       </View>
-      <ActionSheet
-        onClose={() => setSelectedTransaction(null)}
-        options={actions}
-        visible={Boolean(selectedTransaction)}
+      <ActionSheet onClose={() => setActionSheet(false)} options={actionSheetOptions} visible={actionSheet} />
+      <ActionDialog
+        onClose={closeDeleteDialog}
+        message={locale.t('components.transaction-list.messages.delete-transaction')}
+        primaryAction={{
+          color: theme.deleteButton.backgroundColor,
+          label: locale.t('components.transaction-list.buttons.delete'),
+          onPress: deleteTransaction,
+        }}
+        visible={deleteDialog}
       />
     </Fragment>
   );
@@ -89,7 +112,8 @@ TransactionListComponent.defaultProps = {
 };
 
 TransactionListComponent.propTypes = {
-  actions: PropTypes.arrayOf(
+  actionSheet: PropTypes.bool.isRequired,
+  actionSheetOptions: PropTypes.arrayOf(
     PropTypes.shape({
       callback: PropTypes.func.isRequired,
       icon: PropTypes.string.isRequired,
@@ -98,9 +122,14 @@ TransactionListComponent.propTypes = {
   ),
   cards: PropTypes.object.isRequired,
   categories: PropTypes.object.isRequired,
+  closeDeleteDialog: PropTypes.func.isRequired,
   contentContainerStyle: ViewPropTypes.style,
+  deleteDialog: PropTypes.bool.isRequired,
+  deleteTransaction: PropTypes.func.isRequired,
   ListStickyHeaderComponent: PropTypes.node,
-  selectedTransaction: Transaction.propTypes,
+  onRefresh: PropTypes.func,
+  refreshing: PropTypes.bool,
+  setActionSheet: PropTypes.func.isRequired,
   setSelectedTransaction: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
 };

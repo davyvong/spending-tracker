@@ -1,3 +1,19 @@
+import useTheme from 'hooks/theme';
+import React, { useMemo } from 'react';
+
 import CategoryListComponent from './component';
 
-export default CategoryListComponent;
+const CategoryList = props => {
+  const { palette } = useTheme();
+
+  const theme = useMemo(
+    () => ({
+      refreshControl: palette.get('refreshControl'),
+    }),
+    [palette],
+  );
+
+  return <CategoryListComponent {...props} theme={theme} />;
+};
+
+export default CategoryList;

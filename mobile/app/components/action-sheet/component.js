@@ -6,11 +6,10 @@ import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 import { FlatList, Pressable, View } from 'react-native';
 import Modal from 'react-native-modal';
-import isFunction from 'utils/is-function';
 
 import styles from './styles';
 
-const ActionSheetComponent = ({ onClose, options, theme, visible }) => {
+const ActionSheetComponent = ({ onClose, onModalHide, options, setCallback, theme, visible }) => {
   const [locale] = useLocale();
 
   const getActionButtonStyle = useCallback(
@@ -18,18 +17,17 @@ const ActionSheetComponent = ({ onClose, options, theme, visible }) => {
     [theme],
   );
 
-  const getCancelButtonStyle = useCallback(
-    ({ pressed }) => (pressed ? [styles.button, theme.cancelButtonPressed] : [styles.button, theme.cancelButton]),
+  const getCloseButtonStyle = useCallback(
+    ({ pressed }) =>
+      pressed ? [styles.closeButton, theme.closeButtonPressed] : [styles.closeButton, theme.closeButton],
     [theme],
   );
 
   const renderAction = useCallback(
     ({ item: option }) => {
       const onPress = () => {
+        setCallback(() => option.callback);
         onClose();
-        if (isFunction(option.callback)) {
-          setTimeout(option.callback, 500);
-        }
       };
       return (
         <Pressable key={option.label} onPress={onPress} style={getActionButtonStyle}>
@@ -52,6 +50,7 @@ const ActionSheetComponent = ({ onClose, options, theme, visible }) => {
       isVisible={visible}
       onBackButtonPress={onClose}
       onBackdropPress={onClose}
+      onModalHide={onModalHide}
       style={styles.modal}
       useNativeDriverForBackdrop={false}
     >
@@ -63,7 +62,7 @@ const ActionSheetComponent = ({ onClose, options, theme, visible }) => {
           removeClippedSubviews
           renderItem={renderAction}
         />
-        <Button onPress={onClose} style={getCancelButtonStyle}>
+        <Button onPress={onClose} style={getCloseButtonStyle}>
           <Text>{locale.t('components.action-sheet.buttons.close')}</Text>
         </Button>
       </View>
@@ -79,6 +78,7 @@ ActionSheetComponent.defaultProps = {
 
 ActionSheetComponent.propTypes = {
   onClose: PropTypes.func,
+  onModalHide: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       callback: PropTypes.func.isRequired,
@@ -86,6 +86,7 @@ ActionSheetComponent.propTypes = {
       label: PropTypes.string.isRequired,
     }),
   ),
+  setCallback: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   visible: PropTypes.bool,
 };
