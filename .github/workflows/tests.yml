@@ -6,15 +6,28 @@ jobs:
     name: API
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Run Checkout
         uses: actions/checkout@v2
+      - name: Cache Dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: api/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock')}}
+          restore-keys: ${{ runner.os }}-yarn-
+      - name: Setup Node
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
       - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
         working-directory: api
-      - name: Eslint
+      - name: Run Eslint
         run: npm run eslint
         working-directory: api
-      - name: Prettier
+      - name: Run Prettier
         run: npm run prettier
         working-directory: api
   mobile:
@@ -23,12 +36,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Cache Dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: mobile/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock')}}
+          restore-keys: ${{ runner.os }}-yarn-
+      - name: Setup Node
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
       - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
         working-directory: mobile
-      - name: Eslint
+      - name: Run Eslint
         run: npm run eslint
         working-directory: mobile
-      - name: Prettier
+      - name: Run Prettier
         run: npm run prettier
         working-directory: mobile
