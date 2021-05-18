@@ -33,9 +33,6 @@ jobs:
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
           expo-cache: true
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
-        working-directory: mobile
       - name: Publish Build
         run: expo build:ios --no-wait --type simulator
         working-directory: mobile
