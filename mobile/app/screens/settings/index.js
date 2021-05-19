@@ -80,7 +80,7 @@ const SettingsScreen = ({ navigation, ...props }) => {
       openLogoutDialog={openLogoutDialog}
       navigateToPassword={navigateToPassword}
       navigateToProfile={navigateToProfile}
-      preferredCurrency={cache.account.preferredCurrency}
+      currencyCode={cache.account.currencyCode}
       setColorScheme={setColorScheme}
       theme={theme}
       updateAccount={api.updateAccount}

@@ -3,11 +3,11 @@ import { gql } from '@apollo/client';
 export const updateAccount = gql`
   mutation($data: UpdateAccountData!) {
     updateAccount(data: $data) {
+      currencyCode
       email
       firstName
       id
       lastName
-      preferredCurrency
     }
   }
 `;

@@ -1,5 +1,5 @@
+import { cardTypeEnum } from 'constants/card';
 import { Schema, Types } from 'mongoose';
-import { getCardType } from 'utils/card';
 import { isEmpty } from 'validator';
 
 export default new Schema(
@@ -39,11 +39,12 @@ export default new Schema(
       },
     },
     type: {
+      enum: cardTypeEnum,
       index: true,
       required: true,
       type: String,
       validate: {
-        validator: value => !isEmpty(value) || getCardType(value),
+        validator: value => !isEmpty(value),
       },
     },
     updateTime: {

@@ -33,7 +33,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const [values, setValues] = useState({
     cardId: null,
     categoryId: null,
-    currencyCode: cache.account.preferredCurrency,
+    currencyCode: cache.account.currencyCode,
     description: '',
     postDate: '',
     type: 'debit',

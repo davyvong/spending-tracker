@@ -1,5 +1,6 @@
+import { colorSchemeEnum } from 'constants/color-scheme';
+import { currencyEnum } from 'constants/currency';
 import { Schema } from 'mongoose';
-import { getCurrency } from 'utils/currency';
 import { isEmail, isEmpty } from 'validator';
 
 export default new Schema(
@@ -7,6 +8,14 @@ export default new Schema(
     createTime: {
       required: true,
       type: Number,
+    },
+    currencyCode: {
+      enum: currencyEnum,
+      required: true,
+      type: String,
+      validate: {
+        validator: value => !isEmpty(value),
+      },
     },
     email: {
       index: true,
@@ -35,11 +44,12 @@ export default new Schema(
       required: true,
       type: String,
     },
-    preferredCurrency: {
+    theme: {
+      enum: colorSchemeEnum,
       required: true,
       type: String,
       validate: {
-        validator: value => !isEmpty(value) && getCurrency(value),
+        validator: value => !isEmpty(value),
       },
     },
     updateTime: {

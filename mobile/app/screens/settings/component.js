@@ -19,12 +19,12 @@ import styles from './styles';
 const SettingsScreenComponent = ({
   closeLogoutDialog,
   colorScheme,
+  currencyCode,
   logout,
   logoutDialog,
   openLogoutDialog,
   navigateToPassword,
   navigateToProfile,
-  preferredCurrency,
   setColorScheme,
   theme,
   updateAccount,
@@ -65,9 +65,9 @@ const SettingsScreenComponent = ({
           <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.change-password')}</Text>
         </Pressable>
         <RadioPickerModal
-          onChange={currency => updateAccount({ preferredCurrency: currency })}
+          onChange={currency => updateAccount({ currencyCode: currency })}
           options={currencyOptions}
-          value={preferredCurrency}
+          value={currencyCode}
         >
           <View style={styles.ctaRow}>
             <MaterialCommunityIcons
@@ -76,9 +76,9 @@ const SettingsScreenComponent = ({
               size={28}
               style={styles.ctaRowLeftIcon}
             />
-            <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.preferred-currency')}</Text>
+            <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.default-currency')}</Text>
             <Spacer />
-            <Text style={[styles.ctaRowText, theme.selectedValueText]}>{preferredCurrency}</Text>
+            <Text style={[styles.ctaRowText, theme.selectedValueText]}>{currencyCode}</Text>
             <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} style={styles.ctaRowRightIcon} />
           </View>
         </RadioPickerModal>
@@ -117,12 +117,12 @@ SettingsScreenComponent.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
+  currencyCode: PropTypes.string.isRequired,
   logout: PropTypes.func.isRequired,
   logoutDialog: PropTypes.bool.isRequired,
   openLogoutDialog: PropTypes.func.isRequired,
   navigateToPassword: PropTypes.func.isRequired,
   navigateToProfile: PropTypes.func.isRequired,
-  preferredCurrency: PropTypes.string.isRequired,
   setColorScheme: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   updateAccount: PropTypes.func.isRequired,

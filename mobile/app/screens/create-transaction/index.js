@@ -27,7 +27,7 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
     amount: '',
     cardId: null,
     categoryId: null,
-    currencyCode: cache.account.preferredCurrency,
+    currencyCode: cache.account.currencyCode,
     description: '',
     postDate: '',
     type: 'debit',

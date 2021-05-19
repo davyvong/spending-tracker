@@ -3,11 +3,11 @@ import { gql } from '@apollo/client';
 export const account = gql`
   query {
     account {
+      currencyCode
       email
       firstName
       id
       lastName
-      preferredCurrency
     }
   }
 `;

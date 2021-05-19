@@ -1,5 +1,3 @@
-export const getCurrency = currencyCode => currencyMap[currencyCode];
-
 const currencyMap = {
   AUD: {
     id: 'AUD',
@@ -34,3 +32,7 @@ const currencyMap = {
     name: 'US Dollar',
   },
 };
+
+export const currencyEnum = Object.keys(currencyMap);
+
+export const getCurrency = currencyCode => currencyMap[currencyCode];

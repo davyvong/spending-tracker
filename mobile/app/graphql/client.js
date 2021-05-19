@@ -28,7 +28,7 @@ const authLink = setContext(async (request, context) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'https://api.davyvong.com/budget/graphql',
+  uri: 'http://localhost:3000/budget/graphql',
 });
 
 const client = new ApolloClient({

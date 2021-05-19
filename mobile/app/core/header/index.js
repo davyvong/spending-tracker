@@ -16,7 +16,7 @@ const Header = ({ navigation, previous, scene }) => {
 
   const theme = useMemo(
     () => ({
-      backIcon: palette.get('texts.normal'),
+      backIcon: palette?.get('texts.normal'),
     }),
     [palette],
   );

@@ -5,7 +5,7 @@ import { Appearance } from 'react-native-appearance';
 const colorSchemeMap = {
   automatic: {
     id: 'automatic',
-    name: 'System Theme',
+    name: 'Automatic OS',
   },
   dark: {
     id: 'dark',
