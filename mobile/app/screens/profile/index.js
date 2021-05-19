@@ -19,13 +19,11 @@ const ProfileScreen = ({ navigation, ...props }) => {
     email: null,
     firstName: null,
     lastName: null,
-    preferredCurrency: null,
   });
   const [values, setValues] = useState({
     email: '',
     firstName: '',
     lastName: '',
-    preferredCurrency: '',
     ...cache.account,
   });
 
@@ -53,13 +51,12 @@ const ProfileScreen = ({ navigation, ...props }) => {
   );
 
   const validateValues = useCallback(() => {
-    const { email, firstName, lastName, preferredCurrency } = values;
-    if (!email || !firstName || !lastName || !preferredCurrency) {
+    const { email, firstName, lastName } = values;
+    if (!email || !firstName || !lastName) {
       setErrors({
         email: email ? null : 'screens.profile.errors.empty-email',
         firstName: firstName ? null : 'screens.profile.errors.empty-first-name',
         lastName: lastName ? null : 'screens.profile.errors.empty-last-name',
-        preferredCurrency: preferredCurrency ? null : 'screens.profile.errors.empty-preferred-currency',
         server: null,
       });
       return false;
@@ -70,7 +67,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
   const saveProfile = useCallback(async () => {
     setPending(true);
     try {
-      await api.updateAccount(pick(values, 'email', 'firstName', 'lastName', 'preferredCurrency'));
+      await api.updateAccount(pick(values, 'email', 'firstName', 'lastName'));
       navigation.dispatch({
         ignoreDiscard: true,
         payload: { count: 1 },

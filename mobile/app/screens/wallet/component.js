@@ -51,9 +51,12 @@ const WalletScreenComponent = ({
               <MonthlySummary pending={pendingSummary} spending={monthlySpending} />
             </View>
             <Pressable onPress={navigateToTransactions} style={styles.ctaRow}>
-              <View style={styles.ctaRowIcon}>
-                <MaterialCommunityIcons color={theme.actionIcon} name="credit-card-outline" size={28} />
-              </View>
+              <MaterialCommunityIcons
+                color={theme.actionIcon}
+                name="credit-card-outline"
+                size={28}
+                style={styles.ctaRowIcon}
+              />
               <Text style={styles.ctaRowText}>{locale.t('screens.wallet.actions.transactions')}</Text>
             </Pressable>
           </Fragment>

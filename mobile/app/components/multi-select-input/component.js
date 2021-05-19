@@ -5,12 +5,12 @@ import useLocale from 'hooks/locale';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
-import { FlatList, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Pressable, TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import styles from './styles';
 
-const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...props }) => {
+const MultiSelectInputComponent = ({ editable, name, onChange, options, theme, value, ...props }) => {
   const [locale] = useLocale();
   const [tempValue, setTempValue] = useState(value);
   const [visible, setVisible] = useState(false);
@@ -69,10 +69,10 @@ const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...
       const icon = active ? 'check-box' : 'check-box-outline-blank';
       const onPress = active ? () => onDeselect(option) : () => onSelect(option);
       return (
-        <TouchableOpacity activeOpacity={1} onPress={onPress} style={styles.option}>
+        <Pressable onPress={onPress} style={styles.option}>
           <MaterialIcons color={theme.defaultIcon} name={icon} size={20} style={styles.optionIcon} />
           <Text style={theme.optionText}>{option.label}</Text>
-        </TouchableOpacity>
+        </Pressable>
       );
     },
     [onDeselect, onSelect, optionByValue, theme],
@@ -104,10 +104,10 @@ const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...
 
   return (
     <Fragment>
-      <TouchableOpacity activeOpacity={1} disabled={!editable} onPress={openModal}>
+      <Pressable disabled={!editable} onPress={openModal}>
         <TextInput {...props} editable={false} pointerEvents="none" value={prettifiedValue} />
         <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} style={styles.expandIcon} />
-      </TouchableOpacity>
+      </Pressable>
       <Modal
         backdropTransitionOutTiming={0}
         isVisible={visible}
@@ -140,7 +140,7 @@ const MultiSelectSheet = ({ editable, name, onChange, options, theme, value, ...
   );
 };
 
-MultiSelectSheet.propTypes = {
+MultiSelectInputComponent.propTypes = {
   editable: PropTypes.bool.isRequired,
   name: PropTypes.string,
   onChange: PropTypes.func.isRequired,
@@ -149,4 +149,4 @@ MultiSelectSheet.propTypes = {
   value: PropTypes.any,
 };
 
-export default MultiSelectSheet;
+export default MultiSelectInputComponent;

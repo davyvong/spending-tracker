@@ -1,9 +1,5 @@
 // Source: https://gist.github.com/Fluidbyte/2973986
 
-export const getCurrency = currencyCode => currencyMap[currencyCode];
-
-export const getSupportedCurrencies = () => ['AUD', 'CAD', 'CHF', 'CNY', 'EUR', 'GBP', 'JPY', 'USD'];
-
 const currencyMap = {
   AUD: {
     id: 'AUD',
@@ -38,3 +34,15 @@ const currencyMap = {
     name: 'US Dollar',
   },
 };
+
+export const getCurrency = currencyCode => currencyMap[currencyCode];
+
+export const getSupportedCurrencies = () => ['AUD', 'CAD', 'CHF', 'CNY', 'EUR', 'GBP', 'JPY', 'USD'];
+
+export const currencyOptions = getSupportedCurrencies().map(currencyCode => {
+  const currency = getCurrency(currencyCode);
+  return {
+    label: `${currency.id} (${currency.name})`,
+    value: currency.id,
+  };
+});
