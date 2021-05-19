@@ -8,6 +8,7 @@ export const updateAccount = gql`
       firstName
       id
       lastName
+      theme
     }
   }
 `;

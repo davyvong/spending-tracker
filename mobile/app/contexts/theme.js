@@ -1,26 +1,22 @@
 import { getColorScheme } from 'constants/color-schemes';
+import useCache from 'hooks/cache';
 import PropTypes from 'prop-types';
-import React, { createContext, useMemo, useState } from 'react';
-import { useColorScheme } from 'react-native-appearance';
+import React, { createContext, useMemo } from 'react';
 
 const ThemeContext = createContext({});
 
 export const ThemeConsumer = ThemeContext.Consumer;
 
 export const ThemeProvider = ({ children }) => {
-  const systemColorScheme = useColorScheme();
-  const [colorScheme, setColorScheme] = useState('automatic');
+  const [cache] = useCache();
 
   const value = useMemo(() => {
-    let scheme = getColorScheme(colorScheme);
+    let scheme = getColorScheme(cache.account.theme);
     if (!scheme) {
       scheme = getColorScheme('automatic');
     }
-    return {
-      ...scheme,
-      setColorScheme,
-    };
-  }, [colorScheme, systemColorScheme]);
+    return scheme;
+  }, [cache.account.theme]);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };

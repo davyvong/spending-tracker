@@ -25,7 +25,6 @@ const SettingsScreenComponent = ({
   openLogoutDialog,
   navigateToPassword,
   navigateToProfile,
-  setColorScheme,
   theme,
   updateAccount,
 }) => {
@@ -82,7 +81,11 @@ const SettingsScreenComponent = ({
             <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} style={styles.ctaRowRightIcon} />
           </View>
         </RadioPickerModal>
-        <RadioPickerModal onChange={setColorScheme} options={colorSchemeOptions} value={colorScheme.id}>
+        <RadioPickerModal
+          onChange={scheme => updateAccount({ theme: scheme })}
+          options={colorSchemeOptions}
+          value={colorScheme.id}
+        >
           <View style={styles.ctaRow}>
             <MaterialCommunityIcons
               color={theme.activeIcon}
@@ -123,7 +126,6 @@ SettingsScreenComponent.propTypes = {
   openLogoutDialog: PropTypes.func.isRequired,
   navigateToPassword: PropTypes.func.isRequired,
   navigateToProfile: PropTypes.func.isRequired,
-  setColorScheme: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   updateAccount: PropTypes.func.isRequired,
 };

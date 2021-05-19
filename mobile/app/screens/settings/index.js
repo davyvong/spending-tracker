@@ -16,7 +16,7 @@ const SettingsScreen = ({ navigation, ...props }) => {
   const client = useApolloClient();
   const [, setIsLoggedIn] = useAuthentication();
   const [cache] = useCache();
-  const { palette, setColorScheme, ...colorScheme } = useTheme();
+  const { palette, ...colorScheme } = useTheme();
   const [logoutDialog, setLogoutDialog] = useState(false);
 
   const theme = useMemo(
@@ -81,7 +81,6 @@ const SettingsScreen = ({ navigation, ...props }) => {
       navigateToPassword={navigateToPassword}
       navigateToProfile={navigateToProfile}
       currencyCode={cache.account.currencyCode}
-      setColorScheme={setColorScheme}
       theme={theme}
       updateAccount={api.updateAccount}
     />

@@ -8,6 +8,7 @@ export const account = gql`
       firstName
       id
       lastName
+      theme
     }
   }
 `;
