@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     flex: 1,
+    height: 40,
     justifyContent: 'center',
     marginHorizontal: 9,
     paddingHorizontal: 12,
-    paddingVertical: 10,
   },
 });
 

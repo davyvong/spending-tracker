@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     flex: 1,
+    height: 40,
     justifyContent: 'center',
     marginHorizontal: 9,
-    paddingVertical: 10,
   },
   currencyOption: {
     alignItems: 'center',
