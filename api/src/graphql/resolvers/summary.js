@@ -7,7 +7,7 @@ export default {
   Query: {
     dailySpending: async (parent, args, context) => {
       const account = await context.dataSources.account.findOneById(context.accountId);
-      if (!account || !getCurrency(account.preferredCurrency)) {
+      if (!account || !getCurrency(account.currencyCode)) {
         throw new BadRequest();
       }
       const startDate = moment(args.startDate, 'YYYY-MM-DD', true);
@@ -36,8 +36,8 @@ export default {
         }
       }
       let transactions = await context.dataSources.transaction.model.find(query);
-      if (transactions.some(transaction => transaction.currencyCode !== account.preferredCurrency)) {
-        transactions = await context.dataSources.currency.convert(transactions, account.preferredCurrency);
+      if (transactions.some(transaction => transaction.currencyCode !== account.currencyCode)) {
+        transactions = await context.dataSources.currency.convert(transactions, account.currencyCode);
       }
       const dailySpending = Array(countOfDays + 1)
         .fill(null)
@@ -47,7 +47,7 @@ export default {
           dateString = getDateStringFromMoment(dateString);
           map[dateString] = {
             credit: 0,
-            currencyCode: account.preferredCurrency,
+            currencyCode: account.currencyCode,
             date: dateString,
             debit: 0,
           };
@@ -64,7 +64,7 @@ export default {
     },
     monthlySpending: async (parent, args, context) => {
       const account = await context.dataSources.account.findOneById(context.accountId);
-      if (!account || !getCurrency(account.preferredCurrency)) {
+      if (!account || !getCurrency(account.currencyCode)) {
         throw new BadRequest();
       }
       const startMonth = moment(args.startMonth, 'YYYY-MM', true);
@@ -95,8 +95,8 @@ export default {
         }
       }
       let transactions = await context.dataSources.transaction.model.find(query);
-      if (transactions.some(transaction => transaction.currencyCode !== account.preferredCurrency)) {
-        transactions = await context.dataSources.currency.convert(transactions, account.preferredCurrency);
+      if (transactions.some(transaction => transaction.currencyCode !== account.currencyCode)) {
+        transactions = await context.dataSources.currency.convert(transactions, account.currencyCode);
       }
       const monthlySpending = Array(countOfMonths + 1)
         .fill(null)
@@ -106,7 +106,7 @@ export default {
           monthString = getMonthStringFromMoment(monthString);
           map[monthString] = {
             credit: 0,
-            currencyCode: account.preferredCurrency,
+            currencyCode: account.currencyCode,
             date: monthString,
             debit: 0,
           };
