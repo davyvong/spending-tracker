@@ -93,6 +93,7 @@
   "screens.settings.buttons.logout": "Logout",
   "screens.settings.messages.logout": "Are you sure you want to logout?",
   "screens.settings.sections.account": "Account",
+  "screens.settings.sections.preferences": "Preferences",
   "screens.settings.title": "Settings",
   "screens.wallet.actions.transactions": "Transactions",
   "screens.wallet.messages.recently-spent": "You have recently spent",
