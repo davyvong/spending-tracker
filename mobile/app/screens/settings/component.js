@@ -58,11 +58,28 @@ const SettingsScreenComponent = ({
         <Pressable onPress={navigateToProfile} style={styles.ctaRow}>
           <MaterialCommunityIcons color={theme.activeIcon} name="account-box" size={28} style={styles.ctaRowLeftIcon} />
           <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.personal-information')}</Text>
+          <Spacer />
+          <MaterialIcons
+            color={theme.defaultIcon}
+            name="keyboard-arrow-right"
+            size={20}
+            style={styles.ctaRowRightIcon}
+          />
         </Pressable>
         <Pressable onPress={navigateToPassword} style={styles.ctaRow}>
           <MaterialCommunityIcons color={theme.activeIcon} name="lock-reset" size={28} style={styles.ctaRowLeftIcon} />
           <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.change-password')}</Text>
+          <Spacer />
+          <MaterialIcons
+            color={theme.defaultIcon}
+            name="keyboard-arrow-right"
+            size={20}
+            style={styles.ctaRowRightIcon}
+          />
         </Pressable>
+        <View style={styles.sectionHeader}>
+          <Text style={theme.sectionHeaderText}>{locale.t('screens.settings.sections.preferences')}</Text>
+        </View>
         <RadioPickerModal
           onChange={currency => updateAccount({ currencyCode: currency })}
           options={currencyOptions}

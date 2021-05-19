@@ -33,7 +33,7 @@ const RadioPickerModalComponent = ({
     ({ index, item: option = {} }) => {
       const active = index === selectedIndex;
       return (
-        <Pressable key={option.value} onPress={() => onSelect(option)} style={styles.option}>
+        <Pressable disabled={pending} key={option.value} onPress={() => onSelect(option)} style={styles.option}>
           <MaterialIcons
             color={theme.defaultIcon}
             name={active ? 'radio-button-checked' : 'radio-button-unchecked'}
@@ -44,7 +44,7 @@ const RadioPickerModalComponent = ({
         </Pressable>
       );
     },
-    [onSelect, selectedIndex, theme],
+    [onSelect, pending, selectedIndex, theme],
   );
 
   return (
