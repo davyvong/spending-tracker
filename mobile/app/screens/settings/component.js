@@ -27,6 +27,7 @@ const SettingsScreenComponent = ({
   preferredCurrency,
   setColorScheme,
   theme,
+  updateAccount,
 }) => {
   const [locale] = useLocale();
 
@@ -34,11 +35,6 @@ const SettingsScreenComponent = ({
     ({ pressed }) => (pressed ? theme.logoutButtonPressed : theme.logoutButton),
     [theme],
   );
-
-  const testSave = option => {
-    console.log(option);
-    return new Promise(resolve => setTimeout(resolve, 1000));
-  };
 
   return (
     <View style={styles.container}>
@@ -68,7 +64,11 @@ const SettingsScreenComponent = ({
           <MaterialCommunityIcons color={theme.activeIcon} name="lock-reset" size={28} style={styles.ctaRowLeftIcon} />
           <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.change-password')}</Text>
         </Pressable>
-        <RadioPickerModal onChange={testSave} options={currencyOptions} value={preferredCurrency}>
+        <RadioPickerModal
+          onChange={currency => updateAccount({ preferredCurrency: currency })}
+          options={currencyOptions}
+          value={preferredCurrency}
+        >
           <View style={styles.ctaRow}>
             <MaterialCommunityIcons
               color={theme.activeIcon}
@@ -125,6 +125,7 @@ SettingsScreenComponent.propTypes = {
   preferredCurrency: PropTypes.string.isRequired,
   setColorScheme: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
+  updateAccount: PropTypes.func.isRequired,
 };
 
 export default SettingsScreenComponent;
