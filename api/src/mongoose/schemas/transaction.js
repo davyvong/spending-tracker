@@ -1,5 +1,5 @@
+import { currencyEnum } from 'constants/currency';
 import { Schema, Types } from 'mongoose';
-import { getCurrency } from 'utils/currency';
 import { isEmpty, isNumeric } from 'validator';
 
 export default new Schema(
@@ -43,10 +43,11 @@ export default new Schema(
       type: Number,
     },
     currencyCode: {
+      enum: currencyEnum,
       required: true,
       type: String,
       validate: {
-        validator: value => !isEmpty(value) && getCurrency(value),
+        validator: value => !isEmpty(value),
       },
     },
     description: {

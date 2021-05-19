@@ -1,5 +1,3 @@
-export const getCardType = cardType => cardTypeMap[cardType];
-
 const cardTypeMap = {
   chequingAccount: {
     id: 'chequingAccount',
@@ -18,3 +16,7 @@ const cardTypeMap = {
     name: 'Savings Account',
   },
 };
+
+export const cardTypeEnum = Object.keys(cardTypeMap);
+
+export const getCardType = cardType => cardTypeMap[cardType];

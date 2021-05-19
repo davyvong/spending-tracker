@@ -4,12 +4,12 @@ import Text from 'components/text';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
-import { FlatList, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Pressable, TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import styles from './styles';
 
-const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...props }) => {
+const RadioPickerInputComponent = ({ editable, name, onChange, options, theme, value, ...props }) => {
   const [locale] = useLocale();
   const [tempValue, setTempValue] = useState(value);
   const [visible, setVisible] = useState(false);
@@ -23,9 +23,9 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
     setVisible(true);
   }, [value]);
 
-  const onSelect = option => {
+  const onSelect = useCallback(option => {
     setTempValue(option.value);
-  };
+  }, []);
 
   const onApply = useCallback(() => {
     onChange(tempValue);
@@ -40,12 +40,7 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
     ({ index, item: option = {} }) => {
       const active = index === tempSelected;
       return (
-        <TouchableOpacity
-          activeOpacity={1}
-          key={`${name}.${option.value}`}
-          onPress={() => onSelect(option)}
-          style={styles.option}
-        >
+        <Pressable key={`${name}.${option.value}`} onPress={() => onSelect(option)} style={styles.option}>
           <MaterialIcons
             color={theme.defaultIcon}
             name={active ? 'radio-button-checked' : 'radio-button-unchecked'}
@@ -53,7 +48,7 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
             style={styles.optionIcon}
           />
           <Text style={theme.optionText}>{option.label}</Text>
-        </TouchableOpacity>
+        </Pressable>
       );
     },
     [name, tempSelected, theme],
@@ -66,7 +61,7 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
 
   return (
     <Fragment>
-      <TouchableOpacity activeOpacity={1} disabled={!editable} onPress={openModal}>
+      <Pressable disabled={!editable} onPress={openModal}>
         <TextInput
           {...props}
           editable={false}
@@ -74,7 +69,7 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
           value={selected > -1 ? String(options[selected].label) : ''}
         />
         <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} style={styles.expandIcon} />
-      </TouchableOpacity>
+      </Pressable>
       <Modal
         backdropTransitionOutTiming={0}
         isVisible={visible}
@@ -107,11 +102,11 @@ const RadioPickerSheet = ({ editable, name, onChange, options, theme, value, ...
   );
 };
 
-RadioPickerSheet.defaultProps = {
+RadioPickerInputComponent.defaultProps = {
   options: [],
 };
 
-RadioPickerSheet.propTypes = {
+RadioPickerInputComponent.propTypes = {
   editable: PropTypes.bool,
   name: PropTypes.string,
   onChange: PropTypes.func,
@@ -120,4 +115,4 @@ RadioPickerSheet.propTypes = {
   value: PropTypes.any,
 };
 
-export default RadioPickerSheet;
+export default RadioPickerInputComponent;

@@ -1,7 +1,8 @@
 export const initialState = {
   account: {
+    currencyCode: 'USD',
     id: null,
-    preferredCurrency: 'USD',
+    theme: 'automatic',
   },
   cardsById: {},
   categoriesById: {},

@@ -1,5 +1,4 @@
 import { fontAssets } from 'constants/fonts';
-import { themeModes } from 'contexts/theme/constants';
 import * as Font from 'expo-font';
 import useAuthentication from 'hooks/authentication';
 import useCache from 'hooks/cache';
@@ -12,7 +11,7 @@ import AppComponent from './component';
 const App = () => {
   const [, setIsLoggedIn] = useAuthentication();
   const [cache] = useCache();
-  const { name, palette } = useTheme();
+  const { palette, statusBar } = useTheme();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -22,8 +21,6 @@ const App = () => {
       setIsReady(true);
     });
   }, []);
-
-  const statusBar = useMemo(() => (name === themeModes.light ? 'dark' : 'light'), [name]);
 
   const theme = useMemo(
     () => ({

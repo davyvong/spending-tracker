@@ -10,18 +10,17 @@ jobs:
     steps:
       - name: Run Checkout
         uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
       - name: Cache Dependencies
         id: cache
         uses: actions/cache@v2
         with:
           path: mobile/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock')}}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
-      - name: Setup Node
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile

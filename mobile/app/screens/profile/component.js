@@ -1,11 +1,9 @@
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
-import RadioPickerInput from 'components/radio-picker-input';
 import ScrollView from 'components/scroll-view';
 import Text from 'components/text';
 import TextInput from 'components/text-input';
 import Title from 'components/title';
-import { currencyOptions } from 'components/transaction-form/constants';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
@@ -68,14 +66,6 @@ const ProfileScreenComponent = ({
           label={locale.t('screens.profile.labels.email')}
           onChangeText={updateValue('email')}
           value={values.email}
-        />
-        <RadioPickerInput
-          editable={!pending}
-          error={errors.preferredCurrency && locale.t(errors.preferredCurrency)}
-          label={locale.t('screens.profile.labels.preferred-currency')}
-          onChange={updateValue('preferredCurrency')}
-          options={currencyOptions}
-          value={values.preferredCurrency}
         />
         {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
       </ScrollView>

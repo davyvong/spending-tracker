@@ -3,11 +3,10 @@ import DateInput from 'components/date-input';
 import RadioPickerInput from 'components/radio-picker-input';
 import VendorAutoComplete from 'components/vendor-autocomplete';
 import TextInput from 'components/text-input';
+import { currencyOptions, typeOptions } from 'constants/currencies';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-
-import { currencyOptions, typeOptions } from './constants';
 
 const TransactionFormComponent = ({ cardOptions, categoryOptions, editable, errors, updateValue, values }) => {
   const [locale] = useLocale();

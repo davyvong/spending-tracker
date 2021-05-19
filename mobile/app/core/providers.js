@@ -11,17 +11,17 @@ import { AppearanceProvider } from 'react-native-appearance';
 
 const Providers = ({ children }) => (
   <ApolloProvider client={client}>
-    <AppearanceProvider>
-      <ThemeProvider>
-        <AuthenticationProvider>
-          <CacheProvider>
+    <CacheProvider>
+      <AppearanceProvider>
+        <ThemeProvider>
+          <AuthenticationProvider>
             <APIProvider>
               <LocaleProvider>{children}</LocaleProvider>
             </APIProvider>
-          </CacheProvider>
-        </AuthenticationProvider>
-      </ThemeProvider>
-    </AppearanceProvider>
+          </AuthenticationProvider>
+        </ThemeProvider>
+      </AppearanceProvider>
+    </CacheProvider>
   </ApolloProvider>
 );
 

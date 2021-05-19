@@ -26,7 +26,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
       } else {
         dailySpending.push({
           credit: 0,
-          currencyCode: cache.account.preferredCurrency,
+          currencyCode: cache.account.currencyCode,
           date: dateString,
           debit: 0,
         });
@@ -34,7 +34,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
       currentDate.add(1, 'days');
     }
     return dailySpending;
-  }, [cache.account.preferredCurrency, cache.dailySpending]);
+  }, [cache.account.currencyCode, cache.dailySpending]);
 
   const transactionList = useMemo(() => buildTransactionSectionMap(transactions, cache.transactionsById), [
     cache.transactionsById,
