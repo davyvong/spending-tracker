@@ -24,10 +24,10 @@ const styles = StyleSheet.create({
   closeButton: {
     alignItems: 'center',
     borderRadius: 100,
+    height: 40,
     justifyContent: 'center',
     marginHorizontal: 18,
     marginTop: 18,
-    paddingVertical: 10,
   },
 });
 

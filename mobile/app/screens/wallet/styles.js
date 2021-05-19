@@ -17,15 +17,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 12,
   },
-  ctaRowIcon: {
+  ctaRowLeftIcon: {
     marginRight: 16,
   },
   ctaRowText: {
-    flex: 1,
     fontSize: normalizeText(14),
   },
-  ctaRowCaretIcon: {
-    marginRight: -6,
+  ctaRowRightIcon: {
+    marginLeft: 6,
+    marginRight: -5,
   },
 });
 
