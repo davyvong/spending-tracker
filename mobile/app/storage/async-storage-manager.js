@@ -42,7 +42,6 @@ export default class AsyncStorageManager {
       this.writeBuffer = {};
       for (const blockName in buffer) {
         const block = buffer[blockName];
-        console.log(`Writing ${block.name} with ${block.size} items`);
         const returnToBuffer = () => this.setBlock(block);
         RNAsyncStorage.setItem(block.name, block.toString()).catch(returnToBuffer);
       }
