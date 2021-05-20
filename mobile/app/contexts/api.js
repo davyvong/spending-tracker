@@ -138,7 +138,7 @@ export const APIProvider = ({ children }) => {
       const dailySpending = {};
       data.dailySpending.forEach(spending => {
         dailySpending[spending.date] = spending;
-        storage.setItem(`daily-spending:${spending.data}`, spending);
+        storage.setItem(`daily-spending:${spending.date}`, spending);
       });
       updateCache(prevState => {
         prevState.dailySpending = {
@@ -166,10 +166,10 @@ export const APIProvider = ({ children }) => {
         data.monthlySpending.forEach(month => {
           if (cardId) {
             monthlySpending[`${month.date}:${cardId}`] = month;
-            storage.setItem(`daily-spending:${month.date}:${cardId}`, month);
+            storage.setItem(`monthly-spending:${month.date}(card:${cardId})`, month);
           } else {
             monthlySpending[month.date] = month;
-            storage.setItem(`daily-spending:${month.date}`, month);
+            storage.setItem(`monthly-spending:${month.date}`, month);
           }
         });
       }

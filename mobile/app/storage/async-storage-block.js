@@ -4,14 +4,12 @@ export default class AsyncStorageBlock {
   constructor(name, items) {
     this.name = name || Sha256.hash(new Date().toString());
     this.items = Object.assign({}, items);
-  }
-
-  get size() {
-    return Object.keys(this.items).length;
+    this.size = Object.keys(this.items).length;
   }
 
   deleteItem(key) {
     delete this.items[key];
+    this.size--;
   }
 
   getItem(key) {
@@ -20,6 +18,7 @@ export default class AsyncStorageBlock {
 
   setItem(key, item) {
     this.items[key] = item;
+    this.size++;
   }
 
   merge(block) {

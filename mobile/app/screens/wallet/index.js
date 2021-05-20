@@ -39,7 +39,7 @@ const WalletScreen = ({ navigation, ...props }) => {
     if (!selectedCardId || !selectedMonth) {
       return null;
     }
-    return cache.monthlySpending[`${selectedMonth}-${selectedCardId}`];
+    return cache.monthlySpending[`${selectedMonth}:${selectedCardId}`];
   }, [cache.monthlySpending, selectedCardId, selectedMonth]);
 
   const getCards = useCallback(async () => {

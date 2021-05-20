@@ -2,10 +2,11 @@ import RNAsyncStorage from '@react-native-async-storage/async-storage';
 import AsyncStorageBlock from 'storage/async-storage-block';
 
 export default class AsyncStorageManager {
-  static namespace = 'async-storage-manager';
   static maxBlockSize = 100;
+  static namespace = 'async-storage-manager';
 
   constructor() {
+    this.bufferSize = 0;
     this.currentBlock = new AsyncStorageBlock();
     this.keyBlockMap = {};
     this.writeBuffer = {};
@@ -15,9 +16,8 @@ export default class AsyncStorageManager {
     let stateData = await RNAsyncStorage.getItem(AsyncStorageManager.namespace);
     if (stateData) {
       stateData = JSON.parse(stateData);
+      Object.assign(this, stateData);
       this.currentBlock = await this.getBlock(stateData.currentBlock);
-      this.keyBlockMap = stateData.keyBlockMap;
-      this.writeBuffer = stateData.writeBuffer;
     }
   }
 
@@ -25,6 +25,7 @@ export default class AsyncStorageManager {
     return RNAsyncStorage.setItem(
       AsyncStorageManager.namespace,
       JSON.stringify({
+        bufferSize: this.bufferSize,
         currentBlock: this.currentBlock.name,
         keyBlockMap: this.keyBlockMap,
         writeBuffer: this.writeBuffer,
@@ -32,14 +33,11 @@ export default class AsyncStorageManager {
     );
   }
 
-  get bufferSize() {
-    return Object.keys(this.writeBuffer).length;
-  }
-
   flush() {
     if (this.bufferSize > 0) {
       const buffer = this.writeBuffer;
       this.writeBuffer = {};
+      this.bufferSize = 0;
       for (const blockName in buffer) {
         const block = buffer[blockName];
         const returnToBuffer = () => this.setBlock(block);
@@ -63,6 +61,7 @@ export default class AsyncStorageManager {
       this.writeBuffer[block.name].merge(block);
     } else {
       this.writeBuffer[block.name] = block;
+      this.bufferSize++;
     }
     return this.writeBuffer[block.name];
   }
