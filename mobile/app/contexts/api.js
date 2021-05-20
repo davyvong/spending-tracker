@@ -1,5 +1,6 @@
 import { useApolloClient } from '@apollo/client';
 import useCache from 'hooks/cache';
+import useStorage from 'hooks/storage';
 import * as accountsMutations from 'graphql/mutations/accounts';
 import * as cardsMutations from 'graphql/mutations/cards';
 import * as transactionsMutations from 'graphql/mutations/transactions';
@@ -23,6 +24,7 @@ export const APIConsumer = APIContext.Consumer;
 export const APIProvider = ({ children }) => {
   const client = useApolloClient();
   const [cache, updateCache] = useCache();
+  const storage = useStorage();
 
   const createCard = useCallback(
     async cardData => {
@@ -31,6 +33,7 @@ export const APIProvider = ({ children }) => {
         variables: { data: cardData },
       });
       const card = new Card(data.createCard);
+      storage.setItem(`card:${card.id}`, card);
       updateCache(prevState => ({
         cardsById: {
           ...prevState.cardsById,
@@ -48,6 +51,7 @@ export const APIProvider = ({ children }) => {
         variables: { data: transactionData },
       });
       const transaction = new Transaction(data.createTransaction);
+      storage.setItem(`transaction:${transaction.id}`, transaction);
       updateCache(prevState => ({
         transactionsById: {
           ...prevState.transactionsById,
@@ -67,6 +71,7 @@ export const APIProvider = ({ children }) => {
       if (response.data?.deleteCard) {
         const cardsById = Object.assign({}, cache.cardsById);
         delete cardsById[cardId];
+        storage.deleteItem(`card:${cardId}`);
         updateCache({ cardsById });
       }
     },
@@ -82,6 +87,7 @@ export const APIProvider = ({ children }) => {
       if (response.data?.deleteTransaction) {
         const transactionsById = Object.assign({}, cache.transactionsById);
         delete transactionsById[transactionId];
+        storage.deleteItem(`transaction:${transactionId}`);
         updateCache({ transactionsById });
       }
     },
@@ -93,6 +99,7 @@ export const APIProvider = ({ children }) => {
       query: accountsQueries.account,
     });
     const account = new Account(data.account);
+    storage.setItem(`account:${account.id}`, account);
     updateCache({ account });
   }, [client, updateCache]);
 
@@ -104,6 +111,7 @@ export const APIProvider = ({ children }) => {
     data.cards.forEach(cardData => {
       const card = new Card(cardData);
       cardsById[card.id] = card;
+      storage.setItem(`card:${card.id}`, card);
     });
     updateCache({ cardsById });
   }, [client, updateCache]);
@@ -116,6 +124,7 @@ export const APIProvider = ({ children }) => {
     data.categories.forEach(categoryData => {
       const category = new Category(categoryData);
       categoriesById[category.id] = category;
+      storage.setItem(`category:${category.id}`, category);
     });
     updateCache({ categoriesById });
   }, [client, updateCache]);
@@ -129,6 +138,7 @@ export const APIProvider = ({ children }) => {
       const dailySpending = {};
       data.dailySpending.forEach(spending => {
         dailySpending[spending.date] = spending;
+        storage.setItem(`daily-spending:${spending.data}`, spending);
       });
       updateCache(prevState => {
         prevState.dailySpending = {
@@ -155,9 +165,11 @@ export const APIProvider = ({ children }) => {
       if (Array.isArray(data.monthlySpending)) {
         data.monthlySpending.forEach(month => {
           if (cardId) {
-            monthlySpending[`${month.date}-${cardId}`] = month;
+            monthlySpending[`${month.date}:${cardId}`] = month;
+            storage.setItem(`daily-spending:${month.date}:${cardId}`, month);
           } else {
             monthlySpending[month.date] = month;
+            storage.setItem(`daily-spending:${month.date}`, month);
           }
         });
       }
@@ -179,6 +191,7 @@ export const APIProvider = ({ children }) => {
         variables: { id: transactionId },
       });
       const transaction = new Transaction(data.transaction);
+      storage.setItem(`transaction:${transaction.id}`, transaction);
       updateCache(prevState => ({
         transactionsById: {
           ...prevState.transactionsById,
@@ -206,6 +219,7 @@ export const APIProvider = ({ children }) => {
       data.categories.forEach(categoryData => {
         const category = new Category(categoryData);
         categoriesById[category.id] = category;
+        storage.setItem(`category:${category.id}`, category);
       });
       const transactionsById = {};
       const transactionList = [];
@@ -213,6 +227,7 @@ export const APIProvider = ({ children }) => {
         const transaction = new Transaction(transactionData);
         transactionsById[transaction.id] = transaction;
         transactionList.push(transaction.id);
+        storage.setItem(`transaction:${transaction.id}`, transaction);
       });
       updateCache(prevState => ({
         categoriesById,
@@ -249,6 +264,7 @@ export const APIProvider = ({ children }) => {
         },
       });
       const account = new Account(data.updateAccount);
+      storage.setItem(`account:${account.id}`, account);
       updateCache({ account });
     },
     [client, updateCache],
@@ -264,6 +280,7 @@ export const APIProvider = ({ children }) => {
         },
       });
       const card = new Card(data.updateCard);
+      storage.setItem(`card:${card.id}`, card);
       updateCache(prevState => ({
         cardsById: {
           ...prevState.cardsById,
@@ -296,6 +313,7 @@ export const APIProvider = ({ children }) => {
         },
       });
       const transaction = new Transaction(data.updateTransaction);
+      storage.setItem(`transaction:${transaction.id}`, transaction);
       updateCache(prevState => ({
         transactionsById: {
           ...prevState.transactionsById,
