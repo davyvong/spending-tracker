@@ -1,78 +1,107 @@
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useCache from 'hooks/cache';
+import useStorage from 'hooks/storage';
+import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import buildTransactionSectionMap from 'utils/build-transaction-section-map';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import ActivityScreenComponent from './component';
+import { getBaseDailySpending } from './utils';
 
 const ActivityScreen = ({ navigation, ...props }) => {
   const api = useAPI();
   const [cache] = useCache();
-  const [pending, setPending] = useState(false);
-  const [transactions, setTransactions] = useState(new Set());
+  const storage = useStorage();
+  const [dailySpending, setDailySpending] = useState(getBaseDailySpending(7, cache.account.currencyCode));
+  const [refreshing, setRefreshing] = useState(false);
+  const [transactionIds, setTransactionIds] = useState(new Set());
+  const [transactionSections, setTransactionSections] = useState([]);
 
-  const dailySpending = useMemo(() => {
-    const dailySpending = [];
-    const dayCount = 7;
-    const currentDate = moment().subtract(dayCount - 1, 'days');
-    for (let i = 0; i < dayCount; i += 1) {
-      const dateString = currentDate.format('YYYY-MM-DD');
-      const cachedSpending = cache.dailySpending[dateString];
-      if (cachedSpending) {
-        dailySpending.push(cachedSpending);
-      } else {
-        dailySpending.push({
-          credit: 0,
-          currencyCode: cache.account.currencyCode,
-          date: dateString,
-          debit: 0,
-        });
-      }
-      currentDate.add(1, 'days');
-    }
-    return dailySpending;
-  }, [cache.account.currencyCode, cache.dailySpending]);
-
-  const transactionList = useMemo(() => buildTransactionSectionMap(transactions, cache.transactionsById), [
-    cache.transactionsById,
-    transactions,
-  ]);
-
-  const getDailySpending = useCallback(() => {
+  const getDailySpendingFromAPI = useCallback(() => {
     const tempDate = moment();
     const endDate = tempDate.format('YYYY-MM-DD');
     const startDate = tempDate.subtract(6, 'days').format('YYYY-MM-DD');
     return api.getDailySpending(startDate, endDate);
-  }, [api.getDailySpending]);
+  }, []);
 
-  const getTransactionsWithoutLoading = useCallback(
-    async skip => {
-      try {
-        const transactionPage = await api.getTransactions(undefined, skip);
-        if (!skip) {
-          setTransactions(new Set(transactionPage.list));
-        } else {
-          setTransactions(prevState => new Set([...prevState, ...transactionPage.list]));
-        }
-      } catch (error) {
-        console.log(error.message);
+  const getDailySpendingFromStorage = useCallback(async () => {
+    const dailySpendingList = [];
+    for (let i = 0; i < dailySpending.length; i += 1) {
+      const stateSpending = dailySpending[i];
+      const cachedSpending = await storage.getItem(`daily-spending:${stateSpending.date}`);
+      if (cachedSpending) {
+        dailySpendingList.push(cachedSpending);
+      } else {
+        dailySpendingList.push(stateSpending);
       }
-    },
-    [api.getTransactions],
+    }
+    setDailySpending(dailySpendingList);
+  }, [dailySpending]);
+
+  const getDailySpending = useCallback(
+    () => getDailySpendingFromAPI().then(getDailySpendingFromStorage).catch(getDailySpendingFromStorage),
+    [getDailySpendingFromAPI, getDailySpendingFromStorage],
   );
 
-  const getSpendingAndTransactions = useCallback(
-    async skip => {
-      setPending(true);
-      await getTransactionsWithoutLoading(skip);
-      await getDailySpending().catch();
-      setPending(false);
-    },
-    [getDailySpending, getTransactionsWithoutLoading],
+  const getTransactionsFromAPI = useCallback(async skip => {
+    const transactionPage = await api.getTransactionsV2(undefined, skip);
+    if (!skip) {
+      setTransactionIds(new Set(transactionPage.list));
+      return transactionPage.list;
+    } else {
+      let transactionList = [];
+      setTransactionIds(prevState => {
+        const transactionSet = new Set([...prevState, ...transactionPage.list]);
+        transactionList = Array.from(transactionSet);
+        return transactionSet;
+      });
+      return transactionList;
+    }
+  }, []);
+
+  const getTransactionsFromStorage = useCallback(async transactionIds => {
+    const transactionList = Array.from(transactionIds);
+    const transactionSectionMap = {};
+    for (let i = 0; i < transactionList.length; i += 1) {
+      const storageKey = storage.getItemKey('transaction', transactionList[i]);
+      const transactionData = await storage.getItem(storageKey);
+      if (transactionData) {
+        const transaction = new Transaction(transactionData);
+        const { postDate } = transaction;
+        const section = moment(postDate, 'YYYY-MM-DD').isAfter(moment()) ? 'PENDING' : postDate;
+        if (transactionSectionMap[section]) {
+          transactionSectionMap[section].data.push(transaction);
+        } else {
+          transactionSectionMap[section] = {
+            data: [transaction],
+            section,
+          };
+        }
+      }
+    }
+    setTransactionSections(Object.values(transactionSectionMap));
+  }, []);
+
+  const getTransactions = useCallback(
+    (skip = 0) =>
+      getTransactionsFromAPI(skip)
+        .then(getTransactionsFromStorage)
+        .catch(async () => {
+          const storageKey = storage.getItemKey('transactions', null, { skip });
+          const cachedTransactions = await storage.getItem(storageKey);
+          const transactions = new Set([...transactionIds, ...cachedTransactions]);
+          return getTransactionsFromStorage(transactions);
+        }),
+    [getTransactionsFromAPI, getTransactionsFromStorage, transactionIds],
   );
+
+  const refreshTransactions = useCallback(async () => {
+    setRefreshing(true);
+    await Promise.all([getDailySpending(), getTransactions()]);
+    setRefreshing(false);
+  }, [getDailySpending, getTransactions]);
 
   const navigateToCreateTransaction = useCallback(() => {
     navigation.navigate(routeOptions.createTransactionScreen.name);
@@ -80,24 +109,24 @@ const ActivityScreen = ({ navigation, ...props }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      getTransactionsWithoutLoading();
-      getDailySpending().catch();
+      getDailySpending();
+      getTransactions();
     });
     return () => {
       unsubscribe();
     };
-  }, [getDailySpending, getTransactionsWithoutLoading, navigation]);
+  }, [getDailySpending, getTransactions, navigation]);
 
   return (
     <ActivityScreenComponent
       {...props}
       dailySpending={dailySpending}
-      getSpendingAndTransactions={getSpendingAndTransactions}
-      getTransactionsWithoutLoading={getTransactionsWithoutLoading}
+      getTransactions={getTransactions}
       navigateToCreateTransaction={navigateToCreateTransaction}
-      pending={pending}
-      skip={transactions.size}
-      transactions={transactionList}
+      refreshing={refreshing}
+      refreshTransactions={refreshTransactions}
+      skip={transactionIds.size}
+      transactions={transactionSections}
     />
   );
 };

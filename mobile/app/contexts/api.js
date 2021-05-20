@@ -135,20 +135,14 @@ export const APIProvider = ({ children }) => {
         query: summariesQueries.dailySpending,
         variables: { endDate, startDate },
       });
-      const dailySpending = {};
-      data.dailySpending.forEach(spending => {
-        dailySpending[spending.date] = spending;
-        storage.setItem(`daily-spending:${spending.date}`, spending);
-      });
-      updateCache(prevState => {
-        prevState.dailySpending = {
-          ...prevState.dailySpending,
-          ...dailySpending,
-        };
-        return prevState;
-      });
+      return Promise.all(
+        data.dailySpending.map(spending => {
+          const storageKey = `daily-spending:${spending.date}`;
+          return storage.setItem(storageKey, spending);
+        }),
+      );
     },
-    [client, updateCache],
+    [client],
   );
 
   const getMonthlySpending = useCallback(
@@ -244,6 +238,40 @@ export const APIProvider = ({ children }) => {
     [client, updateCache],
   );
 
+  const getTransactionsV2 = useCallback(
+    async (filters, skip = 0) => {
+      const variables = {
+        page: { skip },
+      };
+      if (filters) {
+        variables.filters = filters;
+      }
+      const { data } = await client.query({
+        query: transactionsQueries.transactions,
+        variables,
+      });
+      data.categories.forEach(categoryData => {
+        const category = new Category(categoryData);
+        const storageKey = storage.getItemKey('category', category.id);
+        storage.setItem(storageKey, category);
+      });
+      const transactionList = [];
+      data.transactions.forEach(transactionData => {
+        const transaction = new Transaction(transactionData);
+        transactionList.push(transaction.id);
+        const storageKey = storage.getItemKey('transaction', transaction.id);
+        storage.setItem(storageKey, transaction);
+      });
+      const storageKey = storage.getItemKey('transactions', null, { ...filters, skip });
+      storage.setItem(storageKey, transactionList);
+      return {
+        list: transactionList,
+        skip,
+      };
+    },
+    [client],
+  );
+
   const signInWithEmail = useCallback(
     async (email, password) => {
       const { data } = await client.query({
@@ -336,6 +364,7 @@ export const APIProvider = ({ children }) => {
     getMonthlySpending,
     getTransaction,
     getTransactions,
+    getTransactionsV2,
     signInWithEmail,
     updateAccount,
     updateCard,

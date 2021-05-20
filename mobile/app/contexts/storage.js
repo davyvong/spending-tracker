@@ -24,12 +24,37 @@ export const StorageProvider = ({ children }) => {
     key => {
       const cachedItem = lruCache.get(key);
       if (cachedItem) {
-        return cachedItem;
+        return JSON.parse(cachedItem);
       }
       return storageManager.getItem(key);
     },
     [lruCache, storageManager],
   );
+
+  const getItemKeyFilters = useCallback(filters => {
+    const keys = [];
+    for (const key in filters) {
+      keys.push(`${key}:${filters[key]}`);
+    }
+    keys.sort();
+    return `(${keys.join(',')})`;
+  }, []);
+
+  const getItemKey = useCallback((type, id, filters) => {
+    if (!type) {
+      return null;
+    }
+    if (!id && !filters) {
+      return type;
+    }
+    if (!id) {
+      return `${type}${getItemKeyFilters(filters)}`;
+    }
+    if (!filters) {
+      return `${type}:${id}`;
+    }
+    return `${type}:${id}${getItemKeyFilters(filters)}`;
+  }, []);
 
   const setItem = useCallback(
     (key, item) => {
@@ -43,6 +68,7 @@ export const StorageProvider = ({ children }) => {
     () => ({
       deleteItem,
       getItem,
+      getItemKey,
       rehydrate: () => storageManager.rehydrate(),
       persist: () => storageManager.persist(),
       setItem,
