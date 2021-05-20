@@ -8,21 +8,28 @@ export default class AsyncStorageBlock {
   }
 
   deleteItem(key) {
-    delete this.items[key];
-    this.size--;
+    if (this.items.hasOwnProperty(key)) {
+      delete this.items[key];
+      this.size--;
+    }
   }
 
   getItem(key) {
-    return this.items[key] || null;
+    if (this.items.hasOwnProperty(key)) {
+      return this.items[key];
+    }
+    return null;
   }
 
   setItem(key, item) {
+    if (!this.items.hasOwnProperty(key)) {
+      this.size++;
+    }
     this.items[key] = item;
-    this.size++;
   }
 
   merge(block) {
-    return Object.assign(this.items, block.items);
+    Object.assign(this.items, block.items);
   }
 
   toString() {

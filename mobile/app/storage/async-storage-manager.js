@@ -50,20 +50,19 @@ export default class AsyncStorageManager {
   async getBlock(name) {
     let blockData = await RNAsyncStorage.getItem(name);
     blockData = JSON.parse(blockData);
-    if (!blockData) {
-      return null;
+    if (blockData) {
+      return new AsyncStorageBlock(blockData.name, blockData.items);
     }
-    return new AsyncStorageBlock(blockData.name, blockData.items);
+    return null;
   }
 
-  async setBlock(block) {
-    if (this.writeBuffer[block.name]) {
+  setBlock(block) {
+    if (this.writeBuffer.hasOwnProperty(block.name)) {
       this.writeBuffer[block.name].merge(block);
     } else {
       this.writeBuffer[block.name] = block;
       this.bufferSize++;
     }
-    return this.writeBuffer[block.name];
   }
 
   async deleteItem(key) {
@@ -73,7 +72,7 @@ export default class AsyncStorageManager {
       if (block) {
         delete this.keyBlockMap[key];
         block.deleteItem(key);
-        return this.setBlock(block);
+        this.setBlock(block);
       }
     }
   }
@@ -86,12 +85,11 @@ export default class AsyncStorageManager {
     if (this.currentBlock.name === blockName) {
       return this.currentBlock.getItem(key);
     }
-    let block = await this.getBlock(blockName);
-    if (!block) {
-      return null;
+    const block = await this.getBlock(blockName);
+    if (block) {
+      return block.getItem(key);
     }
-    block = JSON.parse(block) || {};
-    return block[key] || null;
+    return null;
   }
 
   async setItem(key, item) {
@@ -101,7 +99,8 @@ export default class AsyncStorageManager {
       if (block) {
         this.keyBlockMap[key] = block.name;
         block.setItem(key, item);
-        return this.setBlock(block);
+        this.setBlock(block);
+        return;
       }
     }
     if (this.currentBlock.size >= AsyncStorageManager.maxBlockSize) {
@@ -109,6 +108,6 @@ export default class AsyncStorageManager {
     }
     this.keyBlockMap[key] = this.currentBlock.name;
     this.currentBlock.setItem(key, item);
-    return this.setBlock(this.currentBlock);
+    this.setBlock(this.currentBlock);
   }
 }
