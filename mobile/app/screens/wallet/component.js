@@ -16,12 +16,10 @@ import styles from './styles';
 
 const WalletScreenComponent = ({
   cards,
-  getCardsAndSummary,
   monthlySpending,
   navigateToTransactions,
-  pendingCards,
-  pendingSummary,
   refreshing,
+  refreshMonthlySpending,
   selectedMonth,
   setSelectedCard,
   setSelectedMonth,
@@ -35,22 +33,24 @@ const WalletScreenComponent = ({
         refreshControl={
           <RefreshControl
             color={[theme.refreshControl]}
-            onRefresh={getCardsAndSummary}
+            onRefresh={refreshMonthlySpending}
             refreshing={refreshing}
             tintColor={theme.refreshControl}
           />
         }
         StickyHeaderComponent={<Title>{locale.t(routeOptions.walletScreen.title)}</Title>}
       >
-        {!pendingCards && cards.length > 0 && (
+        {cards.length > 0 && (
           <Fragment>
             <WalletCarousel containerCustomStyle={styles.walletCarousel} data={cards} onChange={setSelectedCard} />
             <View style={styles.sectionBlock}>
               <MonthPicker onPress={setSelectedMonth} value={selectedMonth} />
             </View>
-            <View style={styles.sectionBlock}>
-              <MonthlySummary pending={pendingSummary} spending={monthlySpending} />
-            </View>
+            {monthlySpending && (
+              <View style={styles.sectionBlock}>
+                <MonthlySummary spending={monthlySpending} />
+              </View>
+            )}
             <Pressable onPress={navigateToTransactions} style={styles.ctaRow}>
               <MaterialCommunityIcons
                 color={theme.actionIcon}
@@ -76,7 +76,6 @@ const WalletScreenComponent = ({
 
 WalletScreenComponent.propTypes = {
   cards: PropTypes.array.isRequired,
-  getCardsAndSummary: PropTypes.func.isRequired,
   monthlySpending: PropTypes.shape({
     credit: PropTypes.number.isRequired,
     currencyCode: PropTypes.string,
@@ -84,9 +83,8 @@ WalletScreenComponent.propTypes = {
     debit: PropTypes.number.isRequired,
   }),
   navigateToTransactions: PropTypes.func.isRequired,
-  pendingCards: PropTypes.bool.isRequired,
-  pendingSummary: PropTypes.bool.isRequired,
   refreshing: PropTypes.bool.isRequired,
+  refreshMonthlySpending: PropTypes.func.isRequired,
   selectedMonth: PropTypes.string.isRequired,
   setSelectedCard: PropTypes.func.isRequired,
   setSelectedMonth: PropTypes.func.isRequired,

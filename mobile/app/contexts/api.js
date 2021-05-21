@@ -103,19 +103,6 @@ export const APIProvider = ({ children }) => {
     updateCache({ account });
   }, [client, updateCache]);
 
-  const getAllCards = useCallback(async () => {
-    const { data } = await client.query({
-      query: cardsQueries.cards,
-    });
-    const cardsById = {};
-    data.cards.forEach(cardData => {
-      const card = new Card(cardData);
-      cardsById[card.id] = card;
-      storage.setItem(`card:${card.id}`, card);
-    });
-    updateCache({ cardsById });
-  }, [client, updateCache]);
-
   const getAllCategories = useCallback(async () => {
     const { data } = await client.query({
       query: categoriesQueries.categories,
@@ -129,15 +116,31 @@ export const APIProvider = ({ children }) => {
     updateCache({ categoriesById });
   }, [client, updateCache]);
 
+  const getCards = useCallback(async () => {
+    const { data } = await client.query({
+      query: cardsQueries.cards,
+    });
+    const cardIds = [];
+    data.cards.forEach(cardData => {
+      const card = new Card(cardData);
+      cardIds.push(card.id);
+      const storageKey = storage.getItemKey('card', card.id);
+      storage.setItem(storageKey, card);
+    });
+    const storageKey = storage.getItemKey('cards');
+    storage.setItem(storageKey, cardIds);
+    return cardIds;
+  }, [client]);
+
   const getDailySpending = useCallback(
     async (startDate, endDate) => {
       const { data } = await client.query({
         query: summariesQueries.dailySpending,
         variables: { endDate, startDate },
       });
-      return Promise.all(
+      await Promise.all(
         data.dailySpending.map(spending => {
-          const storageKey = `daily-spending:${spending.date}`;
+          const storageKey = storage.getItemKey('daily-spending', spending.date);
           return storage.setItem(storageKey, spending);
         }),
       );
@@ -146,36 +149,28 @@ export const APIProvider = ({ children }) => {
   );
 
   const getMonthlySpending = useCallback(
-    async (cardId, month) => {
+    async (month, filters) => {
       const { data } = await client.query({
         query: summariesQueries.monthlySpending,
         variables: {
           endMonth: month,
-          filters: { cardId },
+          filters,
           startMonth: month,
         },
       });
-      const monthlySpending = {};
-      if (Array.isArray(data.monthlySpending)) {
-        data.monthlySpending.forEach(month => {
-          if (cardId) {
-            monthlySpending[`${month.date}:${cardId}`] = month;
-            storage.setItem(`monthly-spending:${month.date}(card:${cardId})`, month);
+      await Promise.all(
+        data.monthlySpending.map(spending => {
+          if (filters?.cardId) {
+            const storageKey = storage.getItemKey('monthly-spending', spending.date, filters);
+            return storage.setItem(storageKey, spending);
           } else {
-            monthlySpending[month.date] = month;
-            storage.setItem(`monthly-spending:${month.date}`, month);
+            const storageKey = storage.getItemKey('monthly-spending', spending.date);
+            return storage.setItem(storageKey, spending);
           }
-        });
-      }
-      updateCache(prevState => {
-        prevState.monthlySpending = {
-          ...prevState.monthlySpending,
-          ...monthlySpending,
-        };
-        return prevState;
-      });
+        }),
+      );
     },
-    [client, updateCache],
+    [client],
   );
 
   const getTransaction = useCallback(
@@ -185,16 +180,11 @@ export const APIProvider = ({ children }) => {
         variables: { id: transactionId },
       });
       const transaction = new Transaction(data.transaction);
-      storage.setItem(`transaction:${transaction.id}`, transaction);
-      updateCache(prevState => ({
-        transactionsById: {
-          ...prevState.transactionsById,
-          [transaction.id]: transaction,
-        },
-      }));
-      return transaction;
+      const storageKey = storage.getItemKey('transaction', transaction.id);
+      storage.setItem(storageKey, transaction);
+      return transaction.id;
     },
-    [client, updateCache],
+    [client],
   );
 
   const getTransactions = useCallback(
@@ -255,19 +245,16 @@ export const APIProvider = ({ children }) => {
         const storageKey = storage.getItemKey('category', category.id);
         storage.setItem(storageKey, category);
       });
-      const transactionList = [];
+      const transactionIds = [];
       data.transactions.forEach(transactionData => {
         const transaction = new Transaction(transactionData);
-        transactionList.push(transaction.id);
+        transactionIds.push(transaction.id);
         const storageKey = storage.getItemKey('transaction', transaction.id);
         storage.setItem(storageKey, transaction);
       });
       const storageKey = storage.getItemKey('transactions', null, { ...filters, skip });
-      storage.setItem(storageKey, transactionList);
-      return {
-        list: transactionList,
-        skip,
-      };
+      storage.setItem(storageKey, transactionIds);
+      return transactionIds;
     },
     [client],
   );
@@ -358,8 +345,8 @@ export const APIProvider = ({ children }) => {
     deleteCard,
     deleteTransaction,
     getAccount,
-    getAllCards,
     getAllCategories,
+    getCards,
     getDailySpending,
     getMonthlySpending,
     getTransaction,

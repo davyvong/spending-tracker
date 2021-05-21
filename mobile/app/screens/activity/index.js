@@ -29,13 +29,10 @@ const ActivityScreen = ({ navigation, ...props }) => {
   const getDailySpendingFromStorage = useCallback(async () => {
     const dailySpendingList = [];
     for (let i = 0; i < dailySpending.length; i += 1) {
-      const stateSpending = dailySpending[i];
-      const cachedSpending = await storage.getItem(`daily-spending:${stateSpending.date}`);
-      if (cachedSpending) {
-        dailySpendingList.push(cachedSpending);
-      } else {
-        dailySpendingList.push(stateSpending);
-      }
+      const stateDailySpending = dailySpending[i];
+      const storageKey = storage.getItemKey('daily-spending', stateDailySpending.date);
+      const cachedDailySpending = await storage.getItem(storageKey);
+      dailySpendingList.push(cachedDailySpending || stateDailySpending);
     }
     setDailySpending(dailySpendingList);
   }, [dailySpending]);
@@ -46,14 +43,13 @@ const ActivityScreen = ({ navigation, ...props }) => {
   );
 
   const getTransactionsFromAPI = useCallback(async skip => {
-    const transactionPage = await api.getTransactionsV2(undefined, skip);
+    let transactionList = await api.getTransactionsV2(undefined, skip);
     if (!skip) {
-      setTransactionIds(new Set(transactionPage.list));
-      return transactionPage.list;
+      setTransactionIds(new Set(transactionList));
+      return transactionList;
     } else {
-      let transactionList = [];
       setTransactionIds(prevState => {
-        const transactionSet = new Set([...prevState, ...transactionPage.list]);
+        const transactionSet = new Set([...prevState, ...transactionList]);
         transactionList = Array.from(transactionSet);
         return transactionSet;
       });
@@ -66,9 +62,9 @@ const ActivityScreen = ({ navigation, ...props }) => {
     const transactionSectionMap = {};
     for (let i = 0; i < transactionList.length; i += 1) {
       const storageKey = storage.getItemKey('transaction', transactionList[i]);
-      const transactionData = await storage.getItem(storageKey);
-      if (transactionData) {
-        const transaction = new Transaction(transactionData);
+      const cachedTransaction = await storage.getItem(storageKey);
+      if (cachedTransaction) {
+        const transaction = new Transaction(cachedTransaction);
         const { postDate } = transaction;
         const section = moment(postDate, 'YYYY-MM-DD').isAfter(moment()) ? 'PENDING' : postDate;
         if (transactionSectionMap[section]) {
@@ -90,9 +86,8 @@ const ActivityScreen = ({ navigation, ...props }) => {
         .then(getTransactionsFromStorage)
         .catch(async () => {
           const storageKey = storage.getItemKey('transactions', null, { skip });
-          const cachedTransactions = await storage.getItem(storageKey);
-          const transactions = new Set([...transactionIds, ...cachedTransactions]);
-          return getTransactionsFromStorage(transactions);
+          const cachedTransactionIds = await storage.getItem(storageKey);
+          return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
         }),
     [getTransactionsFromAPI, getTransactionsFromStorage, transactionIds],
   );
