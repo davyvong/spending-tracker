@@ -14,15 +14,15 @@ const Providers = ({ children }) => (
   <ApolloProvider client={client}>
     <CacheProvider>
       <StorageProvider>
-        <AppearanceProvider>
-          <ThemeProvider>
-            <AuthenticationProvider>
-              <APIProvider>
+        <APIProvider>
+          <AppearanceProvider>
+            <ThemeProvider>
+              <AuthenticationProvider>
                 <LocaleProvider>{children}</LocaleProvider>
-              </APIProvider>
-            </AuthenticationProvider>
-          </ThemeProvider>
-        </AppearanceProvider>
+              </AuthenticationProvider>
+            </ThemeProvider>
+          </AppearanceProvider>
+        </APIProvider>
       </StorageProvider>
     </CacheProvider>
   </ApolloProvider>
