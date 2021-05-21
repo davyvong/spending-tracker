@@ -111,7 +111,7 @@ const WalletScreen = ({ navigation, ...props }) => {
     const endDate = moment(selectedMonth).add(1, 'months');
     if (card) {
       navigation.navigate(routeOptions.cardTransactionListScreen.name, {
-        cardId: card.id,
+        card,
         endDate: endDate.format('YYYY-MM'),
         startDate: selectedMonth,
         title: card.name,

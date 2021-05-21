@@ -11,8 +11,8 @@ import styles from './styles';
 const CardTransactionListScreenComponent = ({
   card,
   getTransactions,
-  getTransactionsWithoutLoading,
-  pending,
+  refreshing,
+  refreshTransactions,
   skip,
   transactions,
 }) => (
@@ -20,9 +20,9 @@ const CardTransactionListScreenComponent = ({
     <TransactionList
       contentContainerStyle={styles.contentContainer}
       ListStickyHeaderComponent={<Title>{card?.name}</Title>}
-      onEndReached={() => getTransactionsWithoutLoading(skip)}
-      onRefresh={getTransactions}
-      refreshing={pending}
+      onEndReached={() => getTransactions(skip)}
+      onRefresh={refreshTransactions}
+      refreshing={refreshing}
       sections={transactions}
     />
   </View>
@@ -35,8 +35,8 @@ CardTransactionListScreenComponent.defaultProps = {
 CardTransactionListScreenComponent.propTypes = {
   card: Card.propTypes,
   getTransactions: PropTypes.func.isRequired,
-  getTransactionsWithoutLoading: PropTypes.func.isRequired,
-  pending: PropTypes.bool,
+  refreshing: PropTypes.bool.isRequired,
+  refreshTransactions: PropTypes.func.isRequired,
   skip: PropTypes.number.isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({

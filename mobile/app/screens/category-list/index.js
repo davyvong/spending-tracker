@@ -48,7 +48,7 @@ const CategoryListScreen = ({ navigation, ...props }) => {
   const navigateToCategoryDetail = useCallback(
     category => {
       navigation.navigate(routeOptions.categoryDetailScreen.name, {
-        categoryId: category.id,
+        category,
         title: category.name,
       });
     },

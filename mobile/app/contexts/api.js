@@ -199,45 +199,6 @@ export const APIProvider = ({ children }) => {
         query: transactionsQueries.transactions,
         variables,
       });
-      const categoriesById = {};
-      data.categories.forEach(categoryData => {
-        const category = new Category(categoryData);
-        categoriesById[category.id] = category;
-      });
-      const transactionsById = {};
-      const transactionList = [];
-      data.transactions.forEach(transactionData => {
-        const transaction = new Transaction(transactionData);
-        transactionsById[transaction.id] = transaction;
-        transactionList.push(transaction.id);
-      });
-      updateCache(prevState => ({
-        categoriesById,
-        transactionsById: {
-          ...prevState.transactionsById,
-          ...transactionsById,
-        },
-      }));
-      return {
-        list: transactionList,
-        skip,
-      };
-    },
-    [client, updateCache],
-  );
-
-  const getTransactionsV2 = useCallback(
-    async (filters, skip = 0) => {
-      const variables = {
-        page: { skip },
-      };
-      if (filters) {
-        variables.filters = filters;
-      }
-      const { data } = await client.query({
-        query: transactionsQueries.transactions,
-        variables,
-      });
       const categoryIds = [];
       data.categories.forEach(categoryData => {
         const category = new Category(categoryData);
@@ -350,7 +311,6 @@ export const APIProvider = ({ children }) => {
     getMonthlySpending,
     getTransaction,
     getTransactions,
-    getTransactionsV2,
     signInWithEmail,
     updateAccount,
     updateCard,

@@ -43,7 +43,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
   );
 
   const getTransactionsFromAPI = useCallback(async skip => {
-    let transactionList = await api.getTransactionsV2(undefined, skip);
+    let transactionList = await api.getTransactions(undefined, skip);
     if (!skip) {
       setTransactionIds(new Set(transactionList));
       return transactionList;

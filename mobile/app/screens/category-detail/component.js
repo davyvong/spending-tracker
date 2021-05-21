@@ -11,8 +11,8 @@ import styles from './styles';
 const CategoryDetailScreenComponent = ({
   category,
   getTransactions,
-  getTransactionsWithoutLoading,
-  pending,
+  refreshing,
+  refreshTransactions,
   skip,
   transactions,
 }) => (
@@ -20,9 +20,9 @@ const CategoryDetailScreenComponent = ({
     <TransactionList
       contentContainerStyle={styles.contentContainer}
       ListStickyHeaderComponent={<Title>{category?.name}</Title>}
-      onEndReached={() => getTransactionsWithoutLoading(skip)}
-      onRefresh={getTransactions}
-      refreshing={pending}
+      onEndReached={() => getTransactions(skip)}
+      onRefresh={refreshTransactions}
+      refreshing={refreshing}
       sections={transactions}
     />
   </View>
@@ -35,8 +35,8 @@ CategoryDetailScreenComponent.defaultProps = {
 CategoryDetailScreenComponent.propTypes = {
   category: Category.propTypes,
   getTransactions: PropTypes.func.isRequired,
-  getTransactionsWithoutLoading: PropTypes.func.isRequired,
-  pending: PropTypes.bool,
+  refreshing: PropTypes.bool.isRequired,
+  refreshTransactions: PropTypes.func.isRequired,
   skip: PropTypes.number.isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({
