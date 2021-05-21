@@ -1,5 +1,4 @@
 import { useApolloClient } from '@apollo/client';
-import useCache from 'hooks/cache';
 import useStorage from 'hooks/storage';
 import * as accountsMutations from 'graphql/mutations/accounts';
 import * as cardsMutations from 'graphql/mutations/cards';
@@ -15,7 +14,7 @@ import Category from 'models/category';
 import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
 import React, { createContext, useCallback } from 'react';
-import SecureJWT from 'storage/jwt';
+import JWTStorageBlock from 'storage/jwt-storage-block';
 
 const APIContext = createContext({});
 
@@ -23,7 +22,6 @@ export const APIConsumer = APIContext.Consumer;
 
 export const APIProvider = ({ children }) => {
   const client = useApolloClient();
-  const [cache, updateCache] = useCache();
   const storage = useStorage();
 
   const createCard = useCallback(
@@ -33,14 +31,11 @@ export const APIProvider = ({ children }) => {
         variables: { data: cardData },
       });
       const card = new Card(data.createCard);
-      updateCache(prevState => ({
-        cardsById: {
-          ...prevState.cardsById,
-          [card.id]: card,
-        },
-      }));
+      const storageKey = storage.getItemKey('card', card.id);
+      storage.setItem(storageKey, card);
+      return card.id;
     },
-    [client, updateCache],
+    [client],
   );
 
   const createTransaction = useCallback(
@@ -50,14 +45,11 @@ export const APIProvider = ({ children }) => {
         variables: { data: transactionData },
       });
       const transaction = new Transaction(data.createTransaction);
-      updateCache(prevState => ({
-        transactionsById: {
-          ...prevState.transactionsById,
-          [transaction.id]: transaction,
-        },
-      }));
+      const storageKey = storage.getItemKey('transaction', transaction.id);
+      storage.setItem(storageKey, transaction);
+      return transaction.id;
     },
-    [client, updateCache],
+    [client],
   );
 
   const deleteCard = useCallback(
@@ -67,13 +59,12 @@ export const APIProvider = ({ children }) => {
         variables: { id: cardId },
       });
       if (response.data?.deleteCard) {
-        const cardsById = Object.assign({}, cache.cardsById);
-        delete cardsById[cardId];
-        storage.deleteItem(`card:${cardId}`);
-        updateCache({ cardsById });
+        const storageKey = storage.getItemKey('card', cardId);
+        storage.deleteItem(storageKey);
       }
+      return cardId;
     },
-    [client, updateCache],
+    [client],
   );
 
   const deleteTransaction = useCallback(
@@ -83,13 +74,12 @@ export const APIProvider = ({ children }) => {
         variables: { id: transactionId },
       });
       if (response.data?.deleteTransaction) {
-        const transactionsById = Object.assign({}, cache.transactionsById);
-        delete transactionsById[transactionId];
-        storage.deleteItem(`transaction:${transactionId}`);
-        updateCache({ transactionsById });
+        const storageKey = storage.getItemKey('transaction', transactionId);
+        storage.deleteItem(storageKey);
       }
+      return transactionId;
     },
-    [cache, client, updateCache],
+    [client],
   );
 
   const getAccount = useCallback(async () => {
@@ -97,8 +87,10 @@ export const APIProvider = ({ children }) => {
       query: accountsQueries.account,
     });
     const account = new Account(data.account);
-    updateCache({ account });
-  }, [client, updateCache]);
+    const storageKey = storage.getItemKey('account');
+    storage.setItem(storageKey, account);
+    return account.id;
+  }, [client]);
 
   const getCards = useCallback(async () => {
     const { data } = await client.query({
@@ -228,7 +220,7 @@ export const APIProvider = ({ children }) => {
         query: accountsQueries.login,
         variables: { email, password },
       });
-      await SecureJWT.set(data.login);
+      await JWTStorageBlock.set(data.login);
     },
     [client],
   );
@@ -242,9 +234,11 @@ export const APIProvider = ({ children }) => {
         },
       });
       const account = new Account(data.updateAccount);
-      updateCache({ account });
+      const storageKey = storage.getItemKey('account');
+      storage.setItem(storageKey, account);
+      return account.id;
     },
-    [client, updateCache],
+    [client],
   );
 
   const updateCard = useCallback(
@@ -257,14 +251,11 @@ export const APIProvider = ({ children }) => {
         },
       });
       const card = new Card(data.updateCard);
-      updateCache(prevState => ({
-        cardsById: {
-          ...prevState.cardsById,
-          [card.id]: card,
-        },
-      }));
+      const storageKey = storage.getItemKey('card', card.id);
+      storage.setItem(storageKey, card);
+      return card.id;
     },
-    [client, updateCache],
+    [client],
   );
 
   const updatePassword = useCallback(
@@ -289,14 +280,11 @@ export const APIProvider = ({ children }) => {
         },
       });
       const transaction = new Transaction(data.updateTransaction);
-      updateCache(prevState => ({
-        transactionsById: {
-          ...prevState.transactionsById,
-          [transaction.id]: transaction,
-        },
-      }));
+      const storageKey = storage.getItemKey('transaction', transaction.id);
+      storage.setItem(storageKey, transaction);
+      return transaction.id;
     },
-    [client, updateCache],
+    [client],
   );
 
   const value = {

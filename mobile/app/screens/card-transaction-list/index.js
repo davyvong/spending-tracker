@@ -86,6 +86,7 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
     <CardTransactionListScreenComponent
       {...props}
       card={card}
+      getTransactions={getTransactions}
       refreshing={refreshing}
       refreshTransactions={refreshTransactions}
       skip={transactionIds.size}
@@ -95,9 +96,9 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
 };
 
 CardTransactionListScreen.propTypes = {
-  navigation: {
-    addListener: PropTypes.bool.isRequired,
-  },
+  navigation: PropTypes.shape({
+    addListener: PropTypes.func.isRequired,
+  }),
   route: PropTypes.shape({
     params: PropTypes.shape({
       card: Card.propTypes.isRequired,

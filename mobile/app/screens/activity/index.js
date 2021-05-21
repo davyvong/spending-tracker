@@ -1,6 +1,5 @@
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
 import useStorage from 'hooks/storage';
 import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
@@ -12,9 +11,8 @@ import { getBaseDailySpending } from './utils';
 
 const ActivityScreen = ({ navigation, ...props }) => {
   const api = useAPI();
-  const [cache] = useCache();
   const storage = useStorage();
-  const [dailySpending, setDailySpending] = useState(getBaseDailySpending(7, cache.account.currencyCode));
+  const [dailySpending, setDailySpending] = useState(getBaseDailySpending(7));
   const [refreshing, setRefreshing] = useState(false);
   const [transactionIds, setTransactionIds] = useState(new Set());
   const [transactionSections, setTransactionSections] = useState([]);
@@ -28,11 +26,20 @@ const ActivityScreen = ({ navigation, ...props }) => {
 
   const getDailySpendingFromStorage = useCallback(async () => {
     const dailySpendingList = [];
+    let storageKey = storage.getItemKey('account');
+    const account = await storage.getItem(storageKey);
     for (let i = 0; i < dailySpending.length; i += 1) {
       const stateDailySpending = dailySpending[i];
-      const storageKey = storage.getItemKey('daily-spending', stateDailySpending.date);
+      storageKey = storage.getItemKey('daily-spending', stateDailySpending.date);
       const cachedDailySpending = await storage.getItem(storageKey);
-      dailySpendingList.push(cachedDailySpending || stateDailySpending);
+      if (cachedDailySpending) {
+        dailySpendingList.push(cachedDailySpending);
+      } else {
+        dailySpendingList.push({
+          ...stateDailySpending,
+          currencyCode: account.currencyCode,
+        });
+      }
     }
     setDailySpending(dailySpendingList);
   }, [dailySpending]);

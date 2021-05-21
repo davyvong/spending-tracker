@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
 import useLocale from 'hooks/locale';
 import useTheme from 'hooks/theme';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -10,7 +9,6 @@ import TransactionListComponent from './component';
 
 const TransactionList = props => {
   const api = useAPI();
-  const [cache] = useCache();
   const [locale] = useLocale();
   const navigation = useNavigation();
   const { palette } = useTheme();
@@ -77,8 +75,6 @@ const TransactionList = props => {
       {...props}
       actionSheet={actionSheet}
       actionSheetOptions={actionSheetOptions}
-      cards={cache.cardsById}
-      categories={cache.categoriesById}
       closeDeleteDialog={closeDeleteDialog}
       deleteDialog={deleteDialog}
       deleteTransaction={deleteTransaction}

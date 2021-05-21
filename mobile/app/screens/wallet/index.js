@@ -1,6 +1,5 @@
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
 import useStorage from 'hooks/storage';
 import useTheme from 'hooks/theme';
 import Card from 'models/card';
@@ -12,7 +11,6 @@ import WalletScreenComponent from './component';
 
 const WalletScreen = ({ navigation, ...props }) => {
   const api = useAPI();
-  const [cache] = useCache();
   const storage = useStorage();
   const { palette } = useTheme();
   const [cards, setCards] = useState([]);
@@ -106,8 +104,9 @@ const WalletScreen = ({ navigation, ...props }) => {
     [getMonthlySpending, selectedCardId],
   );
 
-  const navigateToTransactions = useCallback(() => {
-    const card = cache.cardsById[selectedCardId];
+  const navigateToTransactions = useCallback(async () => {
+    const storageKey = storage.getItemKey('card', selectedCardId);
+    const card = await storage.getItem(storageKey);
     const endDate = moment(selectedMonth).add(1, 'months');
     if (card) {
       navigation.navigate(routeOptions.cardTransactionListScreen.name, {
@@ -117,7 +116,7 @@ const WalletScreen = ({ navigation, ...props }) => {
         title: card.name,
       });
     }
-  }, [cache.cardsById, selectedMonth, selectedCardId]);
+  }, [selectedMonth, selectedCardId]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {

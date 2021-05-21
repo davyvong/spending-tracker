@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-export default class SecureJWT {
+export default class JWTStorageBlock {
   static async get() {
     let jwt;
     if (await SecureStore.isAvailableAsync()) {

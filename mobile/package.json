@@ -61,7 +61,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "expo-cli": "^4.4.7",
+    "expo-cli": "^4.4.8",
     "expo-optimize": "^0.1.86",
     "prettier": "^2.2.1",
     "sharp-cli": "^1.15.0"

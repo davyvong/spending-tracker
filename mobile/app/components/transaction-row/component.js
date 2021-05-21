@@ -25,18 +25,14 @@ const TransactionRowComponent = ({ card, category, theme, transaction, ...props 
     <Pressable {...props} style={styles.transactionRow}>
       <View style={[styles.transactionRowColumn, styles.transactionRowColumn1]}>
         <View style={[styles.transactionRowIcon, theme.transactionRowIcon]}>
-          <MaterialCommunityIcons
-            color={theme.transactionRowIcon.color}
-            name={category.icon || 'credit-card-outline'}
-            size={28}
-          />
+          <MaterialCommunityIcons color={theme.transactionRowIcon.color} name={category?.icon} size={28} />
         </View>
       </View>
       <View style={[styles.transactionRowColumn, styles.transactionRowColumn2]}>
         <Text numberOfLines={1} style={styles.transactionRowVendor}>
           {transaction.vendor}
         </Text>
-        <Text style={[styles.transactionRowCategory, theme.transactionRowMutedText]}>{card.name}</Text>
+        <Text style={[styles.transactionRowCategory, theme.transactionRowMutedText]}>{card?.name}</Text>
       </View>
       <View style={[styles.transactionRowColumn, styles.transactionRowColumn3]}>
         <Text style={[styles.transactionRowAmount, transaction.isCredit && theme.transactionRowAmountPositive]}>

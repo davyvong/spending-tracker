@@ -1,6 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import LRUCache from 'lru-cache';
 import PropTypes from 'prop-types';
-import React, { createContext, useCallback, useEffect, useMemo } from 'react';
+import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import AsyncStorageManager from 'storage/async-storage-manager';
 
 const StorageContext = createContext({});
@@ -8,9 +9,14 @@ const StorageContext = createContext({});
 export const StorageConsumer = StorageContext.Consumer;
 
 export const StorageProvider = ({ children }) => {
+  const [storageManager, setStorageManager] = useState(new AsyncStorageManager());
+
   const lruCache = useMemo(() => new LRUCache(1000), []);
 
-  const storageManager = useMemo(() => new AsyncStorageManager(), []);
+  const clear = useCallback(async () => {
+    await AsyncStorage.clear();
+    setStorageManager(new AsyncStorageManager());
+  }, []);
 
   const deleteItem = useCallback(
     key => {
@@ -66,6 +72,7 @@ export const StorageProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({
+      clear,
       deleteItem,
       getItem,
       getItemKey,
