@@ -24,7 +24,7 @@ const CategoryListScreen = ({ navigation, ...props }) => {
         categoryList[i] = new Category(cachedCategory);
       }
     }
-    setCategories(categoryList.filter(card => card instanceof Category).sort((a, b) => a.name > b.name));
+    setCategories(categoryList.filter(category => category instanceof Category).sort((a, b) => a.name > b.name));
   }, []);
 
   const getCategories = useCallback(

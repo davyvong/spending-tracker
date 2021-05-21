@@ -30,7 +30,7 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    api.getAccount().then(getThemeFromStorage);
+    api.getAccount().then(getThemeFromStorage).catch(getThemeFromStorage);
   }, []);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

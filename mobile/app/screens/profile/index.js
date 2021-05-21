@@ -1,5 +1,5 @@
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
+import useStorage from 'hooks/storage';
 import useTheme from 'hooks/theme';
 import pick from 'lodash/pick';
 import PropTypes from 'prop-types';
@@ -9,7 +9,7 @@ import ProfileScreenComponent from './component';
 
 const ProfileScreen = ({ navigation, ...props }) => {
   const api = useAPI();
-  const [cache] = useCache();
+  const storage = useStorage();
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
@@ -24,7 +24,6 @@ const ProfileScreen = ({ navigation, ...props }) => {
     email: '',
     firstName: '',
     lastName: '',
-    ...cache.account,
   });
 
   const theme = useMemo(
@@ -109,14 +108,20 @@ const ProfileScreen = ({ navigation, ...props }) => {
     setDiscardDialog(action);
   }, []);
 
+  const getAccountFromStorage = useCallback(async () => {
+    const storageKey = storage.getItemKey('account');
+    const cachedAccount = await storage.getItem(storageKey);
+    if (cachedAccount) {
+      setValues(prevState => ({
+        ...prevState,
+        ...cachedAccount,
+      }));
+    }
+  }, []);
+
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      api.getAccount().catch();
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [api.getAccount, navigation]);
+    api.getAccount().then(getAccountFromStorage).catch(getAccountFromStorage);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', event => {

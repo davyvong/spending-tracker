@@ -194,7 +194,7 @@ export const APIProvider = ({ children }) => {
       const categoryIds = [];
       data.categories.forEach(categoryData => {
         const category = new Category(categoryData);
-        categoryIds.push(category);
+        categoryIds.push(category.id);
         const storageKey = storage.getItemKey('category', category.id);
         storage.setItem(storageKey, category);
       });
