@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink, from, InMemoryCache } from '@apollo/clien
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import moment from 'moment-timezone';
-import SecureJWT from 'storage/jwt';
+import JWTStorageBlock from 'storage/jwt-storage-block';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -20,7 +20,7 @@ const authLink = setContext(async (request, context) => {
     ...context.headers,
     timezone: moment.tz.guess(),
   };
-  const jwt = await SecureJWT.get();
+  const jwt = await JWTStorageBlock.get();
   if (jwt) {
     headers.authorization = `Bearer ${jwt}`;
   }

@@ -1,16 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
 import useLocale from 'hooks/locale';
 import useTheme from 'hooks/theme';
+import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useState } from 'react';
 
 import TransactionListComponent from './component';
 
-const TransactionList = props => {
+const TransactionList = ({ onDelete, ...props }) => {
   const api = useAPI();
-  const [cache] = useCache();
   const [locale] = useLocale();
   const navigation = useNavigation();
   const { palette } = useTheme();
@@ -46,14 +45,9 @@ const TransactionList = props => {
 
   const deleteTransaction = useCallback(async () => {
     setPendingDelete(true);
-    try {
-      await api.deleteTransaction(selectedTransaction.id).catch();
-      setPendingDelete(false);
-    } catch (error) {
-      console.log(error.message);
-      setPendingDelete(false);
-    }
-  }, [api.deleteTransaction, selectedTransaction]);
+    await api.deleteTransaction(selectedTransaction.id).then(onDelete).catch();
+    setPendingDelete(false);
+  }, [onDelete, selectedTransaction]);
 
   const actionSheetOptions = useMemo(
     () => [
@@ -77,8 +71,6 @@ const TransactionList = props => {
       {...props}
       actionSheet={actionSheet}
       actionSheetOptions={actionSheetOptions}
-      cards={cache.cardsById}
-      categories={cache.categoriesById}
       closeDeleteDialog={closeDeleteDialog}
       deleteDialog={deleteDialog}
       deleteTransaction={deleteTransaction}
@@ -87,6 +79,10 @@ const TransactionList = props => {
       theme={theme}
     />
   );
+};
+
+TransactionList.propTypes = {
+  onDelete: PropTypes.func,
 };
 
 export default TransactionList;

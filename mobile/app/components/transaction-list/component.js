@@ -15,8 +15,6 @@ import styles from './styles';
 const TransactionListComponent = ({
   actionSheet,
   actionSheetOptions,
-  cards,
-  categories,
   closeDeleteDialog,
   contentContainerStyle,
   deleteDialog,
@@ -37,8 +35,6 @@ const TransactionListComponent = ({
   const renderItem = useCallback(
     ({ item }) => (
       <TransactionRow
-        card={cards[item.cardId]}
-        category={categories[item.categoryId]}
         key={item.id}
         onLongPress={() => {
           setSelectedTransaction(item);
@@ -47,7 +43,7 @@ const TransactionListComponent = ({
         transaction={item}
       />
     ),
-    [categories],
+    [],
   );
 
   const renderSectionHeader = useCallback(
@@ -120,8 +116,6 @@ TransactionListComponent.propTypes = {
       label: PropTypes.string.isRequired,
     }),
   ),
-  cards: PropTypes.object.isRequired,
-  categories: PropTypes.object.isRequired,
   closeDeleteDialog: PropTypes.func.isRequired,
   contentContainerStyle: ViewPropTypes.style,
   deleteDialog: PropTypes.bool.isRequired,

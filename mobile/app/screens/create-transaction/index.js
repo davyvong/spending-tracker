@@ -1,5 +1,5 @@
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
+import useStorage from 'hooks/storage';
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -8,7 +8,7 @@ import CreateTransactionScreenComponent from './component';
 
 const CreateTransactionScreen = ({ navigation, ...props }) => {
   const api = useAPI();
-  const [cache] = useCache();
+  const storage = useStorage();
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
@@ -27,12 +27,31 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
     amount: '',
     cardId: null,
     categoryId: null,
-    currencyCode: cache.account.currencyCode,
+    currencyCode: null,
     description: '',
     postDate: '',
     type: 'debit',
     vendor: '',
   });
+
+  const theme = useMemo(
+    () => ({
+      activityIndicator: palette.get('texts.button'),
+      cancelButton: {
+        backgroundColor: palette.get('backgrounds.secondary-button'),
+      },
+      cancelButtonPressed: {
+        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
+      },
+      deleteButton: {
+        backgroundColor: palette.get('backgrounds.alternate-button'),
+      },
+      serverError: {
+        color: palette.get('texts.error'),
+      },
+    }),
+    [palette],
+  );
 
   const updateValue = useCallback(
     field => value => {
@@ -66,7 +85,7 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
       }
       setPending(false);
     }
-  }, [api.createTransaction, navigation, validateValues, values]);
+  }, [navigation, validateValues, values]);
 
   const validateValues = useCallback(() => {
     const { amount, cardId, categoryId, currencyCode, postDate, type, vendor } = values;
@@ -86,25 +105,6 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
     return true;
   }, [values]);
 
-  const theme = useMemo(
-    () => ({
-      activityIndicator: palette.get('texts.button'),
-      cancelButton: {
-        backgroundColor: palette.get('backgrounds.secondary-button'),
-      },
-      cancelButtonPressed: {
-        backgroundColor: palette.get('backgrounds.secondary-button-pressed'),
-      },
-      deleteButton: {
-        backgroundColor: palette.get('backgrounds.alternate-button'),
-      },
-      serverError: {
-        color: palette.get('texts.error'),
-      },
-    }),
-    [palette],
-  );
-
   const navigateBack = useCallback(() => {
     if (discardDialog) {
       navigation.dispatch(discardDialog);
@@ -119,6 +119,21 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
 
   const openDiscardDialog = useCallback((action = false) => {
     setDiscardDialog(action);
+  }, []);
+
+  const getAccountFromStorage = useCallback(async () => {
+    const storageKey = storage.getItemKey('account');
+    const cachedAccount = await storage.getItem(storageKey);
+    if (cachedAccount) {
+      setValues(prevState => ({
+        ...prevState,
+        currencyCode: cachedAccount.currencyCode,
+      }));
+    }
+  }, []);
+
+  useEffect(() => {
+    api.getAccount().then(getAccountFromStorage).catch(getAccountFromStorage);
   }, []);
 
   useEffect(() => {

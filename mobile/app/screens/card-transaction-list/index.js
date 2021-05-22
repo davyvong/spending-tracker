@@ -1,68 +1,108 @@
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
+import useStorage from 'hooks/storage';
+import Card from 'models/card';
+import Transaction from 'models/transaction';
+import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import buildTransactionSectionMap from 'utils/build-transaction-section-map';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import CardTransactionListScreenComponent from './component';
 
-const CardTransactionListScreen = ({ route, ...props }) => {
-  const { cardId, endDate, startDate } = route.params;
+const CardTransactionListScreen = ({ navigation, route, ...props }) => {
+  const { card, endDate, startDate } = route.params;
 
   const api = useAPI();
-  const [cache] = useCache();
-  const [pending, setPending] = useState(false);
-  const [transactions, setTransactions] = useState(new Set());
+  const storage = useStorage();
+  const [refreshing, setRefreshing] = useState(false);
+  const [transactionIds, setTransactionIds] = useState(new Set());
+  const [transactionSections, setTransactionSections] = useState([]);
 
-  const card = useMemo(() => cache.cardsById[cardId], [cache.cardsById, cardId]);
+  const getTransactionsFromAPI = useCallback(async skip => {
+    let transactionList = await api.getTransactions({ cardId: card.id, endDate, startDate }, skip);
+    if (!skip) {
+      setTransactionIds(new Set(transactionList));
+      return transactionList;
+    } else {
+      setTransactionIds(prevState => {
+        const transactionSet = new Set([...prevState, ...transactionList]);
+        transactionList = Array.from(transactionSet);
+        return transactionSet;
+      });
+      return transactionList;
+    }
+  }, []);
 
-  const transactionList = useMemo(() => buildTransactionSectionMap(transactions, cache.transactionsById), [
-    cache.transactionsById,
-    transactions,
-  ]);
-
-  const getTransactionsWithoutLoading = useCallback(
-    async skip => {
-      const transactionsInCategory = await api.getTransactions({ cardId, endDate, startDate }, skip).catch();
-      if (!skip) {
-        setTransactions(new Set(transactionsInCategory.list));
-      } else {
-        setTransactions(prevState => new Set([...prevState, ...transactionsInCategory.list]));
+  const getTransactionsFromStorage = useCallback(async transactionIds => {
+    const transactionList = Array.from(transactionIds);
+    const transactionSectionMap = {};
+    for (let i = 0; i < transactionList.length; i += 1) {
+      const storageKey = storage.getItemKey('transaction', transactionList[i]);
+      const cachedTransaction = await storage.getItem(storageKey);
+      if (cachedTransaction) {
+        const transaction = new Transaction(cachedTransaction);
+        const { postDate } = transaction;
+        const section = moment(postDate, 'YYYY-MM-DD').isAfter(moment()) ? 'PENDING' : postDate;
+        if (transactionSectionMap[section]) {
+          transactionSectionMap[section].data.push(transaction);
+        } else {
+          transactionSectionMap[section] = {
+            data: [transaction],
+            section,
+          };
+        }
       }
-    },
-    [api.getTransactions, cardId, endDate, startDate],
-  );
+    }
+    setTransactionSections(Object.values(transactionSectionMap));
+  }, []);
 
   const getTransactions = useCallback(
-    async skip => {
-      setPending(true);
-      await getTransactionsWithoutLoading(skip);
-      setPending(false);
-    },
-    [getTransactionsWithoutLoading],
+    (skip = 0) =>
+      getTransactionsFromAPI(skip)
+        .then(getTransactionsFromStorage)
+        .catch(async () => {
+          const storageKey = storage.getItemKey('transactions', null, { cardId: card.id, endDate, startDate, skip });
+          const cachedTransactionIds = await storage.getItem(storageKey);
+          return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
+        }),
+    [getTransactionsFromAPI, getTransactionsFromStorage, transactionIds],
   );
 
+  const refreshTransactions = useCallback(async () => {
+    setRefreshing(true);
+    await getTransactions();
+    setRefreshing(false);
+  }, [getTransactions]);
+
   useEffect(() => {
-    getTransactionsWithoutLoading();
-  }, [getTransactionsWithoutLoading]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getTransactions();
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [getTransactions, navigation]);
 
   return (
     <CardTransactionListScreenComponent
       {...props}
       card={card}
       getTransactions={getTransactions}
-      getTransactionsWithoutLoading={getTransactionsWithoutLoading}
-      pending={pending}
-      skip={transactions.size}
-      transactions={transactionList}
+      getTransactionsFromStorage={getTransactionsFromStorage}
+      refreshing={refreshing}
+      refreshTransactions={refreshTransactions}
+      transactionIds={transactionIds}
+      transactions={transactionSections}
     />
   );
 };
 
 CardTransactionListScreen.propTypes = {
+  navigation: PropTypes.shape({
+    addListener: PropTypes.func.isRequired,
+  }),
   route: PropTypes.shape({
     params: PropTypes.shape({
-      cardId: PropTypes.string.isRequired,
+      card: Card.propTypes.isRequired,
       endDate: PropTypes.string.isRequired,
       startDate: PropTypes.string.isRequired,
     }),

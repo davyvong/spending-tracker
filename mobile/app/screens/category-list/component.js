@@ -9,7 +9,7 @@ import { View } from 'react-native';
 
 import styles from './styles';
 
-const CategoryListScreenComponent = ({ categories, getCategories, navigateToCategoryDetail, pending }) => {
+const CategoryListScreenComponent = ({ categories, navigateToCategoryDetail, refreshing, refreshCategories }) => {
   const [locale] = useLocale();
 
   return (
@@ -18,8 +18,8 @@ const CategoryListScreenComponent = ({ categories, getCategories, navigateToCate
         data={categories}
         ListStickyHeaderComponent={<Title>{locale.t(routeOptions.categoryListScreen.title)}</Title>}
         onPressItem={navigateToCategoryDetail}
-        onRefresh={getCategories}
-        refreshing={pending}
+        onRefresh={refreshCategories}
+        refreshing={refreshing}
       />
     </View>
   );
@@ -27,9 +27,9 @@ const CategoryListScreenComponent = ({ categories, getCategories, navigateToCate
 
 CategoryListScreenComponent.propTypes = {
   categories: PropTypes.arrayOf(Category.propTypes),
-  getCategories: PropTypes.func,
   navigateToCategoryDetail: PropTypes.func,
-  pending: PropTypes.bool,
+  refreshing: PropTypes.bool,
+  refreshCategories: PropTypes.func,
 };
 
 export default CategoryListScreenComponent;

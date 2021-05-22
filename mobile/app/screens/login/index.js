@@ -39,7 +39,7 @@ const LoginScreen = props => {
         setPending(false);
       }
     }
-  }, [api.signInWithEmail, setIsLoggedIn, values]);
+  }, [setIsLoggedIn, values]);
 
   const setEmail = useCallback(text => {
     setValues(prevState => ({ ...prevState, email: text }));

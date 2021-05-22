@@ -1,52 +1,76 @@
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
+import useStorage from 'hooks/storage';
+import Category from 'models/category';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import CategoryListScreenComponent from './component';
 
 const CategoryListScreen = ({ navigation, ...props }) => {
   const api = useAPI();
-  const [cache] = useCache();
-  const [pending, setPending] = useState(false);
+  const storage = useStorage();
+  const [categories, setCategories] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      api.getAllCategories().catch();
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [api.getAllCategories, navigation]);
+  const getCategoriesFromAPI = useCallback(api.getCategories, []);
 
-  const categories = useMemo(() => Object.values(cache.categoriesById).sort((a, b) => a.name > b.name), [
-    cache.categoriesById,
-  ]);
+  const getCategoriesFromStorage = useCallback(async categoryIds => {
+    let categoryList = Array.from(categoryIds);
+    for (let i = 0; i < categoryList.length; i += 1) {
+      const storageKey = storage.getItemKey('category', categoryList[i]);
+      const cachedCategory = await storage.getItem(storageKey);
+      if (cachedCategory) {
+        categoryList[i] = new Category(cachedCategory);
+      }
+    }
+    setCategories(categoryList.filter(category => category instanceof Category).sort((a, b) => a.name > b.name));
+  }, []);
 
-  const getCategories = useCallback(async () => {
-    setPending(true);
-    await api.getAllCategories().catch();
-    setPending(false);
-  }, [api.getAllCategories]);
+  const getCategories = useCallback(
+    () =>
+      getCategoriesFromAPI()
+        .then(getCategoriesFromStorage)
+        .catch(async () => {
+          const storageKey = storage.getItemKey('categories');
+          const cachedCategoryIds = await storage.getItem(storageKey);
+          return getCategoriesFromStorage([...cachedCategoryIds]);
+        }),
+    [getCategoriesFromAPI, getCategoriesFromStorage],
+  );
+
+  const refreshCategories = useCallback(async () => {
+    setRefreshing(true);
+    await getCategories();
+    setRefreshing(false);
+  }, [getCategories]);
 
   const navigateToCategoryDetail = useCallback(
     category => {
       navigation.navigate(routeOptions.categoryDetailScreen.name, {
-        categoryId: category.id,
+        category,
         title: category.name,
       });
     },
     [navigation],
   );
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getCategories();
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [getCategories, navigation]);
+
   return (
     <CategoryListScreenComponent
       {...props}
       categories={categories}
-      getCategories={getCategories}
       navigateToCategoryDetail={navigateToCategoryDetail}
-      pending={pending}
+      refreshCategories={refreshCategories}
+      refreshing={refreshing}
     />
   );
 };

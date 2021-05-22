@@ -14,11 +14,12 @@ import styles from './styles';
 
 const ActivityScreenComponent = ({
   dailySpending,
-  getSpendingAndTransactions,
-  getTransactionsWithoutLoading,
+  getTransactions,
+  getTransactionsFromStorage,
   navigateToCreateTransaction,
-  pending,
-  skip,
+  refreshing,
+  refreshTransactions,
+  transactionIds,
   transactions,
 }) => {
   const [locale] = useLocale();
@@ -38,9 +39,10 @@ const ActivityScreenComponent = ({
             <Button onPress={navigateToCreateTransaction} title={locale.t('screens.activity.buttons.create')} />
           </Fragment>
         }
-        onEndReached={() => getTransactionsWithoutLoading(skip)}
-        onRefresh={getSpendingAndTransactions}
-        refreshing={pending}
+        onDelete={() => getTransactionsFromStorage(transactionIds)}
+        onEndReached={() => getTransactions(transactionIds.skip)}
+        onRefresh={refreshTransactions}
+        refreshing={refreshing}
         sections={transactions}
       />
     </View>
@@ -53,11 +55,12 @@ ActivityScreenComponent.defaultProps = {
 
 ActivityScreenComponent.propTypes = {
   dailySpending: PropTypes.array.isRequired,
-  getSpendingAndTransactions: PropTypes.func.isRequired,
-  getTransactionsWithoutLoading: PropTypes.func.isRequired,
+  getTransactions: PropTypes.func.isRequired,
+  getTransactionsFromStorage: PropTypes.func.isRequired,
   navigateToCreateTransaction: PropTypes.func.isRequired,
-  pending: PropTypes.bool.isRequired,
-  skip: PropTypes.number.isRequired,
+  refreshing: PropTypes.bool.isRequired,
+  refreshTransactions: PropTypes.func.isRequired,
+  transactionIds: PropTypes.instanceOf(Set).isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({
       data: PropTypes.arrayOf(Transaction.propTypes).isRequired,

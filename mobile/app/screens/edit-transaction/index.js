@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
 import useTheme from 'hooks/theme';
 import pick from 'lodash/pick';
 import Transaction from 'models/transaction';
@@ -13,7 +12,6 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const { transaction = {} } = route.params;
 
   const api = useAPI();
-  const [cache] = useCache();
   const navigation = useNavigation();
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
@@ -33,7 +31,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const [values, setValues] = useState({
     cardId: null,
     categoryId: null,
-    currencyCode: cache.account.currencyCode,
+    currencyCode: null,
     description: '',
     postDate: '',
     type: 'debit',
@@ -109,7 +107,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
       }));
     }
     setPendingSave(false);
-  }, [api.updateTransaction, navigation, values]);
+  }, [navigation, values]);
 
   const closeSaveDialog = useCallback(() => {
     setSaveDialog(false);

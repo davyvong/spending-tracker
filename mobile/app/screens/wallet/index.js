@@ -1,7 +1,8 @@
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
+import useStorage from 'hooks/storage';
 import useTheme from 'hooks/theme';
+import Card from 'models/card';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -10,10 +11,10 @@ import WalletScreenComponent from './component';
 
 const WalletScreen = ({ navigation, ...props }) => {
   const api = useAPI();
-  const [cache] = useCache();
+  const storage = useStorage();
   const { palette } = useTheme();
-  const [pendingCards, setPendingCards] = useState(false);
-  const [pendingSummary, setPendingSummary] = useState(false);
+  const [cards, setCards] = useState([]);
+  const [monthlySpending, setMonthlySpending] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(moment().format('YYYY-MM'));
@@ -26,8 +27,6 @@ const WalletScreen = ({ navigation, ...props }) => {
     [palette],
   );
 
-  const cards = useMemo(() => Object.values(cache.cardsById), [cache.cardsById]);
-
   const selectedCardId = useMemo(() => {
     if (selectedCard) {
       return selectedCard.id;
@@ -35,99 +34,118 @@ const WalletScreen = ({ navigation, ...props }) => {
     return cards.length > 0 ? cards[0].id : null;
   }, [cards, selectedCard]);
 
-  const monthlySpending = useMemo(() => {
-    if (!selectedCardId || !selectedMonth) {
-      return null;
+  const getCardsFromAPI = useCallback(api.getCards, []);
+
+  const getCardsFromStorage = useCallback(async cardIds => {
+    let cardList = Array.from(cardIds);
+    for (let i = 0; i < cardList.length; i += 1) {
+      const storageKey = storage.getItemKey('card', cardList[i]);
+      const cachedCard = await storage.getItem(storageKey);
+      if (cachedCard) {
+        cardList[i] = new Card(cachedCard);
+      }
     }
-    return cache.monthlySpending[`${selectedMonth}-${selectedCardId}`];
-  }, [cache.monthlySpending, selectedCardId, selectedMonth]);
+    setCards(cardList.filter(card => card instanceof Card));
+  }, []);
 
-  const getCards = useCallback(async () => {
-    setPendingCards(true);
-    await api.getAllCards().catch();
-    setPendingCards(false);
-  }, [api.getAllCards]);
-
-  const getCardSummary = useCallback(
-    async (cardId, month) => {
-      setPendingSummary(true);
-      await api.getMonthlySpending(cardId || selectedCardId, month || selectedMonth).catch();
-      setPendingSummary(false);
-    },
-    [api.getMonthlySpending, selectedCardId, selectedMonth],
+  const getCards = useCallback(
+    () =>
+      getCardsFromAPI()
+        .then(getCardsFromStorage)
+        .catch(async () => {
+          const storageKey = storage.getItemKey('cards');
+          const cachedCardIds = await storage.getItem(storageKey);
+          return getCardsFromStorage([...cachedCardIds]);
+        }),
+    [getCardsFromAPI, getCardsFromStorage],
   );
 
-  const getCardsAndSummaryWithoutLoading = useCallback(async () => {
-    const requests = [api.getAllCards().catch()];
-    if (selectedCardId) {
-      requests.push(api.getMonthlySpending(selectedCardId, selectedMonth).catch());
+  const getMonthlySpendingFromAPI = useCallback((month, cardId) => api.getMonthlySpending(month, { cardId }), []);
+
+  const getMonthlySpendingFromStorage = useCallback(async (month, cardId) => {
+    let selectedCardId = cardId;
+    if (!selectedCardId) {
+      const storageKey = storage.getItemKey('cards');
+      const cachedCards = await storage.getItem(storageKey);
+      if (Array.isArray(cachedCards) && cachedCards.length > 0) {
+        selectedCardId = cachedCards[0];
+      }
     }
-    await Promise.all(requests);
-  }, [api.getAllCards, api.getMonthlySpending, selectedCardId, selectedMonth]);
+    if (selectedCardId) {
+      const storageKey = storage.getItemKey('monthly-spending', month, { cardId: selectedCardId });
+      const monthlySpending = await storage.getItem(storageKey);
+      setMonthlySpending(monthlySpending);
+    } else {
+      setMonthlySpending(null);
+    }
+  }, []);
 
-  const getCardsAndSummary = useCallback(async () => {
+  const getMonthlySpending = useCallback(
+    (month, cardId) =>
+      getMonthlySpendingFromAPI(month, cardId)
+        .then(() => getMonthlySpendingFromStorage(month, cardId))
+        .catch(() => getMonthlySpendingFromStorage(month, cardId)),
+    [getMonthlySpendingFromAPI, getMonthlySpendingFromStorage],
+  );
+
+  const refreshMonthlySpending = useCallback(async () => {
     setRefreshing(true);
-    await getCardsAndSummaryWithoutLoading();
+    await getMonthlySpending(selectedMonth, selectedCardId);
     setRefreshing(false);
-  }, [getCardsAndSummaryWithoutLoading]);
+  }, [getMonthlySpending, selectedCardId, selectedMonth]);
 
-  const setSelectedCardAndFetch = useCallback(
+  const setCard = useCallback(
     card => {
       setSelectedCard(card);
-      getCardSummary(card.id);
+      getMonthlySpending(selectedMonth, card.id);
     },
-    [getCardSummary],
+    [getMonthlySpending, selectedMonth],
   );
 
-  const setSelectedMonthAndFetch = useCallback(
+  const setMonth = useCallback(
     month => {
       setSelectedMonth(month);
       if (selectedCardId) {
-        getCardSummary(selectedCardId, month);
+        getMonthlySpending(month, selectedCardId);
       }
     },
-    [getCardSummary, selectedCardId],
+    [getMonthlySpending, selectedCardId],
   );
 
-  const navigateToTransactions = useCallback(() => {
-    const card = cache.cardsById[selectedCardId];
+  const navigateToTransactions = useCallback(async () => {
+    const storageKey = storage.getItemKey('card', selectedCardId);
+    const card = await storage.getItem(storageKey);
     const endDate = moment(selectedMonth).add(1, 'months');
     if (card) {
       navigation.navigate(routeOptions.cardTransactionListScreen.name, {
-        cardId: card.id,
+        card,
         endDate: endDate.format('YYYY-MM'),
         startDate: selectedMonth,
         title: card.name,
       });
     }
-  }, [cache.cardsById, selectedMonth, selectedCardId]);
-
-  useEffect(() => {
-    getCards();
-  }, []);
+  }, [selectedMonth, selectedCardId]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      getCardsAndSummaryWithoutLoading();
+      getCards().then(() => getMonthlySpending(selectedMonth, selectedCardId));
     });
     return () => {
       unsubscribe();
     };
-  }, [getCardsAndSummaryWithoutLoading, navigation]);
+  }, [getCards, getMonthlySpending, navigation, selectedCardId, selectedMonth]);
 
   return (
     <WalletScreenComponent
       {...props}
       cards={cards}
-      getCardsAndSummary={getCardsAndSummary}
       monthlySpending={monthlySpending}
       navigateToTransactions={navigateToTransactions}
-      pendingCards={pendingCards}
-      pendingSummary={pendingSummary}
       refreshing={refreshing}
+      refreshMonthlySpending={refreshMonthlySpending}
       selectedMonth={selectedMonth}
-      setSelectedCard={setSelectedCardAndFetch}
-      setSelectedMonth={setSelectedMonthAndFetch}
+      setSelectedCard={setCard}
+      setSelectedMonth={setMonth}
       theme={theme}
     />
   );

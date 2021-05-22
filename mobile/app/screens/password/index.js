@@ -91,7 +91,7 @@ const PasswordScreen = ({ navigation, ...props }) => {
       }));
     }
     setPending(false);
-  }, [api.updatePassword, navigation, validateValues, values]);
+  }, [navigation, validateValues, values]);
 
   const navigateBack = useCallback(() => {
     if (discardDialog) {

@@ -9,7 +9,11 @@ import styles from './styles';
 const MonthlySummaryComponent = ({ pending, spending, theme }) => {
   const [locale] = useLocale();
 
-  if (pending || !spending) {
+  if (!spending) {
+    return null;
+  }
+
+  if (pending) {
     return (
       <View style={[styles.container, styles.pendingContainer]}>
         <ActivityIndicator color={theme.activityIndicator} />
@@ -37,8 +41,12 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
   );
 };
 
+MonthlySummaryComponent.defaultProps = {
+  pending: false,
+};
+
 MonthlySummaryComponent.propTypes = {
-  pending: PropTypes.bool.isRequired,
+  pending: PropTypes.bool,
   spending: PropTypes.shape({
     credit: PropTypes.number,
     currencyCode: PropTypes.string,

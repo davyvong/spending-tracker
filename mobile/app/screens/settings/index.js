@@ -2,11 +2,12 @@ import { useApolloClient } from '@apollo/client';
 import { routeOptions } from 'constants/routes';
 import useAuthentication from 'hooks/authentication';
 import useAPI from 'hooks/api';
-import useCache from 'hooks/cache';
+import useStorage from 'hooks/storage';
 import useTheme from 'hooks/theme';
+import Account from 'models/account';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import SecureJWT from 'storage/jwt';
+import JWTStorageBlock from 'storage/jwt-storage-block';
 import hexToRGB from 'utils/hex-to-rgb';
 
 import SettingsScreenComponent from './component';
@@ -15,8 +16,9 @@ const SettingsScreen = ({ navigation, ...props }) => {
   const api = useAPI();
   const client = useApolloClient();
   const [, setIsLoggedIn] = useAuthentication();
-  const [cache] = useCache();
-  const { palette, ...colorScheme } = useTheme();
+  const storage = useStorage();
+  const { name: themeName, palette, setTheme } = useTheme();
+  const [account, setAccount] = useState(null);
   const [logoutDialog, setLogoutDialog] = useState(false);
 
   const theme = useMemo(
@@ -39,8 +41,38 @@ const SettingsScreen = ({ navigation, ...props }) => {
     [palette],
   );
 
+  const getAccountFromAPI = useCallback(api.getAccount, []);
+
+  const getAccountFromStorage = useCallback(async () => {
+    const storageKey = storage.getItemKey('account');
+    const cachedAccount = await storage.getItem(storageKey);
+    if (cachedAccount) {
+      const account = new Account(cachedAccount);
+      setAccount(account);
+    }
+  }, []);
+
+  const getAccount = useCallback(() => getAccountFromAPI().then(getAccountFromStorage).catch(getAccountFromStorage), [
+    getAccountFromAPI,
+    getAccountFromStorage,
+  ]);
+
+  const updateAccount = useCallback(
+    updateData => api.updateAccount(updateData).then(getAccountFromStorage).catch(getAccountFromStorage),
+    [getAccountFromStorage],
+  );
+
+  const updateTheme = useCallback(
+    async colorScheme => {
+      await updateAccount({ theme: colorScheme });
+      setTheme(colorScheme);
+    },
+    [updateAccount],
+  );
+
   const logout = useCallback(async () => {
-    await SecureJWT.delete();
+    await JWTStorageBlock.delete();
+    await storage.clear();
     client.resetStore();
     setIsLoggedIn(false);
   }, [client, setIsLoggedIn]);
@@ -63,26 +95,27 @@ const SettingsScreen = ({ navigation, ...props }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      api.getAccount().catch();
+      getAccount();
     });
     return () => {
       unsubscribe();
     };
-  }, [api.getAccount, navigation]);
+  }, [getAccount, navigation]);
 
   return (
     <SettingsScreenComponent
       {...props}
+      account={account}
       closeLogoutDialog={closeLogoutDialog}
-      colorScheme={colorScheme}
       logout={logout}
       logoutDialog={logoutDialog}
       openLogoutDialog={openLogoutDialog}
       navigateToPassword={navigateToPassword}
       navigateToProfile={navigateToProfile}
-      currencyCode={cache.account.currencyCode}
       theme={theme}
-      updateAccount={api.updateAccount}
+      themeName={themeName}
+      updateAccount={updateAccount}
+      updateTheme={updateTheme}
     />
   );
 };

@@ -1,22 +1,37 @@
 import { getColorScheme } from 'constants/color-schemes';
-import useCache from 'hooks/cache';
+import useAPI from 'hooks/api';
+import useStorage from 'hooks/storage';
 import PropTypes from 'prop-types';
-import React, { createContext, useMemo } from 'react';
+import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 
 const ThemeContext = createContext({});
 
 export const ThemeConsumer = ThemeContext.Consumer;
 
 export const ThemeProvider = ({ children }) => {
-  const [cache] = useCache();
+  const api = useAPI();
+  const storage = useStorage();
+  const [selectedTheme, setSelectedTheme] = useState('automatic');
 
   const value = useMemo(() => {
-    let scheme = getColorScheme(cache.account.theme);
+    let scheme = getColorScheme(selectedTheme);
     if (!scheme) {
       scheme = getColorScheme('automatic');
     }
-    return scheme;
-  }, [cache.account.theme]);
+    return Object.assign(scheme, { setTheme: setSelectedTheme });
+  }, [selectedTheme]);
+
+  const getThemeFromStorage = useCallback(async () => {
+    const storageKey = storage.getItemKey('account');
+    const cachedAccount = await storage.getItem(storageKey);
+    if (cachedAccount) {
+      setSelectedTheme(cachedAccount.theme);
+    }
+  }, []);
+
+  useEffect(() => {
+    api.getAccount().then(getThemeFromStorage).catch(getThemeFromStorage);
+  }, []);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
