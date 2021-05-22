@@ -63,12 +63,20 @@ const WalletScreen = ({ navigation, ...props }) => {
   const getMonthlySpendingFromAPI = useCallback((month, cardId) => api.getMonthlySpending(month, { cardId }), []);
 
   const getMonthlySpendingFromStorage = useCallback(async (month, cardId) => {
-    if (!cardId || !month) {
-      setMonthlySpending(null);
-    } else {
-      const storageKey = storage.getItemKey('monthly-spending', month, { cardId });
+    let selectedCardId = cardId;
+    if (!selectedCardId) {
+      const storageKey = storage.getItemKey('cards');
+      const cachedCards = await storage.getItem(storageKey);
+      if (Array.isArray(cachedCards) && cachedCards.length > 0) {
+        selectedCardId = cachedCards[0];
+      }
+    }
+    if (selectedCardId) {
+      const storageKey = storage.getItemKey('monthly-spending', month, { cardId: selectedCardId });
       const monthlySpending = await storage.getItem(storageKey);
       setMonthlySpending(monthlySpending);
+    } else {
+      setMonthlySpending(null);
     }
   }, []);
 
@@ -120,8 +128,7 @@ const WalletScreen = ({ navigation, ...props }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      getCards();
-      getMonthlySpending(selectedMonth, selectedCardId);
+      getCards().then(() => getMonthlySpending(selectedMonth, selectedCardId));
     });
     return () => {
       unsubscribe();
