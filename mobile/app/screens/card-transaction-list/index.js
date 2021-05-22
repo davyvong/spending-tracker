@@ -87,9 +87,10 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
       {...props}
       card={card}
       getTransactions={getTransactions}
+      getTransactionsFromStorage={getTransactionsFromStorage}
       refreshing={refreshing}
       refreshTransactions={refreshTransactions}
-      skip={transactionIds.size}
+      transactionIds={transactionIds}
       transactions={transactionSections}
     />
   );

@@ -124,10 +124,11 @@ const ActivityScreen = ({ navigation, ...props }) => {
       {...props}
       dailySpending={dailySpending}
       getTransactions={getTransactions}
+      getTransactionsFromStorage={getTransactionsFromStorage}
       navigateToCreateTransaction={navigateToCreateTransaction}
       refreshing={refreshing}
       refreshTransactions={refreshTransactions}
-      skip={transactionIds.size}
+      transactionIds={transactionIds}
       transactions={transactionSections}
     />
   );

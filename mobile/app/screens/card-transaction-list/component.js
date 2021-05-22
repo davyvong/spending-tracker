@@ -11,16 +11,18 @@ import styles from './styles';
 const CardTransactionListScreenComponent = ({
   card,
   getTransactions,
+  getTransactionsFromStorage,
   refreshing,
   refreshTransactions,
-  skip,
+  transactionIds,
   transactions,
 }) => (
   <View style={styles.container}>
     <TransactionList
       contentContainerStyle={styles.contentContainer}
       ListStickyHeaderComponent={<Title>{card?.name}</Title>}
-      onEndReached={() => getTransactions(skip)}
+      onDelete={() => getTransactionsFromStorage(transactionIds)}
+      onEndReached={() => getTransactions(transactionIds.size)}
       onRefresh={refreshTransactions}
       refreshing={refreshing}
       sections={transactions}
@@ -35,9 +37,10 @@ CardTransactionListScreenComponent.defaultProps = {
 CardTransactionListScreenComponent.propTypes = {
   card: Card.propTypes,
   getTransactions: PropTypes.func.isRequired,
+  getTransactionsFromStorage: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
   refreshTransactions: PropTypes.func.isRequired,
-  skip: PropTypes.number.isRequired,
+  transactionIds: PropTypes.instanceOf(Set).isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({
       data: PropTypes.arrayOf(Transaction.propTypes).isRequired,

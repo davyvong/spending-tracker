@@ -15,10 +15,11 @@ import styles from './styles';
 const ActivityScreenComponent = ({
   dailySpending,
   getTransactions,
+  getTransactionsFromStorage,
   navigateToCreateTransaction,
   refreshing,
   refreshTransactions,
-  skip,
+  transactionIds,
   transactions,
 }) => {
   const [locale] = useLocale();
@@ -38,7 +39,8 @@ const ActivityScreenComponent = ({
             <Button onPress={navigateToCreateTransaction} title={locale.t('screens.activity.buttons.create')} />
           </Fragment>
         }
-        onEndReached={() => getTransactions(skip)}
+        onDelete={() => getTransactionsFromStorage(transactionIds)}
+        onEndReached={() => getTransactions(transactionIds.skip)}
         onRefresh={refreshTransactions}
         refreshing={refreshing}
         sections={transactions}
@@ -54,10 +56,11 @@ ActivityScreenComponent.defaultProps = {
 ActivityScreenComponent.propTypes = {
   dailySpending: PropTypes.array.isRequired,
   getTransactions: PropTypes.func.isRequired,
+  getTransactionsFromStorage: PropTypes.func.isRequired,
   navigateToCreateTransaction: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
   refreshTransactions: PropTypes.func.isRequired,
-  skip: PropTypes.number.isRequired,
+  transactionIds: PropTypes.instanceOf(Set).isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({
       data: PropTypes.arrayOf(Transaction.propTypes).isRequired,

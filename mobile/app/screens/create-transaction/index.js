@@ -85,7 +85,7 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
       }
       setPending(false);
     }
-  }, [api.createTransaction, navigation, validateValues, values]);
+  }, [navigation, validateValues, values]);
 
   const validateValues = useCallback(() => {
     const { amount, cardId, categoryId, currencyCode, postDate, type, vendor } = values;

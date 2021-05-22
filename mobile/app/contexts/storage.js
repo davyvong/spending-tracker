@@ -21,7 +21,7 @@ export const StorageProvider = ({ children }) => {
   const deleteItem = useCallback(
     key => {
       lruCache.del(key);
-      storageManager.deleteItem(key);
+      return storageManager.deleteItem(key);
     },
     [lruCache, storageManager],
   );
@@ -65,7 +65,7 @@ export const StorageProvider = ({ children }) => {
   const setItem = useCallback(
     (key, item) => {
       lruCache.set(key, JSON.stringify(item));
-      storageManager.setItem(key, item);
+      return storageManager.setItem(key, item);
     },
     [lruCache, storageManager],
   );

@@ -87,9 +87,10 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
       {...props}
       category={category}
       getTransactions={getTransactions}
+      getTransactionsFromStorage={getTransactionsFromStorage}
       refreshing={refreshing}
       refreshTransactions={refreshTransactions}
-      skip={transactionIds.size}
+      transactionIds={transactionIds}
       transactions={transactionSections}
     />
   );

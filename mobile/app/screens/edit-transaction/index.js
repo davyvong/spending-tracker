@@ -107,7 +107,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
       }));
     }
     setPendingSave(false);
-  }, [api.updateTransaction, navigation, values]);
+  }, [navigation, values]);
 
   const closeSaveDialog = useCallback(() => {
     setSaveDialog(false);

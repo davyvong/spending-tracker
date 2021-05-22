@@ -60,7 +60,7 @@ export const APIProvider = ({ children }) => {
       });
       if (response.data?.deleteCard) {
         const storageKey = storage.getItemKey('card', cardId);
-        storage.deleteItem(storageKey);
+        await storage.deleteItem(storageKey);
       }
       return cardId;
     },
@@ -75,7 +75,7 @@ export const APIProvider = ({ children }) => {
       });
       if (response.data?.deleteTransaction) {
         const storageKey = storage.getItemKey('transaction', transactionId);
-        storage.deleteItem(storageKey);
+        await storage.deleteItem(storageKey);
       }
       return transactionId;
     },

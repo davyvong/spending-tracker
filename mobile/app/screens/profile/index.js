@@ -80,7 +80,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
       }));
     }
     setPending(false);
-  }, [api.updateProfile, navigation, validateValues, values]);
+  }, [navigation, validateValues, values]);
 
   const navigateBack = useCallback(() => {
     if (discardDialog) {
