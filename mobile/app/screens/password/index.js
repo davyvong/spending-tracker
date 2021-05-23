@@ -16,7 +16,6 @@ const PasswordScreen = ({ navigation, ...props }) => {
     confirmPassword: null,
     currentPassword: null,
     newPassword: null,
-    server: null,
   });
   const [values, setValues] = useState({
     confirmPassword: '',
@@ -29,9 +28,6 @@ const PasswordScreen = ({ navigation, ...props }) => {
       activityIndicator: palette.get('texts.button'),
       discardButton: {
         backgroundColor: palette.get('backgrounds.alternate-button'),
-      },
-      serverError: {
-        color: palette.get('texts.error'),
       },
     }),
     [palette],
@@ -53,7 +49,6 @@ const PasswordScreen = ({ navigation, ...props }) => {
       confirmPassword: null,
       currentPassword: null,
       newPassword: null,
-      server: null,
     };
     if (confirmPassword !== newPassword) {
       validationErrors.confirmPassword = 'screens.password.errors.mismatch-password';
@@ -86,7 +81,7 @@ const PasswordScreen = ({ navigation, ...props }) => {
     } else {
       setErrors(prevState => ({
         ...prevState,
-        server: 'common.unknown-error',
+        currentPassword: 'screens.password.errors.incorrect-password',
       }));
     }
     setPending(false);
