@@ -53,6 +53,7 @@ export default new Schema(
       },
     },
     updateTime: {
+      minLength: 6,
       required: true,
       type: Number,
     },
