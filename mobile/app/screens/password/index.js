@@ -62,6 +62,9 @@ const PasswordScreen = ({ navigation, ...props }) => {
     if (!newPassword) {
       validationErrors.newPassword = 'screens.password.errors.empty-new-password';
     }
+    if (newPassword.length < 6) {
+      validationErrors.newPassword = 'screens.password.errors.minimum-length';
+    }
     if (Object.values(validationErrors).some(field => field)) {
       setErrors(validationErrors);
       return false;

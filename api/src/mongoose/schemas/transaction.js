@@ -14,10 +14,11 @@ export default new Schema(
       },
     },
     amount: {
+      min: 0,
       required: true,
       type: Number,
       validate: {
-        validator: value => isNumeric(value.toString()) && value >= 0,
+        validator: value => isNumeric(value.toString()),
       },
     },
     cardId: {

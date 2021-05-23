@@ -70,6 +70,7 @@
   "screens.password.errors.empty-current-password": "The current password cannot be empty.",
   "screens.password.errors.empty-new-password": "The new password cannot be empty.",
   "screens.password.errors.incorrect-password": "The current password is incorrect.",
+  "screens.password.errors.minimum-length": "The new password should be at least 6 characters long.",
   "screens.password.errors.mismatch-password": "The confirm password and new password do not match.",
   "screens.password.labels.confirm-password": "Confirm Password",
   "screens.password.labels.current-password": "Current Password",
