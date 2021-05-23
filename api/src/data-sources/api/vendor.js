@@ -2,10 +2,6 @@ import { DataSource } from 'apollo-datasource';
 import fetch from 'node-fetch';
 
 export default class VendorDataSource extends DataSource {
-  constructor() {
-    super();
-  }
-
   initialize(config) {
     this.cache = config.cache;
     this.context = config.context;
