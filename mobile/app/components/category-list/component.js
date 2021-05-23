@@ -60,6 +60,7 @@ const CategoryListComponent = ({
             tintColor={theme.refreshControl}
           />
         }
+        removeClippedSubviews
         renderItem={renderItem}
         scrollEventThrottle={200}
       />

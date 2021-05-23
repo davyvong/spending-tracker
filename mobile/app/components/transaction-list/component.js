@@ -82,6 +82,7 @@ const TransactionListComponent = ({
               tintColor={theme.refreshControl}
             />
           }
+          removeClippedSubviews
           renderItem={renderItem}
           renderSectionHeader={renderSectionHeader}
           scrollEventThrottle={200}

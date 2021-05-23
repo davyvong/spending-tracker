@@ -42,7 +42,6 @@ const ProfileScreenComponent = ({
   return (
     <View style={styles.container}>
       <ScrollView
-        bounces={false}
         contentContainerStyle={styles.contentContainer}
         StickyHeaderComponent={<Title>{locale.t(routeOptions.profileScreen.title)}</Title>}
       >
