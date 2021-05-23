@@ -1,7 +1,6 @@
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
 import ScrollView from 'components/scroll-view';
-import Text from 'components/text';
 import TextInput from 'components/text-input';
 import Title from 'components/title';
 import { routeOptions } from 'constants/routes';
@@ -73,7 +72,6 @@ const PasswordScreenComponent = ({
           textContentType="password"
           value={values.confirmPassword}
         />
-        {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
       </ScrollView>
       <ActionDialog
         onClose={closeDiscardDialog}

@@ -16,7 +16,6 @@ const PasswordScreen = ({ navigation, ...props }) => {
     confirmPassword: null,
     currentPassword: null,
     newPassword: null,
-    server: null,
   });
   const [values, setValues] = useState({
     confirmPassword: '',
@@ -29,9 +28,6 @@ const PasswordScreen = ({ navigation, ...props }) => {
       activityIndicator: palette.get('texts.button'),
       discardButton: {
         backgroundColor: palette.get('backgrounds.alternate-button'),
-      },
-      serverError: {
-        color: palette.get('texts.error'),
       },
     }),
     [palette],
@@ -53,7 +49,6 @@ const PasswordScreen = ({ navigation, ...props }) => {
       confirmPassword: null,
       currentPassword: null,
       newPassword: null,
-      server: null,
     };
     if (confirmPassword !== newPassword) {
       validationErrors.confirmPassword = 'screens.password.errors.mismatch-password';
@@ -76,18 +71,17 @@ const PasswordScreen = ({ navigation, ...props }) => {
 
   const changePassword = useCallback(async () => {
     setPending(true);
-    try {
-      await api.updatePassword(values.currentPassword, values.newPassword);
+    const successfullyChanged = await api.updatePassword(values.currentPassword, values.newPassword).catch();
+    if (successfullyChanged) {
       navigation.dispatch({
         ignoreDiscard: true,
         payload: { count: 1 },
         type: 'POP',
       });
-    } catch (error) {
-      console.log(error.message);
+    } else {
       setErrors(prevState => ({
         ...prevState,
-        server: 'common.unknown-error',
+        currentPassword: 'screens.password.errors.incorrect-password',
       }));
     }
     setPending(false);

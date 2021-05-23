@@ -259,14 +259,16 @@ export const APIProvider = ({ children }) => {
   );
 
   const updatePassword = useCallback(
-    async (currentPassword, newPassword) =>
-      client.mutate({
+    async (currentPassword, newPassword) => {
+      const { data } = await client.mutate({
         mutation: accountsMutations.updatePassword,
         variables: {
           currentPassword,
           newPassword,
         },
-      }),
+      });
+      return Boolean(data?.updateAccount);
+    },
     [client],
   );
 

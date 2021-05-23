@@ -1,7 +1,6 @@
 import { Unauthorized } from 'http-errors';
 import jwt from 'jsonwebtoken';
 import { getCurrentTimestamp } from 'utils/date';
-import { createPassword, verifyPassword } from 'utils/password';
 
 export default {
   Mutation: {
@@ -17,12 +16,15 @@ export default {
       if (!account) {
         throw new Unauthorized();
       }
-      const verifiedPassword = await verifyPassword(args.currentPassword, account.get('passwordHash'));
+      const verifiedPassword = await context.dataSources.account.verifyPassword(
+        args.currentPassword,
+        account.get('passwordHash'),
+      );
       if (!verifiedPassword) {
         throw new Unauthorized();
       }
       try {
-        const passwordHash = await createPassword(args.newPassword);
+        const passwordHash = await context.dataSources.account.createPassword(args.newPassword);
         await context.dataSources.account.model.findOneAndUpdate(
           { _id: context.accountId },
           { passwordHash, updateTime: getCurrentTimestamp() },
@@ -44,7 +46,10 @@ export default {
       if (!account) {
         throw new Unauthorized();
       }
-      const verifiedPassword = await verifyPassword(args.password, account.get('passwordHash'));
+      const verifiedPassword = await context.dataSources.account.verifyPassword(
+        args.password,
+        account.get('passwordHash'),
+      );
       if (!verifiedPassword) {
         throw new Unauthorized();
       }
