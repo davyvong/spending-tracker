@@ -40,7 +40,6 @@ const EditTransactionScreenComponent = ({
   return (
     <View style={styles.container}>
       <ScrollView
-        bounces={false}
         contentContainerStyle={styles.contentContainer}
         keyboardShouldPersistTaps="handled"
         StickyHeaderComponent={<Title>{locale.t('screens.edit-transaction.title')}</Title>}
