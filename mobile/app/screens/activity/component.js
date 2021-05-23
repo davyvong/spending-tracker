@@ -40,7 +40,7 @@ const ActivityScreenComponent = ({
           </Fragment>
         }
         onDelete={() => getTransactionsFromStorage(transactionIds)}
-        onEndReached={() => getTransactions(transactionIds.skip)}
+        onEndReached={() => getTransactions(transactionIds.size)}
         onRefresh={refreshTransactions}
         refreshing={refreshing}
         sections={transactions}
