@@ -1,4 +1,4 @@
-import { Unauthorized } from 'http-errors';
+import { InternalServerError, Unauthorized } from 'http-errors';
 import jwt from 'jsonwebtoken';
 import { getCurrentTimestamp } from 'utils/date';
 
@@ -31,7 +31,7 @@ export default {
         );
         return true;
       } catch (error) {
-        return false;
+        throw new InternalServerError();
       }
     },
   },

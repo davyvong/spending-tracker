@@ -1,3 +1,4 @@
+import { InternalServerError } from 'http-errors';
 import { getCurrentTimestamp } from 'utils/date';
 import { buildFindOptions } from 'utils/mongo';
 
@@ -27,7 +28,7 @@ export default {
         });
         return true;
       } catch (error) {
-        return false;
+        throw new InternalServerError();
       }
     },
   },

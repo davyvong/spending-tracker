@@ -267,7 +267,7 @@ export const APIProvider = ({ children }) => {
           newPassword,
         },
       });
-      return Boolean(data?.updateAccount);
+      return Boolean(data?.updatePassword);
     },
     [client],
   );
