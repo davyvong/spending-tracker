@@ -1,7 +1,6 @@
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useState } from 'react';
-import isFunction from 'utils/is-function';
 
 import ActionDialogComponent from './component';
 
@@ -31,21 +30,21 @@ const ActionDialog = ({ onClose, primaryAction, secondaryAction, ...props }) => 
   );
 
   const onPressPrimary = useCallback(() => {
-    if (isFunction(primaryAction.onPress)) {
+    if (primaryAction.onPress instanceof Function) {
       setCallback(() => primaryAction.onPress);
     }
     onClose();
   }, [onClose, primaryAction]);
 
   const onPressSecondary = useCallback(() => {
-    if (isFunction(secondaryAction.onPress)) {
+    if (secondaryAction.onPress instanceof Function) {
       setCallback(() => secondaryAction.onPress);
     }
     onClose();
   }, [onClose, secondaryAction]);
 
   const onModalHide = useCallback(() => {
-    if (isFunction(callback)) {
+    if (callback instanceof Function) {
       callback();
       setCallback();
     }

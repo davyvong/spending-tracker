@@ -3,7 +3,6 @@ import Text from 'components/text';
 import useTheme from 'hooks/theme';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo } from 'react';
 import { TouchableOpacity } from 'react-native';
@@ -40,7 +39,7 @@ const Header = ({ navigation, previous, scene }) => {
 
   const renderRight = useCallback(() => {
     const headerRight = currOptions.headerRight || {};
-    if (isFunction(headerRight)) {
+    if (headerRight instanceof Function) {
       return headerRight();
     }
     if (isEmpty(headerRight)) {

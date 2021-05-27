@@ -56,9 +56,8 @@ const ActivityScreen = ({ navigation, ...props }) => {
       return transactionList;
     } else {
       setTransactionIds(prevState => {
-        const transactionSet = new Set([...prevState, ...transactionList]);
-        transactionList = Array.from(transactionSet);
-        return transactionSet;
+        transactionList = new Set([...prevState, ...transactionList]);
+        return transactionList;
       });
       return transactionList;
     }
@@ -94,7 +93,10 @@ const ActivityScreen = ({ navigation, ...props }) => {
         .catch(async () => {
           const storageKey = storage.getItemKey('transactions', null, { skip });
           const cachedTransactionIds = await storage.getItem(storageKey);
-          return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
+          if (skip) {
+            return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
+          }
+          return getTransactionsFromStorage(new Set(cachedTransactionIds));
         }),
     [getTransactionsFromAPI, getTransactionsFromStorage, transactionIds],
   );

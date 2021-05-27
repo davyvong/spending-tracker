@@ -3,7 +3,7 @@ import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { useCallback, useRef } from 'react';
 import { Animated, View } from 'react-native';
-import normalizeText from 'utils/normalize-text';
+import { normalizeText } from 'utils/styles';
 
 import { daysOfWeek, initialAnimatedData } from './constants';
 import styles from './styles';
