@@ -1,6 +1,6 @@
 // Source: https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 
-export default function hexToRGB(hex, alpha = null) {
+export const hexToRGB = (hex, alpha = null) => {
   const c = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!c) {
     return null;
@@ -13,4 +13,4 @@ export default function hexToRGB(hex, alpha = null) {
     return `rgba(${rgb}, ${alpha})`;
   }
   return `rgb(${rgb})`;
-}
+};

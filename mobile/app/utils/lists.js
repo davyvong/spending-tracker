@@ -1,3 +1,5 @@
+import { isFunction } from 'utils/types';
+
 // Source: https://github.com/jsoendermann/rn-section-list-get-item-layout/blob/master/index.ts
 
 export const getSectionListItemLayout = ({
@@ -10,7 +12,7 @@ export const getSectionListItemLayout = ({
   let i = 0;
   let sectionIndex = 0;
   let elementPointer = { type: 'SECTION_HEADER' };
-  let offset = typeof listHeaderHeight === 'function' ? listHeaderHeight() : listHeaderHeight;
+  let offset = isFunction(listHeaderHeight) ? listHeaderHeight() : listHeaderHeight;
 
   while (i < index) {
     switch (elementPointer.type) {

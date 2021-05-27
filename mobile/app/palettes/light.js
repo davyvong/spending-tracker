@@ -1,4 +1,4 @@
-import hexToRGB from 'utils/hex-to-rgb';
+import { hexToRGB } from 'utils/colors';
 
 export default new Map(
   Object.entries({

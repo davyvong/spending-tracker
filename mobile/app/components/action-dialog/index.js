@@ -1,7 +1,7 @@
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useState } from 'react';
-import isFunction from 'utils/is-function';
+import { isFunction } from 'utils/types';
 
 import ActionDialogComponent from './component';
 
