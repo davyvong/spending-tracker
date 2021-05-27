@@ -1,5 +1,5 @@
 import { fontFamilies } from 'constants/fonts';
-import { normalizeText } from 'utils/texts';
+import { normalizeText } from 'utils/styles';
 
 export const getCalendarTheme = palette => ({
   arrowColor: palette.get('texts.normal'),

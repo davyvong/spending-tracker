@@ -8,7 +8,7 @@ import Account from 'models/account';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import JWTStorageBlock from 'storage/jwt-storage-block';
-import { hexToRGB } from 'utils/colors';
+import { hexToRGB } from 'utils/styles';
 
 import SettingsScreenComponent from './component';
 

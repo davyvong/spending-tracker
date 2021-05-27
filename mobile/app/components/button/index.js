@@ -1,6 +1,6 @@
 import useTheme from 'hooks/theme';
 import React, { useMemo } from 'react';
-import { hexToRGB } from 'utils/colors';
+import { hexToRGB } from 'utils/styles';
 
 import ButtonComponent from './component';
 

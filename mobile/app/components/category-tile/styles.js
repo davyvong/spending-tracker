@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { normalizeText } from 'utils/texts';
+import { normalizeText } from 'utils/styles';
 
 const styles = StyleSheet.create({
   categoryTile: {

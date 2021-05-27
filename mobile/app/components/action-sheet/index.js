@@ -1,6 +1,5 @@
 import useTheme from 'hooks/theme';
 import React, { useCallback, useMemo, useState } from 'react';
-import { isFunction } from 'utils/types';
 
 import ActionSheetComponent from './component';
 
@@ -31,7 +30,7 @@ const ActionSheet = props => {
   );
 
   const onModalHide = useCallback(() => {
-    if (isFunction(callback)) {
+    if (callback instanceof Function) {
       callback();
       setCallback();
     }

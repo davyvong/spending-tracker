@@ -1,5 +1,4 @@
 import Text from 'components/text';
-import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 import { Pressable, ViewPropTypes } from 'react-native';
@@ -18,7 +17,7 @@ const ButtonComponent = ({ children, disabled, theme, title, style, ...props }) 
       } else {
         pressableStyles.push(theme.container);
       }
-      if (isFunction(style)) {
+      if (style instanceof Function) {
         pressableStyles = pressableStyles.concat(style({ pressed }));
       } else {
         pressableStyles = pressableStyles.concat(style);
