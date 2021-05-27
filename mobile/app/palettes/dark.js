@@ -12,7 +12,7 @@ export default new Map(
     'backgrounds.secondary-button-pressed': hexToRGB('#ffffff', 0.1),
     'backgrounds.selected-tab': hexToRGB('#0984e3', 0.15),
     'backgrounds.tile': hexToRGB('#a09c97', 0.15),
-    'backgrounds.wallet-card': '#ffffff',
+    'backgrounds.wallet-card': hexToRGB('#a09c97', 0.15),
     border: hexToRGB('#a09c97', 0.25),
     'charts.primary-bar': '#0984e3',
     'foregrounds.app': '#f7f9ff',
@@ -30,7 +30,7 @@ export default new Map(
     'texts.positive': '#00b894',
     'texts.primary': '#0984e3',
     'texts.secondary': '#ff6b6b',
-    'texts.wallet-primary': '#000000',
-    'texts.wallet-secondary': hexToRGB('#000000', 0.75),
+    'texts.wallet-primary': '#ffffff',
+    'texts.wallet-secondary': hexToRGB('#ffffff', 0.5),
   }),
 );
