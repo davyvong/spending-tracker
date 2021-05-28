@@ -41,7 +41,7 @@ const ActivityScreenComponent = ({
         }
         onDelete={() => getTransactionsFromStorage(transactionIds)}
         onEndReached={() => {
-          if (transactionIds.size < 200) {
+          if (transactionIds.size < 100) {
             getTransactions(transactionIds.size);
           }
         }}

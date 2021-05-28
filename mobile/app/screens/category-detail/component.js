@@ -23,7 +23,7 @@ const CategoryDetailScreenComponent = ({
       ListStickyHeaderComponent={<Title>{category?.name}</Title>}
       onDelete={() => getTransactionsFromStorage(transactionIds)}
       onEndReached={() => {
-        if (transactionIds.size < 200) {
+        if (transactionIds.size < 100) {
           getTransactions(transactionIds.size);
         }
       }}
