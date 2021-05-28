@@ -4,11 +4,11 @@ import Category from 'models/category';
 import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import CategoryDetailScreenComponent from './component';
 
-const CategoryDetailScreen = ({ navigation, route, ...props }) => {
+const CategoryDetailScreen = ({ route, ...props }) => {
   const { category } = route.params;
 
   const api = useAPI();
@@ -17,18 +17,18 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
   const [transactionIds, setTransactionIds] = useState(new Set());
   const [transactionSections, setTransactionSections] = useState([]);
 
-  const getTransactionsFromAPI = useCallback(async skip => {
+  const getTransactionsFromAPI = useCallback(async (skip = 0, reset = false) => {
     let transactionList = await api.getTransactions({ categoryId: category.id }, skip);
-    if (!skip) {
-      setTransactionIds(new Set(transactionList));
-      return transactionList;
+    if (reset) {
+      transactionList = new Set(transactionList);
+      setTransactionIds(transactionList);
     } else {
       setTransactionIds(prevState => {
         transactionList = new Set([...prevState, ...transactionList]);
         return transactionList;
       });
-      return transactionList;
     }
+    return transactionList;
   }, []);
 
   const getTransactionsFromStorage = useCallback(async transactionIds => {
@@ -56,15 +56,16 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
 
   const getTransactions = useCallback(
     (skip = 0, reset = false) =>
-      getTransactionsFromAPI(skip)
+      getTransactionsFromAPI(skip, reset)
         .then(getTransactionsFromStorage)
         .catch(async () => {
           const storageKey = storage.getItemKey('transactions', null, { categoryId: category.id, skip });
           const cachedTransactionIds = await storage.getItem(storageKey);
           if (reset) {
-            return getTransactionsFromStorage(new Set(cachedTransactionIds));
+            getTransactionsFromStorage(new Set(cachedTransactionIds));
+          } else {
+            getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
           }
-          return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
         }),
     [getTransactionsFromAPI, getTransactionsFromStorage, transactionIds],
   );
@@ -74,15 +75,6 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
     await getTransactions(0, true);
     setRefreshing(false);
   }, [getTransactions]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      getTransactions();
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [getTransactions, navigation]);
 
   return (
     <CategoryDetailScreenComponent
@@ -99,9 +91,6 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
 };
 
 CategoryDetailScreen.propTypes = {
-  navigation: PropTypes.shape({
-    addListener: PropTypes.func.isRequired,
-  }),
   route: PropTypes.shape({
     params: PropTypes.shape({
       category: Category.propTypes.isRequired,

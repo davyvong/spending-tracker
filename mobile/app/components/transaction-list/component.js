@@ -78,7 +78,6 @@ const TransactionListComponent = ({
       <View style={ScrollViewStyles.container}>
         {ListStickyHeaderComponent && <View style={ScrollViewStyles.header}>{ListStickyHeaderComponent}</View>}
         <SectionList
-          {...props}
           contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
           getItemLayout={getItemLayout}
           initialNumToRender={10}
@@ -97,6 +96,7 @@ const TransactionListComponent = ({
           renderSectionHeader={renderSectionHeader}
           scrollEventThrottle={200}
           stickySectionHeadersEnabled={false}
+          {...props}
         />
       </View>
       <ActionSheet onClose={() => setActionSheet(false)} options={actionSheetOptions} visible={actionSheet} />

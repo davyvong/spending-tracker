@@ -4,7 +4,7 @@ import useStorage from 'hooks/storage';
 import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import ActivityScreenComponent from './component';
 import { getBaseDailySpending } from './utils';
@@ -49,18 +49,18 @@ const ActivityScreen = ({ navigation, ...props }) => {
     [getDailySpendingFromAPI, getDailySpendingFromStorage],
   );
 
-  const getTransactionsFromAPI = useCallback(async skip => {
+  const getTransactionsFromAPI = useCallback(async (skip = 0, reset = false) => {
     let transactionList = await api.getTransactions(undefined, skip);
-    if (!skip) {
-      setTransactionIds(new Set(transactionList));
-      return transactionList;
+    if (reset) {
+      transactionList = new Set(transactionList);
+      setTransactionIds(transactionList);
     } else {
       setTransactionIds(prevState => {
         transactionList = new Set([...prevState, ...transactionList]);
         return transactionList;
       });
-      return transactionList;
     }
+    return transactionList;
   }, []);
 
   const getTransactionsFromStorage = useCallback(async transactionIds => {
@@ -88,15 +88,16 @@ const ActivityScreen = ({ navigation, ...props }) => {
 
   const getTransactions = useCallback(
     (skip = 0, reset = false) =>
-      getTransactionsFromAPI(skip)
+      getTransactionsFromAPI(skip, reset)
         .then(getTransactionsFromStorage)
         .catch(async () => {
           const storageKey = storage.getItemKey('transactions', null, { skip });
           const cachedTransactionIds = await storage.getItem(storageKey);
           if (reset) {
-            return getTransactionsFromStorage(new Set(cachedTransactionIds));
+            getTransactionsFromStorage(new Set(cachedTransactionIds));
+          } else {
+            getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
           }
-          return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
         }),
     [getTransactionsFromAPI, getTransactionsFromStorage, transactionIds],
   );
@@ -110,16 +111,6 @@ const ActivityScreen = ({ navigation, ...props }) => {
   const navigateToCreateTransaction = useCallback(() => {
     navigation.navigate(routeOptions.createTransactionScreen.name);
   }, [navigation]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      getDailySpending();
-      getTransactions();
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [getDailySpending, getTransactions, navigation]);
 
   return (
     <ActivityScreenComponent
