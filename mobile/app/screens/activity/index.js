@@ -1,13 +1,12 @@
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useStorage from 'hooks/storage';
-import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ActivityScreenComponent from './component';
-import { getBaseDailySpending } from './utils';
+import { getBaseDailySpending, getTransactionSections } from './utils';
 
 const ActivityScreen = ({ navigation, ...props }) => {
   const api = useAPI();
@@ -63,28 +62,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
     return transactionList;
   }, []);
 
-  const getTransactionsFromStorage = useCallback(async transactionIds => {
-    const transactionList = Array.from(transactionIds);
-    const transactionSectionMap = {};
-    for (let i = 0; i < transactionList.length; i += 1) {
-      const storageKey = storage.getItemKey('transaction', transactionList[i]);
-      const cachedTransaction = await storage.getItem(storageKey);
-      if (cachedTransaction) {
-        const transaction = new Transaction(cachedTransaction);
-        const { postDate } = transaction;
-        const section = moment(postDate, 'YYYY-MM-DD').isAfter(moment()) ? 'PENDING' : postDate;
-        if (transactionSectionMap[section]) {
-          transactionSectionMap[section].data.push(transaction);
-        } else {
-          transactionSectionMap[section] = {
-            data: [transaction],
-            section,
-          };
-        }
-      }
-    }
-    setTransactionSections(Object.values(transactionSectionMap));
-  }, []);
+  const getTransactionsFromStorage = useCallback(getTransactionSections(storage, setTransactionSections), []);
 
   const getTransactions = useCallback(
     (skip = 0, reset = false) =>
