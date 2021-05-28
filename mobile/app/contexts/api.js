@@ -181,8 +181,9 @@ export const APIProvider = ({ children }) => {
 
   const getTransactions = useCallback(
     async (filters, skip = 0) => {
+      const roundedSkip = Math.round(skip / 20) * 20;
       const variables = {
-        page: { skip },
+        page: { skip: roundedSkip },
       };
       if (filters) {
         variables.filters = filters;
@@ -207,7 +208,7 @@ export const APIProvider = ({ children }) => {
         const storageKey = storage.getItemKey('transaction', transaction.id);
         storage.setItem(storageKey, transaction);
       });
-      storageKey = storage.getItemKey('transactions', null, { ...filters, skip });
+      storageKey = storage.getItemKey('transactions', null, { ...filters, skip: roundedSkip });
       storage.setItem(storageKey, transactionIds);
       return transactionIds;
     },
