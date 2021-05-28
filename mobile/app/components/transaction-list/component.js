@@ -9,7 +9,6 @@ import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback, useRef } from 'react';
 import { RefreshControl, SectionList, View, ViewPropTypes } from 'react-native';
-import { getSectionListItemLayout } from 'utils/lists';
 
 import styles from './styles';
 
@@ -32,14 +31,6 @@ const TransactionListComponent = ({
   const ref = useRef();
 
   useScrollToTop(ref);
-
-  const getItemLayout = useCallback(
-    getSectionListItemLayout({
-      getItemHeight: () => 67,
-      getSectionHeaderHeight: () => 35,
-    }),
-    [],
-  );
 
   const renderItem = useCallback(
     ({ item }) => (
@@ -79,8 +70,6 @@ const TransactionListComponent = ({
         {ListStickyHeaderComponent && <View style={ScrollViewStyles.header}>{ListStickyHeaderComponent}</View>}
         <SectionList
           contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
-          getItemLayout={getItemLayout}
-          keyExtractor={item => item.id}
           ref={ref}
           refreshControl={
             <RefreshControl
