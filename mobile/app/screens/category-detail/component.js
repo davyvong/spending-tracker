@@ -10,23 +10,18 @@ import styles from './styles';
 
 const CategoryDetailScreenComponent = ({
   category,
-  getTransactions,
-  getTransactionsFromStorage,
+  onDeleteTransaction,
+  onListEndReached,
   refreshing,
   refreshTransactions,
-  transactionIds,
   transactions,
 }) => (
   <View style={styles.container}>
     <TransactionList
       contentContainerStyle={styles.contentContainer}
       ListStickyHeaderComponent={<Title>{category?.name}</Title>}
-      onDelete={() => getTransactionsFromStorage(transactionIds)}
-      onEndReached={() => {
-        if (transactionIds.size < 100) {
-          getTransactions(transactionIds.size);
-        }
-      }}
+      onDelete={onDeleteTransaction}
+      onEndReached={onListEndReached}
       onRefresh={refreshTransactions}
       refreshing={refreshing}
       sections={transactions}
@@ -40,11 +35,10 @@ CategoryDetailScreenComponent.defaultProps = {
 
 CategoryDetailScreenComponent.propTypes = {
   category: Category.propTypes,
-  getTransactions: PropTypes.func.isRequired,
-  getTransactionsFromStorage: PropTypes.func.isRequired,
+  onDeleteTransaction: PropTypes.func.isRequired,
+  onListEndReached: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
   refreshTransactions: PropTypes.func.isRequired,
-  transactionIds: PropTypes.instanceOf(Set).isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({
       data: PropTypes.arrayOf(Transaction.propTypes).isRequired,

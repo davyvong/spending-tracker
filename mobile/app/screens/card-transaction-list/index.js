@@ -54,6 +54,16 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
     setRefreshing(false);
   }, [getTransactions]);
 
+  const onDeleteTransaction = useCallback(() => {
+    getTransactionsFromStorage(transactionIds);
+  }, [getTransactionsFromStorage, transactionIds]);
+
+  const onListEndReached = useCallback(() => {
+    if (transactionIds.size < 100) {
+      getTransactions(transactionIds.size);
+    }
+  }, [getTransactions, transactionIds]);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getTransactions();
@@ -67,11 +77,10 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
     <CardTransactionListScreenComponent
       {...props}
       card={card}
-      getTransactions={getTransactions}
-      getTransactionsFromStorage={getTransactionsFromStorage}
+      onDeleteTransaction={onDeleteTransaction}
+      onListEndReached={onListEndReached}
       refreshing={refreshing}
       refreshTransactions={refreshTransactions}
-      transactionIds={transactionIds}
       transactions={transactionSections}
     />
   );

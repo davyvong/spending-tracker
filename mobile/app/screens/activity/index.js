@@ -90,6 +90,16 @@ const ActivityScreen = ({ navigation, ...props }) => {
     navigation.navigate(routeOptions.createTransactionScreen.name);
   }, [navigation]);
 
+  const onDeleteTransaction = useCallback(() => {
+    getTransactionsFromStorage(transactionIds);
+  }, [getTransactionsFromStorage, transactionIds]);
+
+  const onListEndReached = useCallback(() => {
+    if (transactionIds.size < 100) {
+      getTransactions(transactionIds.size);
+    }
+  }, [getTransactions, transactionIds]);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getDailySpending();
@@ -104,12 +114,11 @@ const ActivityScreen = ({ navigation, ...props }) => {
     <ActivityScreenComponent
       {...props}
       dailySpending={dailySpending}
-      getTransactions={getTransactions}
-      getTransactionsFromStorage={getTransactionsFromStorage}
+      onDeleteTransaction={onDeleteTransaction}
+      onListEndReached={onListEndReached}
       navigateToCreateTransaction={navigateToCreateTransaction}
       refreshing={refreshing}
       refreshTransactions={refreshTransactions}
-      transactionIds={transactionIds}
       transactions={transactionSections}
     />
   );

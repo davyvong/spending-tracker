@@ -14,12 +14,11 @@ import styles from './styles';
 
 const ActivityScreenComponent = ({
   dailySpending,
-  getTransactions,
-  getTransactionsFromStorage,
+  onDeleteTransaction,
+  onListEndReached,
   navigateToCreateTransaction,
   refreshing,
   refreshTransactions,
-  transactionIds,
   transactions,
 }) => {
   const [locale] = useLocale();
@@ -39,12 +38,8 @@ const ActivityScreenComponent = ({
             <Button onPress={navigateToCreateTransaction} title={locale.t('screens.activity.buttons.create')} />
           </Fragment>
         }
-        onDelete={() => getTransactionsFromStorage(transactionIds)}
-        onEndReached={() => {
-          if (transactionIds.size < 100) {
-            getTransactions(transactionIds.size);
-          }
-        }}
+        onDelete={onDeleteTransaction}
+        onEndReached={onListEndReached}
         onRefresh={refreshTransactions}
         refreshing={refreshing}
         sections={transactions}
@@ -59,12 +54,11 @@ ActivityScreenComponent.defaultProps = {
 
 ActivityScreenComponent.propTypes = {
   dailySpending: PropTypes.array.isRequired,
-  getTransactions: PropTypes.func.isRequired,
-  getTransactionsFromStorage: PropTypes.func.isRequired,
+  onDeleteTransaction: PropTypes.func.isRequired,
+  onListEndReached: PropTypes.func.isRequired,
   navigateToCreateTransaction: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
   refreshTransactions: PropTypes.func.isRequired,
-  transactionIds: PropTypes.instanceOf(Set).isRequired,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({
       data: PropTypes.arrayOf(Transaction.propTypes).isRequired,
