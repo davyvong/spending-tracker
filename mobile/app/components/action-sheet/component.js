@@ -58,7 +58,7 @@ const ActionSheetComponent = ({ onClose, onModalHide, options, setCallback, them
         <FlatList
           bounces={false}
           data={options}
-          keyExtractor={option => option.value}
+          keyExtractor={option => option.label}
           removeClippedSubviews
           renderItem={renderAction}
         />
