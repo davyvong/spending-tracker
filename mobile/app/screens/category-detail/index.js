@@ -4,11 +4,11 @@ import Category from 'models/category';
 import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import CategoryDetailScreenComponent from './component';
 
-const CategoryDetailScreen = ({ route, ...props }) => {
+const CategoryDetailScreen = ({ navigation, route, ...props }) => {
   const { category } = route.params;
 
   const api = useAPI();
@@ -76,6 +76,15 @@ const CategoryDetailScreen = ({ route, ...props }) => {
     setRefreshing(false);
   }, [getTransactions]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getTransactions();
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [getTransactions, navigation]);
+
   return (
     <CategoryDetailScreenComponent
       {...props}
@@ -91,6 +100,9 @@ const CategoryDetailScreen = ({ route, ...props }) => {
 };
 
 CategoryDetailScreen.propTypes = {
+  navigation: PropTypes.shape({
+    addListener: PropTypes.func.isRequired,
+  }),
   route: PropTypes.shape({
     params: PropTypes.shape({
       category: Category.propTypes.isRequired,

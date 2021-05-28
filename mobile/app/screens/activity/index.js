@@ -4,7 +4,7 @@ import useStorage from 'hooks/storage';
 import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import ActivityScreenComponent from './component';
 import { getBaseDailySpending } from './utils';
@@ -111,6 +111,16 @@ const ActivityScreen = ({ navigation, ...props }) => {
   const navigateToCreateTransaction = useCallback(() => {
     navigation.navigate(routeOptions.createTransactionScreen.name);
   }, [navigation]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getDailySpending();
+      getTransactions();
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [getDailySpending, getTransactions, navigation]);
 
   return (
     <ActivityScreenComponent

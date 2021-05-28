@@ -80,7 +80,6 @@ const TransactionListComponent = ({
         <SectionList
           contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
           getItemLayout={getItemLayout}
-          initialNumToRender={10}
           keyExtractor={item => item.id}
           ref={ref}
           refreshControl={

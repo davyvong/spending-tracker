@@ -4,11 +4,11 @@ import Card from 'models/card';
 import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import CardTransactionListScreenComponent from './component';
 
-const CardTransactionListScreen = ({ route, ...props }) => {
+const CardTransactionListScreen = ({ navigation, route, ...props }) => {
   const { card, endDate, startDate } = route.params;
 
   const api = useAPI();
@@ -76,6 +76,15 @@ const CardTransactionListScreen = ({ route, ...props }) => {
     setRefreshing(false);
   }, [getTransactions]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getTransactions();
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [getTransactions, navigation]);
+
   return (
     <CardTransactionListScreenComponent
       {...props}
@@ -91,6 +100,9 @@ const CardTransactionListScreen = ({ route, ...props }) => {
 };
 
 CardTransactionListScreen.propTypes = {
+  navigation: PropTypes.shape({
+    addListener: PropTypes.func.isRequired,
+  }),
   route: PropTypes.shape({
     params: PropTypes.shape({
       card: Card.propTypes.isRequired,
