@@ -27,7 +27,7 @@ export const StorageProvider = ({ children }) => {
   );
 
   const getItem = useCallback(
-    key => {
+    async key => {
       const cachedItem = lruCache.get(key);
       if (cachedItem) {
         return JSON.parse(cachedItem);

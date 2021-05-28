@@ -1,3 +1,4 @@
+import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 
 export const getBaseDailySpending = dayCount => {
@@ -13,4 +14,27 @@ export const getBaseDailySpending = dayCount => {
     currentDate.add(1, 'days');
   }
   return dailySpendingList;
+};
+
+export const getTransactionSections = (storage, callback) => async transactionIds => {
+  const transactionList = Array.from(transactionIds);
+  const transactionSectionMap = {};
+  for (let i = 0; i < transactionList.length; i += 1) {
+    const storageKey = storage.getItemKey('transaction', transactionList[i]);
+    const cachedTransaction = await storage.getItem(storageKey);
+    if (cachedTransaction) {
+      const transaction = new Transaction(cachedTransaction);
+      const { postDate } = transaction;
+      const section = moment(postDate, 'YYYY-MM-DD').isAfter(moment()) ? 'PENDING' : postDate;
+      if (transactionSectionMap[section]) {
+        transactionSectionMap[section].data.push(transaction);
+      } else {
+        transactionSectionMap[section] = {
+          data: [transaction],
+          section,
+        };
+      }
+    }
+  }
+  callback(Object.values(transactionSectionMap));
 };

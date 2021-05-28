@@ -1,13 +1,12 @@
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useStorage from 'hooks/storage';
-import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ActivityScreenComponent from './component';
-import { getBaseDailySpending } from './utils';
+import { getBaseDailySpending, getTransactionSections } from './utils';
 
 const ActivityScreen = ({ navigation, ...props }) => {
   const api = useAPI();
@@ -49,67 +48,57 @@ const ActivityScreen = ({ navigation, ...props }) => {
     [getDailySpendingFromAPI, getDailySpendingFromStorage],
   );
 
-  const getTransactionsFromAPI = useCallback(async skip => {
+  const getTransactionsFromAPI = useCallback(async (skip = 0, reset = false) => {
     let transactionList = await api.getTransactions(undefined, skip);
-    if (!skip) {
-      setTransactionIds(new Set(transactionList));
-      return transactionList;
+    if (reset) {
+      transactionList = new Set(transactionList);
+      setTransactionIds(transactionList);
     } else {
       setTransactionIds(prevState => {
         transactionList = new Set([...prevState, ...transactionList]);
         return transactionList;
       });
-      return transactionList;
     }
+    return transactionList;
   }, []);
 
-  const getTransactionsFromStorage = useCallback(async transactionIds => {
-    const transactionList = Array.from(transactionIds);
-    const transactionSectionMap = {};
-    for (let i = 0; i < transactionList.length; i += 1) {
-      const storageKey = storage.getItemKey('transaction', transactionList[i]);
-      const cachedTransaction = await storage.getItem(storageKey);
-      if (cachedTransaction) {
-        const transaction = new Transaction(cachedTransaction);
-        const { postDate } = transaction;
-        const section = moment(postDate, 'YYYY-MM-DD').isAfter(moment()) ? 'PENDING' : postDate;
-        if (transactionSectionMap[section]) {
-          transactionSectionMap[section].data.push(transaction);
-        } else {
-          transactionSectionMap[section] = {
-            data: [transaction],
-            section,
-          };
-        }
-      }
-    }
-    setTransactionSections(Object.values(transactionSectionMap));
-  }, []);
+  const getTransactionsFromStorage = useCallback(getTransactionSections(storage, setTransactionSections), []);
 
   const getTransactions = useCallback(
-    (skip = 0) =>
-      getTransactionsFromAPI(skip)
+    (skip = 0, reset = false) =>
+      getTransactionsFromAPI(skip, reset)
         .then(getTransactionsFromStorage)
         .catch(async () => {
           const storageKey = storage.getItemKey('transactions', null, { skip });
           const cachedTransactionIds = await storage.getItem(storageKey);
-          if (skip) {
-            return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
+          if (reset) {
+            getTransactionsFromStorage(new Set(cachedTransactionIds));
+          } else {
+            getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
           }
-          return getTransactionsFromStorage(new Set(cachedTransactionIds));
         }),
     [getTransactionsFromAPI, getTransactionsFromStorage, transactionIds],
   );
 
   const refreshTransactions = useCallback(async () => {
     setRefreshing(true);
-    await Promise.all([getDailySpending(), getTransactions()]);
+    await Promise.all([getDailySpending(), getTransactions(0, true)]);
     setRefreshing(false);
   }, [getDailySpending, getTransactions]);
 
   const navigateToCreateTransaction = useCallback(() => {
     navigation.navigate(routeOptions.createTransactionScreen.name);
   }, [navigation]);
+
+  const onDeleteTransaction = useCallback(() => {
+    getTransactionsFromStorage(transactionIds);
+  }, [getTransactionsFromStorage, transactionIds]);
+
+  const onListEndReached = useCallback(() => {
+    if (transactionIds.size < 100) {
+      getTransactions(transactionIds.size);
+    }
+  }, [getTransactions, transactionIds]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -125,12 +114,11 @@ const ActivityScreen = ({ navigation, ...props }) => {
     <ActivityScreenComponent
       {...props}
       dailySpending={dailySpending}
-      getTransactions={getTransactions}
-      getTransactionsFromStorage={getTransactionsFromStorage}
+      onDeleteTransaction={onDeleteTransaction}
+      onListEndReached={onListEndReached}
       navigateToCreateTransaction={navigateToCreateTransaction}
       refreshing={refreshing}
       refreshTransactions={refreshTransactions}
-      transactionIds={transactionIds}
       transactions={transactionSections}
     />
   );
