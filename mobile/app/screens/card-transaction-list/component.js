@@ -22,7 +22,11 @@ const CardTransactionListScreenComponent = ({
       contentContainerStyle={styles.contentContainer}
       ListStickyHeaderComponent={<Title>{card?.name}</Title>}
       onDelete={() => getTransactionsFromStorage(transactionIds)}
-      onEndReached={() => getTransactions(transactionIds.size)}
+      onEndReached={() => {
+        if (transactionIds.size < 200) {
+          getTransactions(transactionIds.size);
+        }
+      }}
       onRefresh={refreshTransactions}
       refreshing={refreshing}
       sections={transactions}
