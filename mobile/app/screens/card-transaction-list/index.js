@@ -24,9 +24,8 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
       return transactionList;
     } else {
       setTransactionIds(prevState => {
-        const transactionSet = new Set([...prevState, ...transactionList]);
-        transactionList = Array.from(transactionSet);
-        return transactionSet;
+        transactionList = new Set([...prevState, ...transactionList]);
+        return transactionList;
       });
       return transactionList;
     }
@@ -56,12 +55,15 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
   }, []);
 
   const getTransactions = useCallback(
-    (skip = 0) =>
+    (skip = 0, reset = false) =>
       getTransactionsFromAPI(skip)
         .then(getTransactionsFromStorage)
         .catch(async () => {
           const storageKey = storage.getItemKey('transactions', null, { cardId: card.id, endDate, startDate, skip });
           const cachedTransactionIds = await storage.getItem(storageKey);
+          if (reset) {
+            return getTransactionsFromStorage(new Set(cachedTransactionIds));
+          }
           return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
         }),
     [getTransactionsFromAPI, getTransactionsFromStorage, transactionIds],
@@ -69,7 +71,7 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
 
   const refreshTransactions = useCallback(async () => {
     setRefreshing(true);
-    await getTransactions();
+    await getTransactions(0, true);
     setRefreshing(false);
   }, [getTransactions]);
 

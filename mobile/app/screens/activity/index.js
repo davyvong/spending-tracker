@@ -87,23 +87,23 @@ const ActivityScreen = ({ navigation, ...props }) => {
   }, []);
 
   const getTransactions = useCallback(
-    (skip = 0) =>
+    (skip = 0, reset = false) =>
       getTransactionsFromAPI(skip)
         .then(getTransactionsFromStorage)
         .catch(async () => {
           const storageKey = storage.getItemKey('transactions', null, { skip });
           const cachedTransactionIds = await storage.getItem(storageKey);
-          if (skip) {
-            return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
+          if (reset) {
+            return getTransactionsFromStorage(new Set(cachedTransactionIds));
           }
-          return getTransactionsFromStorage(new Set(cachedTransactionIds));
+          return getTransactionsFromStorage(new Set([...transactionIds, ...cachedTransactionIds]));
         }),
     [getTransactionsFromAPI, getTransactionsFromStorage, transactionIds],
   );
 
   const refreshTransactions = useCallback(async () => {
     setRefreshing(true);
-    await Promise.all([getDailySpending(), getTransactions()]);
+    await Promise.all([getDailySpending(), getTransactions(0, true)]);
     setRefreshing(false);
   }, [getDailySpending, getTransactions]);
 
