@@ -181,7 +181,7 @@ export const APIProvider = ({ children }) => {
 
   const getTransactions = useCallback(
     async (filters, skip = 0) => {
-      const roundedSkip = Math.round(skip / 20) * 20;
+      const roundedSkip = Math.floor(skip / 20) * 20;
       const variables = {
         page: { skip: roundedSkip },
       };
