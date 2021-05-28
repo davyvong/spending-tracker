@@ -70,6 +70,7 @@ const TransactionListComponent = ({
         {ListStickyHeaderComponent && <View style={ScrollViewStyles.header}>{ListStickyHeaderComponent}</View>}
         <SectionList
           contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
+          maxToRenderPerBatch={5}
           ref={ref}
           refreshControl={
             <RefreshControl
@@ -84,6 +85,7 @@ const TransactionListComponent = ({
           renderSectionHeader={renderSectionHeader}
           scrollEventThrottle={200}
           stickySectionHeadersEnabled={false}
+          windowSize={7}
           {...props}
         />
       </View>
