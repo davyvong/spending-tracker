@@ -45,7 +45,7 @@ const currencyMap = {
 
 export const getCurrency = currencyCode => currencyMap[currencyCode];
 
-export const getSupportedCurrencies = () => ['AUD', 'CAD', 'CHF', 'CNY', 'EUR', 'GBP', 'JPY', 'USD'];
+export const getSupportedCurrencies = () => ['AUD', 'BTC', 'CAD', 'CHF', 'CNY', 'ETH', 'EUR', 'GBP', 'JPY', 'USD'];
 
 export const currencyOptions = getSupportedCurrencies().map(currencyCode => {
   const currency = getCurrency(currencyCode);
