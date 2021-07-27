@@ -19,7 +19,11 @@ const CardTransactionListScreenComponent = ({
   <View style={styles.container}>
     <TransactionList
       contentContainerStyle={styles.contentContainer}
-      ListStickyHeaderComponent={<Title>{card?.name}</Title>}
+      ListStickyHeaderComponent={
+        <Title>
+          {card?.company} {card?.name}
+        </Title>
+      }
       onDelete={onDeleteTransaction}
       onEndReached={onListEndReached}
       onRefresh={refreshTransactions}

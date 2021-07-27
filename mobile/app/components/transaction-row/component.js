@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Text from 'components/text';
+import { getCurrency } from 'constants/currencies';
 import useLocale from 'hooks/locale';
 import Card from 'models/card';
 import Category from 'models/category';
@@ -14,7 +15,8 @@ const TransactionRowComponent = ({ card, category, theme, transaction, ...props 
   const [locale] = useLocale();
 
   const transactionAmount = useMemo(() => {
-    const amount = locale.toCurrency(transaction.amount, { unit: '' });
+    const currency = getCurrency(transaction.currencyCode);
+    const amount = locale.toCurrency(transaction.amount, { precision: currency?.precision, unit: '' });
     if (transaction.amount === 0) {
       return amount;
     }

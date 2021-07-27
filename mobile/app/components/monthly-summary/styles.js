@@ -16,12 +16,16 @@ const styles = StyleSheet.create({
   statisticCard: {
     borderRadius: 5,
     flex: 1,
+    justifyContent: 'center',
     marginHorizontal: 6,
     padding: 12,
   },
   statisticAmount: {
     fontSize: normalizeText(16),
     marginTop: 6,
+  },
+  statisticAmountSmall: {
+    fontSize: normalizeText(14),
   },
   statisticCurrency: {
     fontSize: normalizeText(12),
