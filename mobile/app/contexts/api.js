@@ -131,9 +131,11 @@ export const APIProvider = ({ children }) => {
         variables: { endDate, startDate },
       });
       await Promise.all(
-        data.dailySpending.map(spending => {
-          const storageKey = storage.getItemKey('daily-spending', spending.date);
-          return storage.setItem(storageKey, spending);
+        data.dailySpending.map(currencySpending => {
+          const storageKey = storage.getItemKey('daily-spending', currencySpending.date, {
+            currencyCode: currencySpending.currencyCode,
+          });
+          return storage.setItem(storageKey, currencySpending);
         }),
       );
     },
@@ -151,14 +153,12 @@ export const APIProvider = ({ children }) => {
         },
       });
       await Promise.all(
-        data.monthlySpending.map(spending => {
-          if (filters?.cardId) {
-            const storageKey = storage.getItemKey('monthly-spending', spending.date, filters);
-            return storage.setItem(storageKey, spending);
-          } else {
-            const storageKey = storage.getItemKey('monthly-spending', spending.date);
-            return storage.setItem(storageKey, spending);
-          }
+        data.monthlySpending.map(currencySpending => {
+          const storageKey = storage.getItemKey('monthly-spending', currencySpending.date, {
+            ...(filters?.cardId ? filters : {}),
+            currencyCode: currencySpending.currencyCode,
+          });
+          return storage.setItem(storageKey, currencySpending);
         }),
       );
     },
