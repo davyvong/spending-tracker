@@ -38,7 +38,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
     type: 'debit',
     vendor: '',
     ...transaction,
-    amount: transaction.amount.toFixed(getCurrency(transaction?.currencyCode)?.precision) || '',
+    amount: transaction?.amount?.toFixed(getCurrency(transaction?.currencyCode)?.precision) || '',
   });
 
   const theme = useMemo(

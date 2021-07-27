@@ -1,3 +1,4 @@
+import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useStorage from 'hooks/storage';
 import Category from 'models/category';
@@ -64,6 +65,10 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
     }
   }, [getTransactions, transactionIds]);
 
+  const navigateToCreateTransaction = useCallback(() => {
+    navigation.navigate(routeOptions.createTransactionScreen.name, { transaction: { categoryId: category.id } });
+  }, [navigation]);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getTransactions();
@@ -77,10 +82,12 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
     <CategoryDetailScreenComponent
       {...props}
       category={category}
+      navigateToCreateTransaction={navigateToCreateTransaction}
       onDeleteTransaction={onDeleteTransaction}
       onListEndReached={onListEndReached}
       refreshing={refreshing}
       refreshTransactions={refreshTransactions}
+      setNavigationOptions={navigation.setOptions}
       transactions={transactionSections}
     />
   );
@@ -89,6 +96,8 @@ const CategoryDetailScreen = ({ navigation, route, ...props }) => {
 CategoryDetailScreen.propTypes = {
   navigation: PropTypes.shape({
     addListener: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }),
   route: PropTypes.shape({
     params: PropTypes.shape({
