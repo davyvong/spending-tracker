@@ -92,7 +92,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
   }, [getDailySpending, getTransactions]);
 
   const navigateToCreateTransaction = useCallback(() => {
-    navigation.navigate(routeOptions.createTransactionScreen.name);
+    navigation.navigate(routeOptions.createTransactionScreen.name, { transaction: {} });
   }, [navigation]);
 
   const onDeleteTransaction = useCallback(() => {

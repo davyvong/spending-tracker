@@ -5,6 +5,7 @@ import useLocale from 'hooks/locale';
 import React from 'react';
 import CategoryDetailScreen from 'screens/category-detail';
 import CategoryListScreen from 'screens/category-list';
+import CreateTransactionScreen from 'screens/create-transaction';
 import EditTransactionScreen from 'screens/edit-transaction';
 
 const Stack = createStackNavigator();
@@ -35,6 +36,15 @@ const CategoriesNavigator = () => {
         component={CategoryDetailScreen}
         name={routeOptions.categoryDetailScreen.name}
         options={routeOptions.categoryDetailScreen}
+        unmountOnBlur
+      />
+      <Stack.Screen
+        component={CreateTransactionScreen}
+        name={routeOptions.createTransactionScreen.name}
+        options={{
+          ...routeOptions.createTransactionScreen,
+          title: locale.t(routeOptions.createTransactionScreen.title),
+        }}
         unmountOnBlur
       />
       <Stack.Screen
