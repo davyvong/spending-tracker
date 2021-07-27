@@ -34,7 +34,16 @@ const ActivityScreen = ({ navigation, ...props }) => {
         date: stateDailySpending.date,
       });
       const cachedDailySpending = await storage.getItem(storageKey);
-      dailySpendingList.push(cachedDailySpending || stateDailySpending);
+      if (cachedDailySpending) {
+        dailySpendingList.push(cachedDailySpending);
+      } else {
+        dailySpendingList.push({
+          credit: 0,
+          currencyCode: account?.currencyCode,
+          date: stateDailySpending.date,
+          debit: 0,
+        });
+      }
     }
     setDailySpending(dailySpendingList);
   }, [dailySpending]);
