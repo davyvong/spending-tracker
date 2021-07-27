@@ -133,10 +133,10 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
     if (cachedAccount) {
       setValues(prevState => ({
         ...prevState,
-        currencyCode: cachedAccount.currencyCode,
+        currencyCode: transaction.currencyCode || cachedAccount.currencyCode,
       }));
     }
-  }, []);
+  }, [transaction]);
 
   useEffect(() => {
     api.getAccount().then(getAccountFromStorage).catch(getAccountFromStorage);
