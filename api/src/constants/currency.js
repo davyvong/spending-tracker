@@ -3,6 +3,10 @@ const currencyMap = {
     id: 'AUD',
     name: 'Australian Dollar',
   },
+  BTC: {
+    id: 'BTC',
+    name: 'Bitcoin',
+  },
   CAD: {
     id: 'CAD',
     name: 'Canadian Dollar',
@@ -14,6 +18,10 @@ const currencyMap = {
   CNY: {
     id: 'CNY',
     name: 'Chinese Yuan',
+  },
+  ETH: {
+    id: 'ETH',
+    name: 'Ethereum',
   },
   EUR: {
     id: 'EUR',

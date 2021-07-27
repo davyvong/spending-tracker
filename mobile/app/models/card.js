@@ -4,6 +4,7 @@ export default class Card {
   static propTypes = PropTypes.shape({
     color: PropTypes.string,
     company: PropTypes.string,
+    currencyCode: PropTypes.string,
     name: PropTypes.string,
     id: PropTypes.string,
     type: PropTypes.string,

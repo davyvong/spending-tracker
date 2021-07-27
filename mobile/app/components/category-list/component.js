@@ -49,6 +49,7 @@ const CategoryListComponent = ({
         {...props}
         contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
         data={categoriesWithIcons}
+        keyExtractor={(item, index) => item?.id || `item-${index}`}
         numColumns={2}
         ref={ref}
         refreshControl={

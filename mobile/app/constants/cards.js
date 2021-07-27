@@ -11,6 +11,10 @@ const cardTypeMap = {
     id: 'creditCard',
     name: 'Credit Card',
   },
+  cryptoWallet: {
+    id: 'cryptoWallet',
+    name: 'Crypto Wallet',
+  },
   lineOfCredit: {
     id: 'lineOfCredit',
     name: 'Line of Credit',

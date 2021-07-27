@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { getCurrency } from 'constants/currencies';
 import useAPI from 'hooks/api';
 import useTheme from 'hooks/theme';
 import pick from 'lodash/pick';
@@ -37,7 +38,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
     type: 'debit',
     vendor: '',
     ...transaction,
-    amount: !transaction.amount && transaction.amount !== 0 ? '' : String(transaction.amount),
+    amount: transaction?.amount?.toFixed(getCurrency(transaction?.currencyCode)?.precision) || '',
   });
 
   const theme = useMemo(

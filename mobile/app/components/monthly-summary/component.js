@@ -1,13 +1,16 @@
 import Text from 'components/text';
+import { getCurrency } from 'constants/currencies';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import styles from './styles';
 
 const MonthlySummaryComponent = ({ pending, spending, theme }) => {
   const [locale] = useLocale();
+
+  const currency = useMemo(() => getCurrency(spending?.currencyCode), [spending]);
 
   if (!spending) {
     return null;
@@ -24,16 +27,20 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
   return (
     <View style={[styles.container, styles.statisticRow]}>
       <View style={[styles.statisticCard, theme.statisticCard]}>
-        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.credit')}</Text>
-        <Text style={styles.statisticAmount}>
-          {locale.toCurrency(spending.credit, { precision: 2, unit: '' })}{' '}
+        <Text style={theme.statisticLabel}>
+          {locale.t(`components.monthly-summary.labels.${currency?.cryptocurrency ? 'deposits' : 'credit'}`)}
+        </Text>
+        <Text style={[styles.statisticAmount, currency?.cryptocurrency && styles.statisticAmountSmall]}>
+          {locale.toCurrency(spending.credit, { precision: currency?.precision, unit: '' })}{' '}
           <Text style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currencyCode}</Text>
         </Text>
       </View>
       <View style={[styles.statisticCard, theme.statisticCard]}>
-        <Text style={theme.statisticLabel}>{locale.t('components.monthly-summary.labels.debit')}</Text>
-        <Text style={styles.statisticAmount}>
-          {locale.toCurrency(spending.debit, { precision: 2, unit: '' })}{' '}
+        <Text style={theme.statisticLabel}>
+          {locale.t(`components.monthly-summary.labels.${currency?.cryptocurrency ? 'withdrawals' : 'debit'}`)}
+        </Text>
+        <Text style={[styles.statisticAmount, currency?.cryptocurrency && styles.statisticAmountSmall]}>
+          {locale.toCurrency(spending.debit, { precision: currency?.precision, unit: '' })}{' '}
           <Text style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currencyCode}</Text>
         </Text>
       </View>

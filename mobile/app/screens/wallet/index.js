@@ -73,7 +73,13 @@ const WalletScreen = ({ navigation, ...props }) => {
       }
     }
     if (selectedCardId) {
-      const storageKey = storage.getItemKey('monthly-spending', month, { cardId: selectedCardId });
+      let storageKey = storage.getItemKey('card', selectedCardId);
+      const selectedCard = await storage.getItem(storageKey);
+      storageKey = storage.getItemKey('monthly-spending', null, {
+        cardId: selectedCardId,
+        currencyCode: selectedCard?.currencyCode,
+        month,
+      });
       const monthlySpending = await storage.getItem(storageKey);
       setMonthlySpending(monthlySpending);
     } else {

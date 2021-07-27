@@ -5,17 +5,17 @@ import { Appearance } from 'react-native-appearance';
 const colorSchemeMap = {
   automatic: {
     id: 'automatic',
-    name: 'Automatic OS',
+    name: 'common.color-schemes.automatic',
   },
   dark: {
     id: 'dark',
-    name: 'Dark',
+    name: 'common.color-schemes.dark',
     palette: darkPalette,
     statusBar: 'light',
   },
   light: {
     id: 'light',
-    name: 'Light',
+    name: 'common.color-schemes.light',
     palette: lightPalette,
     statusBar: 'dark',
   },

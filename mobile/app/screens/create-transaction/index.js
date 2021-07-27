@@ -1,12 +1,16 @@
+import { getCurrency } from 'constants/currencies';
 import useAPI from 'hooks/api';
 import useStorage from 'hooks/storage';
 import useTheme from 'hooks/theme';
+import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import CreateTransactionScreenComponent from './component';
 
-const CreateTransactionScreen = ({ navigation, ...props }) => {
+const CreateTransactionScreen = ({ navigation, route, ...props }) => {
+  const { transaction = {} } = route.params;
+
   const api = useAPI();
   const storage = useStorage();
   const { palette } = useTheme();
@@ -32,6 +36,8 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
     postDate: '',
     type: 'debit',
     vendor: '',
+    ...transaction,
+    amount: transaction?.amount?.toFixed(getCurrency(transaction?.currencyCode)?.precision) || '',
   });
 
   const theme = useMemo(
@@ -127,10 +133,10 @@ const CreateTransactionScreen = ({ navigation, ...props }) => {
     if (cachedAccount) {
       setValues(prevState => ({
         ...prevState,
-        currencyCode: cachedAccount.currencyCode,
+        currencyCode: transaction.currencyCode || cachedAccount.currencyCode,
       }));
     }
-  }, []);
+  }, [transaction]);
 
   useEffect(() => {
     api.getAccount().then(getAccountFromStorage).catch(getAccountFromStorage);
@@ -173,6 +179,11 @@ CreateTransactionScreen.propTypes = {
     dispatch: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
     setOptions: PropTypes.func.isRequired,
+  }),
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      transaction: Transaction.propTypes,
+    }),
   }),
 };
 

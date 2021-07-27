@@ -32,20 +32,20 @@ const ActivityNavigator = () => {
         }}
       />
       <Stack.Screen
-        component={EditTransactionScreen}
-        name={routeOptions.editTransactionScreen.name}
-        options={{
-          ...routeOptions.editTransactionScreen,
-          title: locale.t(routeOptions.editTransactionScreen.title),
-        }}
-        unmountOnBlur
-      />
-      <Stack.Screen
         component={CreateTransactionScreen}
         name={routeOptions.createTransactionScreen.name}
         options={{
           ...routeOptions.createTransactionScreen,
           title: locale.t(routeOptions.createTransactionScreen.title),
+        }}
+        unmountOnBlur
+      />
+      <Stack.Screen
+        component={EditTransactionScreen}
+        name={routeOptions.editTransactionScreen.name}
+        options={{
+          ...routeOptions.editTransactionScreen,
+          title: locale.t(routeOptions.editTransactionScreen.title),
         }}
         unmountOnBlur
       />

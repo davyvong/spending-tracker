@@ -1,4 +1,3 @@
-import { getCurrency } from 'constants/currency';
 import { BadRequest } from 'http-errors';
 import moment from 'moment-timezone';
 import { getDateStringFromMoment, getMonthStringFromMoment } from 'utils/date';
@@ -7,7 +6,7 @@ export default {
   Query: {
     dailySpending: async (parent, args, context) => {
       const account = await context.dataSources.account.findOneById(context.accountId);
-      if (!account || !getCurrency(account.currencyCode)) {
+      if (!account) {
         throw new BadRequest();
       }
       const startDate = moment(args.startDate, 'YYYY-MM-DD', true);
@@ -35,36 +34,38 @@ export default {
           query.cardId = cardId;
         }
       }
-      let transactions = await context.dataSources.transaction.model.find(query);
-      if (transactions.some(transaction => transaction.currencyCode !== account.currencyCode)) {
-        transactions = await context.dataSources.currency.convert(transactions, account.currencyCode);
-      }
-      const dailySpending = Array(countOfDays + 1)
-        .fill(null)
-        .reduce((map, item, index) => {
-          let dateString = moment(endDate);
-          dateString.subtract(countOfDays - index, 'days');
-          dateString = getDateStringFromMoment(dateString);
-          map[dateString] = {
-            credit: 0,
-            currencyCode: account.currencyCode,
-            date: dateString,
-            debit: 0,
-          };
-          return map;
-        }, {});
+      const transactions = await context.dataSources.transaction.model.find(query);
+      let dailySpending = {};
       transactions.forEach(transaction => {
-        if (transaction.type === 'credit') {
-          dailySpending[transaction.postDate].credit += transaction.amount;
-        } else if (transaction.type === 'debit') {
-          dailySpending[transaction.postDate].debit += transaction.amount;
+        if (!dailySpending[transaction.currencyCode]) {
+          dailySpending[transaction.currencyCode] = {
+            currencyCode: transaction.currencyCode,
+            spending: Array(countOfDays + 1)
+              .fill(null)
+              .reduce((map, item, index) => {
+                let dateString = moment(endDate);
+                dateString.subtract(countOfDays - index, 'days');
+                dateString = getDateStringFromMoment(dateString);
+                map[dateString] = {
+                  credit: 0,
+                  date: dateString,
+                  debit: 0,
+                };
+                return map;
+              }, {}),
+          };
         }
+        dailySpending[transaction.currencyCode].spending[transaction.postDate][transaction.type] += transaction.amount;
       });
-      return Object.values(dailySpending);
+      dailySpending = Object.values(dailySpending);
+      for (let i = 0; i < dailySpending.length; i++) {
+        dailySpending[i].spending = Object.values(dailySpending[i].spending);
+      }
+      return dailySpending;
     },
     monthlySpending: async (parent, args, context) => {
       const account = await context.dataSources.account.findOneById(context.accountId);
-      if (!account || !getCurrency(account.currencyCode)) {
+      if (!account) {
         throw new BadRequest();
       }
       const startMonth = moment(args.startMonth, 'YYYY-MM', true);
@@ -94,34 +95,36 @@ export default {
           query.cardId = cardId;
         }
       }
-      let transactions = await context.dataSources.transaction.model.find(query);
-      if (transactions.some(transaction => transaction.currencyCode !== account.currencyCode)) {
-        transactions = await context.dataSources.currency.convert(transactions, account.currencyCode);
-      }
-      const monthlySpending = Array(countOfMonths + 1)
-        .fill(null)
-        .reduce((map, item, index) => {
-          let monthString = moment(endMonth);
-          monthString.subtract(countOfMonths - index, 'months');
-          monthString = getMonthStringFromMoment(monthString);
-          map[monthString] = {
-            credit: 0,
-            currencyCode: account.currencyCode,
-            date: monthString,
-            debit: 0,
-          };
-          return map;
-        }, {});
+      const transactions = await context.dataSources.transaction.model.find(query);
+      let monthlySpending = {};
       transactions.forEach(transaction => {
+        if (!monthlySpending[transaction.currencyCode]) {
+          monthlySpending[transaction.currencyCode] = {
+            currencyCode: transaction.currencyCode,
+            spending: Array(countOfMonths + 1)
+              .fill(null)
+              .reduce((map, item, index) => {
+                let monthString = moment(endMonth);
+                monthString.subtract(countOfMonths - index, 'months');
+                monthString = getMonthStringFromMoment(monthString);
+                map[monthString] = {
+                  credit: 0,
+                  date: monthString,
+                  debit: 0,
+                };
+                return map;
+              }, {}),
+          };
+        }
         let monthString = moment(transaction.postDate);
         monthString = getMonthStringFromMoment(monthString);
-        if (transaction.type === 'credit') {
-          monthlySpending[monthString].credit += transaction.amount;
-        } else if (transaction.type === 'debit') {
-          monthlySpending[monthString].debit += transaction.amount;
-        }
+        monthlySpending[transaction.currencyCode].spending[monthString][transaction.type] += transaction.amount;
       });
-      return Object.values(monthlySpending);
+      monthlySpending = Object.values(monthlySpending);
+      for (let i = 0; i < monthlySpending.length; i++) {
+        monthlySpending[i].spending = Object.values(monthlySpending[i].spending);
+      }
+      return monthlySpending;
     },
   },
 };

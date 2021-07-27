@@ -1,3 +1,4 @@
+import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useStorage from 'hooks/storage';
 import Card from 'models/card';
@@ -64,6 +65,12 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
     }
   }, [getTransactions, transactionIds]);
 
+  const navigateToCreateTransaction = useCallback(() => {
+    navigation.navigate(routeOptions.createTransactionScreen.name, {
+      transaction: { cardId: card.id, currencyCode: card.currencyCode },
+    });
+  }, [navigation]);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getTransactions();
@@ -77,10 +84,12 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
     <CardTransactionListScreenComponent
       {...props}
       card={card}
+      navigateToCreateTransaction={navigateToCreateTransaction}
       onDeleteTransaction={onDeleteTransaction}
       onListEndReached={onListEndReached}
       refreshing={refreshing}
       refreshTransactions={refreshTransactions}
+      setNavigationOptions={navigation.setOptions}
       transactions={transactionSections}
     />
   );
@@ -89,6 +98,8 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
 CardTransactionListScreen.propTypes = {
   navigation: PropTypes.shape({
     addListener: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }),
   route: PropTypes.shape({
     params: PropTypes.shape({

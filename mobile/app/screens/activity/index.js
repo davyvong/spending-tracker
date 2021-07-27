@@ -25,18 +25,23 @@ const ActivityScreen = ({ navigation, ...props }) => {
 
   const getDailySpendingFromStorage = useCallback(async () => {
     const dailySpendingList = [];
-    let storageKey = storage.getItemKey('account');
-    const account = await storage.getItem(storageKey);
     for (let i = 0; i < dailySpending.length; i += 1) {
       const stateDailySpending = dailySpending[i];
-      storageKey = storage.getItemKey('daily-spending', stateDailySpending.date);
+      let storageKey = storage.getItemKey('account');
+      const account = await storage.getItem(storageKey);
+      storageKey = storage.getItemKey('daily-spending', null, {
+        currencyCode: account?.currencyCode,
+        date: stateDailySpending.date,
+      });
       const cachedDailySpending = await storage.getItem(storageKey);
       if (cachedDailySpending) {
         dailySpendingList.push(cachedDailySpending);
       } else {
         dailySpendingList.push({
-          ...stateDailySpending,
-          currencyCode: account.currencyCode,
+          credit: 0,
+          currencyCode: account?.currencyCode,
+          date: stateDailySpending.date,
+          debit: 0,
         });
       }
     }
@@ -87,7 +92,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
   }, [getDailySpending, getTransactions]);
 
   const navigateToCreateTransaction = useCallback(() => {
-    navigation.navigate(routeOptions.createTransactionScreen.name);
+    navigation.navigate(routeOptions.createTransactionScreen.name, { transaction: {} });
   }, [navigation]);
 
   const onDeleteTransaction = useCallback(() => {

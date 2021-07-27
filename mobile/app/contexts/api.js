@@ -131,10 +131,18 @@ export const APIProvider = ({ children }) => {
         variables: { endDate, startDate },
       });
       await Promise.all(
-        data.dailySpending.map(spending => {
-          const storageKey = storage.getItemKey('daily-spending', spending.date);
-          return storage.setItem(storageKey, spending);
-        }),
+        data.dailySpending.map(currencySpending =>
+          currencySpending.spending.map(spending => {
+            const storageKey = storage.getItemKey('daily-spending', null, {
+              currencyCode: currencySpending.currencyCode,
+              date: spending.date,
+            });
+            return storage.setItem(storageKey, {
+              ...spending,
+              currencyCode: currencySpending.currencyCode,
+            });
+          }),
+        ),
       );
     },
     [client],
@@ -151,15 +159,23 @@ export const APIProvider = ({ children }) => {
         },
       });
       await Promise.all(
-        data.monthlySpending.map(spending => {
-          if (filters?.cardId) {
-            const storageKey = storage.getItemKey('monthly-spending', spending.date, filters);
-            return storage.setItem(storageKey, spending);
-          } else {
-            const storageKey = storage.getItemKey('monthly-spending', spending.date);
-            return storage.setItem(storageKey, spending);
-          }
-        }),
+        data.monthlySpending.map(currencySpending =>
+          currencySpending.spending.map(spending => {
+            const storageFilters = {
+              cardId: filters?.cardId,
+              currencyCode: currencySpending.currencyCode,
+              month: spending.date,
+            };
+            if (!storageFilters.cardId) {
+              delete storageFilters.cardId;
+            }
+            const storageKey = storage.getItemKey('monthly-spending', null, storageFilters);
+            return storage.setItem(storageKey, {
+              ...spending,
+              currencyCode: currencySpending.currencyCode,
+            });
+          }),
+        ),
       );
     },
     [client],
