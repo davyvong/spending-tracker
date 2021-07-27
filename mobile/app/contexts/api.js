@@ -131,12 +131,18 @@ export const APIProvider = ({ children }) => {
         variables: { endDate, startDate },
       });
       await Promise.all(
-        data.dailySpending.map(currencySpending => {
-          const storageKey = storage.getItemKey('daily-spending', currencySpending.date, {
-            currencyCode: currencySpending.currencyCode,
-          });
-          return storage.setItem(storageKey, currencySpending);
-        }),
+        data.dailySpending.map(currencySpending =>
+          currencySpending.spending.map(spending => {
+            const storageKey = storage.getItemKey('daily-spending', null, {
+              currencyCode: currencySpending.currencyCode,
+              date: spending.date,
+            });
+            return storage.setItem(storageKey, {
+              ...spending,
+              currencyCode: currencySpending.currencyCode,
+            });
+          }),
+        ),
       );
     },
     [client],
@@ -153,13 +159,23 @@ export const APIProvider = ({ children }) => {
         },
       });
       await Promise.all(
-        data.monthlySpending.map(currencySpending => {
-          const storageKey = storage.getItemKey('monthly-spending', currencySpending.date, {
-            ...(filters?.cardId ? filters : {}),
-            currencyCode: currencySpending.currencyCode,
-          });
-          return storage.setItem(storageKey, currencySpending);
-        }),
+        data.monthlySpending.map(currencySpending =>
+          currencySpending.spending.map(spending => {
+            const storageFilters = {
+              cardId: filters?.cardId,
+              currencyCode: currencySpending.currencyCode,
+              month: spending.date,
+            };
+            if (!storageFilters.cardId) {
+              delete storageFilters.cardId;
+            }
+            const storageKey = storage.getItemKey('monthly-spending', null, storageFilters);
+            return storage.setItem(storageKey, {
+              ...spending,
+              currencyCode: currencySpending.currencyCode,
+            });
+          }),
+        ),
       );
     },
     [client],
