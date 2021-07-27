@@ -12,7 +12,7 @@ import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import Account from 'models/account';
 import PropTypes from 'prop-types';
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 
 import styles from './styles';
@@ -35,6 +35,11 @@ const SettingsScreenComponent = ({
   const getLogoutButtonStyle = useCallback(
     ({ pressed }) => (pressed ? theme.logoutButtonPressed : theme.logoutButton),
     [theme],
+  );
+
+  const themeOptions = useMemo(
+    () => colorSchemeOptions.map(option => ({ ...option, label: locale.t(option.label) })),
+    [],
   );
 
   return (
@@ -99,7 +104,7 @@ const SettingsScreenComponent = ({
             <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} style={styles.ctaRowRightIcon} />
           </View>
         </RadioPickerModal>
-        <RadioPickerModal onChange={updateTheme} options={colorSchemeOptions} value={account?.theme}>
+        <RadioPickerModal onChange={updateTheme} options={themeOptions} value={account?.theme}>
           <View style={styles.ctaRow}>
             <MaterialCommunityIcons
               color={theme.activeIcon}
@@ -109,7 +114,7 @@ const SettingsScreenComponent = ({
             />
             <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.theme')}</Text>
             <Spacer />
-            <Text style={[styles.ctaRowText, theme.selectedValueText]}>{themeName}</Text>
+            <Text style={[styles.ctaRowText, theme.selectedValueText]}>{locale.t(themeName)}</Text>
             <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} style={styles.ctaRowRightIcon} />
           </View>
         </RadioPickerModal>

@@ -1,4 +1,7 @@
 {
+  "common.color-schemes.automatic": "System Default",
+  "common.color-schemes.dark": "Dark",
+  "common.color-schemes.light": "Light",
   "common.days-of-week.friday": "Fri",
   "common.days-of-week.monday": "Mon",
   "common.days-of-week.saturday": "Sat",
