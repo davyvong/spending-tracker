@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useLocale from 'hooks/locale';
+import useStorage from 'hooks/storage';
 import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -12,10 +13,12 @@ const TransactionList = ({ onDelete, ...props }) => {
   const api = useAPI();
   const [locale] = useLocale();
   const navigation = useNavigation();
+  const storage = useStorage();
   const { palette } = useTheme();
   const [actionSheet, setActionSheet] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [, setPendingDelete] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const theme = useMemo(
@@ -26,6 +29,15 @@ const TransactionList = ({ onDelete, ...props }) => {
       },
       deleteButton: {
         backgroundColor: palette.get('backgrounds.alternate-button'),
+      },
+      actionSheetTransactionAmountPositive: {
+        color: palette.get('texts.positive'),
+      },
+      actionSheetTransactionDescription: {
+        backgroundColor: palette.get('backgrounds.tile'),
+      },
+      actionSheetTransactionMutedText: {
+        color: palette.get('texts.muted'),
       },
     }),
     [palette],
@@ -48,6 +60,14 @@ const TransactionList = ({ onDelete, ...props }) => {
     await api.deleteTransaction(selectedTransaction.id).then(onDelete).catch();
     setPendingDelete(false);
   }, [onDelete, selectedTransaction]);
+
+  const selectTransaction = useCallback(async transaction => {
+    setSelectedTransaction(transaction);
+    const storageKey = storage.getItemKey('card', transaction.cardId);
+    const card = await storage.getItem(storageKey);
+    setSelectedCard(card);
+    setActionSheet(true);
+  }, []);
 
   const actionSheetOptions = useMemo(
     () => [
@@ -74,8 +94,10 @@ const TransactionList = ({ onDelete, ...props }) => {
       closeDeleteDialog={closeDeleteDialog}
       deleteDialog={deleteDialog}
       deleteTransaction={deleteTransaction}
+      selectedCard={selectedCard}
+      selectedTransaction={selectedTransaction}
+      selectTransaction={selectTransaction}
       setActionSheet={setActionSheet}
-      setSelectedTransaction={setSelectedTransaction}
       theme={theme}
     />
   );

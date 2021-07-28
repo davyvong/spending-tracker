@@ -9,7 +9,7 @@ import Modal from 'react-native-modal';
 
 import styles from './styles';
 
-const ActionSheetComponent = ({ onClose, onModalHide, options, setCallback, theme, visible }) => {
+const ActionSheetComponent = ({ children, onClose, onModalHide, options, setCallback, theme, visible }) => {
   const [locale] = useLocale();
 
   const getActionButtonStyle = useCallback(
@@ -59,6 +59,7 @@ const ActionSheetComponent = ({ onClose, onModalHide, options, setCallback, them
           bounces={false}
           data={options}
           keyExtractor={option => option.label}
+          ListHeaderComponent={children}
           removeClippedSubviews
           renderItem={renderAction}
         />
@@ -77,6 +78,7 @@ ActionSheetComponent.defaultProps = {
 };
 
 ActionSheetComponent.propTypes = {
+  children: PropTypes.node,
   onClose: PropTypes.func,
   onModalHide: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(
