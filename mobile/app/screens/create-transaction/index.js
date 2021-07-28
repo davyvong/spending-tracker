@@ -2,6 +2,7 @@ import { getCurrency } from 'constants/currencies';
 import useAPI from 'hooks/api';
 import useStorage from 'hooks/storage';
 import useTheme from 'hooks/theme';
+import pick from 'lodash/pick';
 import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -28,7 +29,6 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
     vendor: null,
   });
   const [values, setValues] = useState({
-    amount: '',
     cardId: null,
     categoryId: null,
     currencyCode: null,
@@ -74,7 +74,7 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
       setPending(true);
       try {
         await api.createTransaction({
-          ...values,
+          ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postDate', 'type', 'vendor'),
           amount: Number(values.amount),
         });
         navigation.dispatch({
