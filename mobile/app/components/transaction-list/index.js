@@ -43,6 +43,10 @@ const TransactionList = ({ onDelete, ...props }) => {
     [palette],
   );
 
+  const navigateToCopyTransaction = useCallback(() => {
+    navigation.navigate(routeOptions.createTransactionScreen.name, { transaction: selectedTransaction });
+  }, [navigation, selectedTransaction]);
+
   const navigateToEditTransaction = useCallback(() => {
     navigation.navigate(routeOptions.editTransactionScreen.name, { transaction: selectedTransaction });
   }, [navigation, selectedTransaction]);
@@ -75,6 +79,11 @@ const TransactionList = ({ onDelete, ...props }) => {
         callback: navigateToEditTransaction,
         icon: 'edit',
         label: locale.t('components.transaction-list.actions.edit'),
+      },
+      {
+        callback: navigateToCopyTransaction,
+        icon: 'content-copy',
+        label: 'Duplicate',
       },
       {
         callback: openDeleteDialog,
