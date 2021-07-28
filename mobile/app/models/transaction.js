@@ -1,3 +1,4 @@
+import { getCurrency } from 'constants/currencies';
 import PropTypes from 'prop-types';
 
 export default class Transaction {
@@ -26,7 +27,12 @@ export default class Transaction {
     return this.type === 'debit';
   }
 
-  get sign() {
-    return this.isCredit ? '+' : '-';
+  getFormattedAmount(locale) {
+    const currency = getCurrency(this.currencyCode);
+    const amount = locale.toCurrency(this.amount, { precision: currency?.precision, unit: '' });
+    if (this.amount === 0) {
+      return amount;
+    }
+    return `${this.isCredit ? '+' : '-'}${amount}`;
   }
 }

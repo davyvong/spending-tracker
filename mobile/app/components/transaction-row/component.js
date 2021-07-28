@@ -1,27 +1,17 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Text from 'components/text';
-import { getCurrency } from 'constants/currencies';
 import useLocale from 'hooks/locale';
 import Card from 'models/card';
 import Category from 'models/category';
 import Transaction from 'models/transaction';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, View } from 'react-native';
 
 import styles from './styles';
 
 const TransactionRowComponent = ({ card, category, theme, transaction, ...props }) => {
   const [locale] = useLocale();
-
-  const transactionAmount = useMemo(() => {
-    const currency = getCurrency(transaction.currencyCode);
-    const amount = locale.toCurrency(transaction.amount, { precision: currency?.precision, unit: '' });
-    if (transaction.amount === 0) {
-      return amount;
-    }
-    return `${transaction.sign}${amount}`;
-  }, [locale, transaction]);
 
   return (
     <Pressable {...props} style={styles.transactionRow}>
@@ -38,7 +28,7 @@ const TransactionRowComponent = ({ card, category, theme, transaction, ...props 
       </View>
       <View style={[styles.transactionRowColumn, styles.transactionRowColumn3]}>
         <Text style={[styles.transactionRowAmount, transaction.isCredit && theme.transactionRowAmountPositive]}>
-          {transactionAmount}
+          {transaction.getFormattedAmount(locale)}
         </Text>
         <Text style={[styles.transactionRowCurrency, theme.transactionRowMutedText]}>{transaction.currencyCode}</Text>
       </View>

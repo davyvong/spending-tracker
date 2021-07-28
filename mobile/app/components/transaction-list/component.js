@@ -5,6 +5,8 @@ import ScrollViewStyles from 'components/scroll-view/styles';
 import Text from 'components/text';
 import TransactionRow from 'components/transaction-row';
 import useLocale from 'hooks/locale';
+import Card from 'models/card';
+import Transaction from 'models/transaction';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback, useRef } from 'react';
@@ -23,7 +25,9 @@ const TransactionListComponent = ({
   onRefresh,
   refreshing,
   setActionSheet,
-  setSelectedTransaction,
+  selectedCard,
+  selectedTransaction,
+  selectTransaction,
   theme,
   ...props
 }) => {
@@ -35,15 +39,13 @@ const TransactionListComponent = ({
   const renderItem = useCallback(
     ({ item }) => (
       <TransactionRow
+        delayLongPress={250}
         key={item.id}
-        onLongPress={() => {
-          setSelectedTransaction(item);
-          setActionSheet(true);
-        }}
+        onLongPress={() => selectTransaction(item)}
         transaction={item}
       />
     ),
-    [],
+    [selectTransaction],
   );
 
   const renderSectionHeader = useCallback(
@@ -89,7 +91,40 @@ const TransactionListComponent = ({
           {...props}
         />
       </View>
-      <ActionSheet onClose={() => setActionSheet(false)} options={actionSheetOptions} visible={actionSheet} />
+      <ActionSheet onClose={() => setActionSheet(false)} options={actionSheetOptions} visible={actionSheet}>
+        {selectedTransaction && (
+          <View style={styles.actionSheetTransaction}>
+            <View style={styles.actionSheetTransactionRow}>
+              <View style={styles.actionSheetTransactionColumn1}>
+                <Text style={styles.actionSheetTransactionLargeText}>{selectedTransaction.vendor}</Text>
+                {selectedCard && (
+                  <Text style={[styles.actionSheetTransactionSmallText, theme.actionSheetTransactionMutedText]}>
+                    {selectedCard.name}
+                  </Text>
+                )}
+              </View>
+              <View style={styles.actionSheetTransactionColumn2}>
+                <Text
+                  style={[
+                    styles.actionSheetTransactionLargeText,
+                    selectedTransaction.isCredit && theme.actionSheetTransactionAmountPositive,
+                  ]}
+                >
+                  {selectedTransaction.getFormattedAmount(locale)}
+                </Text>
+                <Text style={[styles.actionSheetTransactionSmallText, theme.actionSheetTransactionMutedText]}>
+                  {selectedTransaction.currencyCode}
+                </Text>
+              </View>
+            </View>
+            {selectedTransaction?.description ? (
+              <View style={[styles.actionSheetTransactionDescription, theme.actionSheetTransactionDescription]}>
+                <Text>{selectedTransaction.description}</Text>
+              </View>
+            ) : null}
+          </View>
+        )}
+      </ActionSheet>
       <ActionDialog
         onClose={closeDeleteDialog}
         message={locale.t('components.transaction-list.messages.delete-transaction')}
@@ -124,8 +159,10 @@ TransactionListComponent.propTypes = {
   ListStickyHeaderComponent: PropTypes.node,
   onRefresh: PropTypes.func,
   refreshing: PropTypes.bool,
+  selectedCard: Card.propTypes,
+  selectedTransaction: Transaction.propTypes,
+  selectTransaction: PropTypes.func.isRequired,
   setActionSheet: PropTypes.func.isRequired,
-  setSelectedTransaction: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
