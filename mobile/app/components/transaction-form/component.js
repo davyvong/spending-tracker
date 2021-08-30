@@ -97,7 +97,7 @@ const TransactionFormComponent = ({
         options={categoryOptions}
         value={values.categoryId}
       />
-      <Text style={[styles.fieldTitle, theme.fieldTitle]}>Items</Text>
+      <Text style={[styles.fieldTitle, theme.fieldTitle]}>{locale.t('components.transaction-form.labels.items')}</Text>
       {values.items.map(renderTransactionItem)}
       {errors.items && <Text style={[styles.fieldError, theme.fieldError]}>{locale.t(errors.items)}</Text>}
       <Pressable
@@ -110,7 +110,7 @@ const TransactionFormComponent = ({
           size={20}
           style={styles.transactionItemSkeletonIcon}
         />
-        <Text style={theme.transactionItemMutedText}>Add Item</Text>
+        <Text style={theme.transactionItemMutedText}>{locale.t('components.transaction-form.buttons.add-item')}</Text>
       </Pressable>
       <Modal
         backdropTransitionOutTiming={0}
