@@ -1,3 +1,4 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import Button from 'components/button';
 import CurrencyInput from 'components/currency-input';
 import DateInput from 'components/date-input';
@@ -5,6 +6,7 @@ import RadioPickerInput from 'components/radio-picker-input';
 import Text from 'components/text';
 import VendorAutoComplete from 'components/vendor-autocomplete';
 import TextInput from 'components/text-input';
+import { getCurrency } from 'constants/currencies';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback } from 'react';
@@ -14,12 +16,15 @@ import Modal from 'react-native-modal';
 import styles from './styles';
 
 const TransactionFormComponent = ({
+  addItem,
   applySelectedItem,
   cardOptions,
   categoryOptions,
   closeItemModal,
+  currency,
   editable,
   errors,
+  removeItem,
   selectedItem,
   setSelectedItem,
   theme,
@@ -32,6 +37,31 @@ const TransactionFormComponent = ({
   const getCancelButtonStyle = useCallback(
     ({ pressed }) => (pressed ? [styles.button, theme.cancelButtonPressed] : [styles.button, theme.cancelButton]),
     [theme],
+  );
+
+  const renderTransactionItem = useCallback(
+    (item, index) => (
+      <View key={index} style={[styles.transactionItemRow, index > 0 && styles.transactionItemRowSpacer]}>
+        <Pressable
+          onPress={() => setSelectedItem({ ...item, index })}
+          style={[styles.transactionItem, theme.transactionItem]}
+        >
+          <Text style={[styles.transactionItemText, !item.description && theme.transactionItemMutedText]}>
+            {item.description || locale.t('components.transaction-form.labels.description')}
+          </Text>
+          <Text style={theme.transactionItemMutedText}>
+            {locale.toCurrency(item.amount, { precision: getCurrency(currency)?.precision, unit: '' })}
+            {currency && ` ${currency}`}
+          </Text>
+        </Pressable>
+        {index > 0 && (
+          <Pressable onPress={() => removeItem(index)} style={styles.transactionItemDelete}>
+            <MaterialIcons color={theme.transactionItemDeleteIcon.color} name="delete" size={20} />
+          </Pressable>
+        )}
+      </View>
+    ),
+    [currency, locale, theme],
   );
 
   return (
@@ -59,12 +89,6 @@ const TransactionFormComponent = ({
         onChange={updateValue('vendor')}
         value={values.vendor}
       />
-      <TextInput
-        editable={editable}
-        label={locale.t('components.transaction-form.labels.description')}
-        onChangeText={updateValue('description')}
-        value={values.description}
-      />
       <RadioPickerInput
         editable={editable}
         error={errors.categoryId && locale.t(errors.categoryId)}
@@ -73,13 +97,21 @@ const TransactionFormComponent = ({
         options={categoryOptions}
         value={values.categoryId}
       />
-      {values.items.map((item, index) => (
-        <Pressable key={index} onPress={() => setSelectedItem({ ...item, index })}>
-          <Text>
-            Item {index} {item.description} {item.amount}
-          </Text>
-        </Pressable>
-      ))}
+      <Text style={[styles.fieldTitle, theme.fieldTitle]}>Items</Text>
+      {values.items.map(renderTransactionItem)}
+      {errors.items && <Text style={[styles.fieldError, theme.fieldError]}>{locale.t(errors.items)}</Text>}
+      <Pressable
+        onPress={addItem}
+        style={[styles.transactionItemSkeleton, theme.transactionItemSkeleton, styles.transactionItemRowSpacer]}
+      >
+        <MaterialIcons
+          color={theme.transactionItemMutedText.color}
+          name="add"
+          size={20}
+          style={styles.transactionItemSkeletonIcon}
+        />
+        <Text style={theme.transactionItemMutedText}>Add Item</Text>
+      </Pressable>
       <Modal
         backdropTransitionOutTiming={0}
         isVisible={selectedItem !== null}
@@ -129,12 +161,15 @@ TransactionFormComponent.defaultProps = {
 };
 
 TransactionFormComponent.propTypes = {
+  addItem: PropTypes.func.isRequired,
   applySelectedItem: PropTypes.func.isRequired,
   cardOptions: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, value: PropTypes.any })),
   categoryOptions: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, value: PropTypes.any })),
   closeItemModal: PropTypes.func.isRequired,
+  currency: PropTypes.string,
   editable: PropTypes.bool,
   errors: PropTypes.object.isRequired,
+  removeItem: PropTypes.func.isRequired,
   selectedItem: PropTypes.object,
   setSelectedItem: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,

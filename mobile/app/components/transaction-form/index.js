@@ -16,6 +16,24 @@ const TransactionForm = ({ updateValue, values, ...props }) => {
 
   const theme = useMemo(
     () => ({
+      fieldTitle: {
+        color: palette.get('texts.primary'),
+      },
+      fieldError: {
+        color: palette.get('texts.error'),
+      },
+      transactionItem: {
+        backgroundColor: palette.get('backgrounds.tile'),
+      },
+      transactionItemDeleteIcon: {
+        color: palette.get('backgrounds.alternate-button'),
+      },
+      transactionItemMutedText: {
+        color: palette.get('texts.muted'),
+      },
+      transactionItemSkeleton: {
+        borderColor: palette.get('border'),
+      },
       innerModal: {
         backgroundColor: palette.get('backgrounds.modal'),
       },
@@ -28,6 +46,17 @@ const TransactionForm = ({ updateValue, values, ...props }) => {
     }),
     [palette],
   );
+
+  const currency = useMemo(() => {
+    if (!values.cardId) {
+      return null;
+    }
+    const selectedCard = cardOptions.find(option => option.value === values.cardId);
+    if (selectedCard) {
+      return selectedCard.currency;
+    }
+    return null;
+  }, [cardOptions, values.cardId]);
 
   const getCardsFromStorage = useCallback(async () => {
     const storageKey = storage.getItemKey('cards');
@@ -49,7 +78,7 @@ const TransactionForm = ({ updateValue, values, ...props }) => {
             }
             return a.company > b.company;
           })
-          .map(card => ({ label: `${card.company} ${card.name}`, value: card.id })),
+          .map(card => ({ currency: card.currency, label: `${card.company} ${card.name}`, value: card.id })),
       );
     }
   }, []);
@@ -96,6 +125,25 @@ const TransactionForm = ({ updateValue, values, ...props }) => {
     [selectedItem],
   );
 
+  const addItem = useCallback(() => {
+    updateValue('items')(prevState =>
+      prevState.concat({
+        amount: '',
+        description: '',
+      }),
+    );
+  }, [updateValue]);
+
+  const removeItem = useCallback(
+    index => {
+      updateValue('items')(prevState => {
+        prevState.splice(index, 1);
+        return prevState;
+      });
+    },
+    [updateValue],
+  );
+
   useEffect(() => {
     getCardsFromStorage();
     getCategoriesFromStorage();
@@ -104,10 +152,13 @@ const TransactionForm = ({ updateValue, values, ...props }) => {
   return (
     <TransactionFormComponent
       {...props}
+      addItem={addItem}
       applySelectedItem={applySelectedItem}
       cardOptions={cardOptions}
       categoryOptions={categoryOptions}
       closeItemModal={closeItemModal}
+      currency={currency}
+      removeItem={removeItem}
       selectedItem={selectedItem}
       setSelectedItem={setSelectedItem}
       theme={theme}
@@ -132,6 +183,7 @@ TransactionForm.propTypes = {
   ),
   updateValue: PropTypes.func.isRequired,
   values: PropTypes.shape({
+    cardId: PropTypes.string,
     categoryId: PropTypes.string,
   }).isRequired,
 };

@@ -41,9 +41,6 @@ export default new Schema(
       required: true,
       type: Number,
     },
-    description: {
-      type: String,
-    },
     items: [
       {
         amount: {

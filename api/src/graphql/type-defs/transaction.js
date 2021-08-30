@@ -14,7 +14,6 @@ export default `
     amount: Float
     cardId: String
     categoryId: String
-    description: String
     id: ID!
     items: [TransactionItem]
     postDate: String
@@ -41,7 +40,6 @@ export default `
   input CreateTransactionData {
     cardId: ID!
     categoryId: ID! 
-    description: String
     items: [TransactionItemData]!
     postDate: String!
     vendor: String!
@@ -50,7 +48,6 @@ export default `
   input UpdateTransactionData {
     cardId: ID
     categoryId: ID
-    description: String
     items: [TransactionItemData]
     postDate: String
     vendor: String

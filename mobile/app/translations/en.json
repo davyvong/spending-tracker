@@ -52,7 +52,7 @@
   "screens.create-transaction.errors.empty-card": "A card must be selected.",
   "screens.create-transaction.errors.empty-category": "A category must be selected.",
   "screens.create-transaction.errors.empty-date": "A date must be selected.",
-  "screens.create-transaction.errors.empty-items": "There must be at least one item.",
+  "screens.create-transaction.errors.empty-items": "Every item must not be empty.",
   "screens.create-transaction.errors.empty-vendor": "The vendor cannot be empty.",
   "screens.create-transaction.messages.discard-changes": "Are you sure you want to discard your changes?",
   "screens.create-transaction.title": "New Transaction",

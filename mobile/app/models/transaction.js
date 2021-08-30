@@ -7,7 +7,6 @@ export default class Transaction {
     cardId: PropTypes.string,
     categoryId: PropTypes.string,
     currency: PropTypes.string,
-    description: PropTypes.string,
     id: PropTypes.string,
     icon: PropTypes.string,
     postDate: PropTypes.string,

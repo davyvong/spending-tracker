@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { getCurrency } from 'constants/currencies';
 import useAPI from 'hooks/api';
 import useTheme from 'hooks/theme';
 import pick from 'lodash/pick';
@@ -21,18 +20,15 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const [saveDialog, setSaveDialog] = useState(false);
   const [pendingSave, setPendingSave] = useState(false);
   const [errors, setErrors] = useState({
-    amount: null,
     cardId: null,
     categoryId: null,
-    currency: null,
+    items: null,
     postDate: null,
     vendor: null,
   });
   const [values, setValues] = useState({
     cardId: null,
     categoryId: null,
-    currency: null,
-    description: '',
     items: [
       {
         amount: '',
@@ -42,7 +38,6 @@ const EditTransactionScreen = ({ route, ...props }) => {
     postDate: '',
     vendor: '',
     ...transaction,
-    amount: transaction?.amount?.toFixed(getCurrency(transaction?.currency)?.precision) || '',
   });
 
   const theme = useMemo(
@@ -78,11 +73,12 @@ const EditTransactionScreen = ({ route, ...props }) => {
 
   const validateValues = useCallback(() => {
     const { cardId, categoryId, items, postDate, vendor } = values;
-    if (!cardId || !categoryId || items.length === 0 || !postDate || !vendor) {
+    const badItems = items.some(item => !item.amount || !item.description);
+    if (badItems || !cardId || !categoryId || !postDate || !vendor) {
       setErrors({
         cardId: cardId ? null : 'screens.create-transaction.errors.empty-card',
         categoryId: categoryId ? null : 'screens.create-transaction.errors.empty-category',
-        items: items.length === 0 ? 'screens.create-transaction.errors.empty-items' : null,
+        items: badItems ? 'screens.create-transaction.errors.empty-items' : null,
         postDate: postDate ? null : 'screens.create-transaction.errors.empty-date',
         vendor: vendor ? null : 'screens.create-transaction.errors.empty-vendor',
       });
@@ -94,10 +90,9 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const saveTransaction = useCallback(async () => {
     setPendingSave(true);
     try {
-      await api.updateTransaction(
-        values.id,
-        pick(values, 'cardId', 'categoryId', 'description', 'items', 'postDate', 'vendor'),
-      );
+      const data = pick(values, 'cardId', 'categoryId', 'items', 'postDate', 'vendor');
+      data.items = data.items.map(item => ({ ...item, amount: Number(item.amount) }));
+      await api.updateTransaction(values.id, data);
       navigation.dispatch({
         ignoreDiscard: true,
         payload: { count: 1 },

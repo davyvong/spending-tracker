@@ -1,6 +1,45 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  fieldTitle: {
+    marginVertical: 8,
+  },
+  fieldError: {
+    marginTop: 8,
+  },
+  transactionItemRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  transactionItemRowSpacer: {
+    marginTop: 12,
+  },
+  transactionItem: {
+    borderRadius: 5,
+    flex: 1,
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  transactionItemText: {
+    flex: 1,
+  },
+  transactionItemSkeleton: {
+    alignItems: 'center',
+    borderRadius: 5,
+    borderWidth: 1,
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  transactionItemSkeletonIcon: {
+    marginLeft: -4,
+    marginRight: 8,
+  },
+  transactionItemDelete: {
+    marginLeft: 12,
+    marginRight: 8,
+  },
   modal: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -10,7 +49,7 @@ const styles = StyleSheet.create({
   innerModal: {
     borderRadius: 10,
     maxHeight: '70%',
-    paddingHorizontal: 18,
+    paddingHorizontal: 24,
     paddingVertical: 18,
   },
   buttonRow: {

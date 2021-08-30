@@ -21,15 +21,13 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
   const [errors, setErrors] = useState({
     cardId: null,
     categoryId: null,
-    currency: null,
+    items: null,
     postDate: null,
     vendor: null,
   });
   const [values, setValues] = useState({
     cardId: null,
     categoryId: null,
-    currency: null,
-    description: '',
     items: [
       {
         amount: '',
@@ -76,9 +74,9 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
     if (validateValues()) {
       setPending(true);
       try {
-        await api.createTransaction(
-          pick(values, 'cardId', 'categoryId', 'currency', 'description', 'items', 'postDate', 'vendor'),
-        );
+        const data = pick(values, 'cardId', 'categoryId', 'items', 'postDate', 'vendor');
+        data.items = data.items.map(item => ({ ...item, amount: Number(item.amount) }));
+        await api.createTransaction(data);
         navigation.dispatch({
           ignoreDiscard: true,
           payload: { count: 1 },
@@ -94,11 +92,12 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
 
   const validateValues = useCallback(() => {
     const { cardId, categoryId, items, postDate, vendor } = values;
-    if (!cardId || !categoryId || items.length === 0 || !postDate || !vendor) {
+    const badItems = items.some(item => !item.amount || !item.description);
+    if (badItems || !cardId || !categoryId || !postDate || !vendor) {
       setErrors({
         cardId: cardId ? null : 'screens.create-transaction.errors.empty-card',
         categoryId: categoryId ? null : 'screens.create-transaction.errors.empty-category',
-        items: items.length === 0 ? 'screens.create-transaction.errors.empty-items' : null,
+        items: badItems ? 'screens.create-transaction.errors.empty-items' : null,
         postDate: postDate ? null : 'screens.create-transaction.errors.empty-date',
         vendor: vendor ? null : 'screens.create-transaction.errors.empty-vendor',
       });
