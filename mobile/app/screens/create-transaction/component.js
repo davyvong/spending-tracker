@@ -1,6 +1,5 @@
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
-import ScrollView from 'components/scroll-view';
 import TransactionForm from 'components/transaction-form';
 import Title from 'components/title';
 import { routeOptions } from 'constants/routes';
@@ -38,13 +37,13 @@ const CreateTransactionScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        keyboardShouldPersistTaps="handled"
+      <TransactionForm
+        editable={!pending}
+        errors={errors}
         StickyHeaderComponent={<Title>{locale.t(routeOptions.createTransactionScreen.title)}</Title>}
-      >
-        <TransactionForm editable={!pending} errors={errors} updateValue={updateValue} values={values} />
-      </ScrollView>
+        updateValue={updateValue}
+        values={values}
+      />
       <ActionDialog
         onClose={closeDiscardDialog}
         message={locale.t('screens.create-transaction.messages.discard-changes')}

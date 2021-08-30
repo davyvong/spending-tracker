@@ -1,6 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    paddingBottom: 12,
+    paddingHorizontal: 24,
+    paddingTop: 6,
+    marginTop: -8,
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+  },
   fieldTitle: {
     marginVertical: 8,
   },
