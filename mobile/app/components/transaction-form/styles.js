@@ -1,6 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    paddingBottom: 12,
+    paddingHorizontal: 24,
+    paddingTop: 6,
+    marginTop: -8,
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+  },
   fieldTitle: {
     marginVertical: 8,
   },
@@ -13,6 +25,18 @@ const styles = StyleSheet.create({
   },
   transactionItemRowSpacer: {
     marginTop: 12,
+  },
+  transactionItemRowHover: {
+    borderRadius: 5,
+    margin: -6,
+    padding: 6,
+    shadowOffset: {
+      height: 2,
+      width: 0,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    zIndex: 1,
   },
   transactionItem: {
     borderRadius: 5,

@@ -11,6 +11,8 @@ import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback } from 'react';
 import { Pressable, View } from 'react-native';
+
+import DraggableFlatList from 'react-native-draggable-flatlist';
 import Modal from 'react-native-modal';
 
 import styles from './styles';
@@ -27,6 +29,7 @@ const TransactionFormComponent = ({
   removeItem,
   selectedItem,
   setSelectedItem,
+  StickyHeaderComponent,
   theme,
   updateSelectedItem,
   updateValue,
@@ -40,9 +43,18 @@ const TransactionFormComponent = ({
   );
 
   const renderTransactionItem = useCallback(
-    (item, index, list) => (
-      <View key={index} style={[styles.transactionItemRow, index > 0 && styles.transactionItemRowSpacer]}>
+    ({ drag, index, isActive, item }) => (
+      <View
+        key={index}
+        style={[
+          styles.transactionItemRow,
+          index > 0 && styles.transactionItemRowSpacer,
+          isActive && styles.transactionItemRowHover,
+          isActive && theme.transactionItemRowHover,
+        ]}
+      >
         <Pressable
+          onLongPress={values.items.length > 1 ? drag : undefined}
           onPress={() => setSelectedItem({ ...item, index })}
           style={[styles.transactionItem, theme.transactionItem]}
         >
@@ -54,64 +66,83 @@ const TransactionFormComponent = ({
             {currency && ` ${currency}`}
           </Text>
         </Pressable>
-        {list.length > 1 && (
+        {values.items.length > 1 && (
           <Pressable onPress={() => removeItem(index)} style={styles.transactionItemDelete}>
             <MaterialIcons color={theme.transactionItemDeleteIcon.color} name="delete" size={20} />
           </Pressable>
         )}
       </View>
     ),
-    [currency, locale, theme],
+    [currency, locale, theme, values.items],
   );
 
   return (
     <Fragment>
-      <RadioPickerInput
-        editable={editable}
-        error={errors.cardId && locale.t(errors.cardId)}
-        label={locale.t('components.transaction-form.labels.card')}
-        onChange={updateValue('cardId')}
-        options={cardOptions}
-        value={values.cardId}
+      {StickyHeaderComponent && <View style={styles.header}>{StickyHeaderComponent}</View>}
+      <DraggableFlatList
+        contentContainerStyle={styles.contentContainer}
+        data={values.items}
+        keyExtractor={(item, index) => index.toString()}
+        ListHeaderComponent={
+          <Fragment>
+            <RadioPickerInput
+              editable={editable}
+              error={errors.cardId && locale.t(errors.cardId)}
+              label={locale.t('components.transaction-form.labels.card')}
+              onChange={updateValue('cardId')}
+              options={cardOptions}
+              value={values.cardId}
+            />
+            <DateInput
+              editable={editable}
+              error={errors.postDate && locale.t(errors.postDate)}
+              format="MMMM D, YYYY"
+              label={locale.t('components.transaction-form.labels.date')}
+              onChange={updateValue('postDate')}
+              value={values.postDate}
+            />
+            <VendorAutoComplete
+              editable={editable}
+              error={errors.vendor && locale.t(errors.vendor)}
+              label={locale.t('components.transaction-form.labels.vendor')}
+              onChange={updateValue('vendor')}
+              value={values.vendor}
+            />
+            <RadioPickerInput
+              editable={editable}
+              error={errors.categoryId && locale.t(errors.categoryId)}
+              label={locale.t('components.transaction-form.labels.category')}
+              onChange={updateValue('categoryId')}
+              options={categoryOptions}
+              value={values.categoryId}
+            />
+            <Text style={[styles.fieldTitle, theme.fieldTitle]}>
+              {locale.t('components.transaction-form.labels.items')}
+            </Text>
+          </Fragment>
+        }
+        ListFooterComponent={
+          <Fragment>
+            {errors.items && <Text style={[styles.fieldError, theme.fieldError]}>{locale.t(errors.items)}</Text>}
+            <Pressable
+              onPress={addItem}
+              style={[styles.transactionItemSkeleton, theme.transactionItemSkeleton, styles.transactionItemRowSpacer]}
+            >
+              <MaterialIcons
+                color={theme.transactionItemMutedText.color}
+                name="add"
+                size={20}
+                style={styles.transactionItemSkeletonIcon}
+              />
+              <Text style={theme.transactionItemMutedText}>
+                {locale.t('components.transaction-form.buttons.add-item')}
+              </Text>
+            </Pressable>
+          </Fragment>
+        }
+        onDragEnd={({ data }) => updateValue('items')(data)}
+        renderItem={renderTransactionItem}
       />
-      <DateInput
-        editable={editable}
-        error={errors.postDate && locale.t(errors.postDate)}
-        format="MMMM D, YYYY"
-        label={locale.t('components.transaction-form.labels.date')}
-        onChange={updateValue('postDate')}
-        value={values.postDate}
-      />
-      <VendorAutoComplete
-        editable={editable}
-        error={errors.vendor && locale.t(errors.vendor)}
-        label={locale.t('components.transaction-form.labels.vendor')}
-        onChange={updateValue('vendor')}
-        value={values.vendor}
-      />
-      <RadioPickerInput
-        editable={editable}
-        error={errors.categoryId && locale.t(errors.categoryId)}
-        label={locale.t('components.transaction-form.labels.category')}
-        onChange={updateValue('categoryId')}
-        options={categoryOptions}
-        value={values.categoryId}
-      />
-      <Text style={[styles.fieldTitle, theme.fieldTitle]}>{locale.t('components.transaction-form.labels.items')}</Text>
-      {values.items.map(renderTransactionItem)}
-      {errors.items && <Text style={[styles.fieldError, theme.fieldError]}>{locale.t(errors.items)}</Text>}
-      <Pressable
-        onPress={addItem}
-        style={[styles.transactionItemSkeleton, theme.transactionItemSkeleton, styles.transactionItemRowSpacer]}
-      >
-        <MaterialIcons
-          color={theme.transactionItemMutedText.color}
-          name="add"
-          size={20}
-          style={styles.transactionItemSkeletonIcon}
-        />
-        <Text style={theme.transactionItemMutedText}>{locale.t('components.transaction-form.buttons.add-item')}</Text>
-      </Pressable>
       <Modal
         avoidKeyboard
         backdropTransitionOutTiming={0}
@@ -172,6 +203,7 @@ TransactionFormComponent.propTypes = {
   removeItem: PropTypes.func.isRequired,
   selectedItem: PropTypes.object,
   setSelectedItem: PropTypes.func.isRequired,
+  StickyHeaderComponent: PropTypes.node,
   theme: PropTypes.object.isRequired,
   updateSelectedItem: PropTypes.func.isRequired,
   updateValue: PropTypes.func.isRequired,

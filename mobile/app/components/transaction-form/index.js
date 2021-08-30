@@ -23,13 +23,17 @@ const TransactionForm = ({ updateValue, values, ...props }) => {
         color: palette.get('texts.error'),
       },
       transactionItem: {
-        backgroundColor: palette.get('backgrounds.tile'),
+        backgroundColor: palette.get('backgrounds.input'),
       },
       transactionItemDeleteIcon: {
         color: palette.get('backgrounds.alternate-button'),
       },
       transactionItemMutedText: {
         color: palette.get('texts.muted'),
+      },
+      transactionItemRowHover: {
+        backgroundColor: palette.get('backgrounds.app'),
+        shadowColor: palette.get('shadow'),
       },
       transactionItemSkeleton: {
         borderColor: palette.get('border'),

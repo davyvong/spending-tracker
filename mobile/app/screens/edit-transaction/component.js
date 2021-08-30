@@ -1,7 +1,5 @@
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
-import ScrollView from 'components/scroll-view';
-import Text from 'components/text';
 import Title from 'components/title';
 import TransactionForm from 'components/transaction-form';
 import useLocale from 'hooks/locale';
@@ -41,14 +39,13 @@ const EditTransactionScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        keyboardShouldPersistTaps="handled"
+      <TransactionForm
+        editable={!pendingSave}
+        errors={errors}
         StickyHeaderComponent={<Title>{locale.t('screens.edit-transaction.title')}</Title>}
-      >
-        <TransactionForm editable={!pendingSave} errors={errors} updateValue={updateValue} values={values} />
-        {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
-      </ScrollView>
+        updateValue={updateValue}
+        values={values}
+      />
       <ActionDialog
         onClose={closeDiscardDialog}
         message={locale.t('screens.edit-transaction.messages.discard-changes')}
