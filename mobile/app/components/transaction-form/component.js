@@ -113,10 +113,10 @@ const TransactionFormComponent = ({
         <Text style={theme.transactionItemMutedText}>{locale.t('components.transaction-form.buttons.add-item')}</Text>
       </Pressable>
       <Modal
+        avoidKeyboard
         backdropTransitionOutTiming={0}
         isVisible={selectedItem !== null}
         onBackButtonPress={closeItemModal}
-        onBackdropPress={closeItemModal}
         style={styles.modal}
         useNativeDriverForBackdrop={false}
       >
