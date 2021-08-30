@@ -110,10 +110,12 @@ const TransactionFormComponent = ({
       />
       <Text style={[styles.fieldTitle, theme.fieldTitle]}>{locale.t('components.transaction-form.labels.items')}</Text>
       <DraggableFlatList
+        bounces={false}
         data={values.items}
         keyExtractor={(item, index) => index.toString()}
         onDragEnd={({ data }) => updateValue('items')(data)}
         renderItem={renderTransactionItem}
+        scrollEnabled={false}
       />
       {errors.items && <Text style={[styles.fieldError, theme.fieldError]}>{locale.t(errors.items)}</Text>}
       <Pressable
