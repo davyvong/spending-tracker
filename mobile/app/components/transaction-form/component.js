@@ -40,7 +40,7 @@ const TransactionFormComponent = ({
   );
 
   const renderTransactionItem = useCallback(
-    (item, index) => (
+    (item, index, list) => (
       <View key={index} style={[styles.transactionItemRow, index > 0 && styles.transactionItemRowSpacer]}>
         <Pressable
           onPress={() => setSelectedItem({ ...item, index })}
@@ -54,7 +54,7 @@ const TransactionFormComponent = ({
             {currency && ` ${currency}`}
           </Text>
         </Pressable>
-        {index > 0 && (
+        {list.length > 1 && (
           <Pressable onPress={() => removeItem(index)} style={styles.transactionItemDelete}>
             <MaterialIcons color={theme.transactionItemDeleteIcon.color} name="delete" size={20} />
           </Pressable>
