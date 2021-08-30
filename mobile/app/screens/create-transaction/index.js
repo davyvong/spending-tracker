@@ -1,4 +1,3 @@
-import { getCurrency } from 'constants/currencies';
 import useAPI from 'hooks/api';
 import useStorage from 'hooks/storage';
 import useTheme from 'hooks/theme';
@@ -17,27 +16,29 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
   const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState({
-    amount: null,
     cardId: null,
     categoryId: null,
-    currencyCode: null,
+    currency: null,
     postDate: null,
-    server: null,
-    type: null,
     vendor: null,
   });
   const [values, setValues] = useState({
     cardId: null,
     categoryId: null,
-    currencyCode: null,
+    currency: null,
     description: '',
+    items: [
+      {
+        amount: '',
+        description: '',
+      },
+    ],
     postDate: '',
-    type: 'debit',
     vendor: '',
     ...transaction,
-    amount: transaction?.amount?.toFixed(getCurrency(transaction?.currencyCode)?.precision) || '',
   });
 
   const theme = useMemo(
@@ -52,16 +53,18 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
       deleteButton: {
         backgroundColor: palette.get('backgrounds.alternate-button'),
       },
-      serverError: {
-        color: palette.get('texts.error'),
-      },
     }),
     [palette],
   );
 
   const updateValue = useCallback(
     field => value => {
-      setValues(prevState => ({ ...prevState, [field]: value }));
+      setValues(prevState => {
+        if (value instanceof Function) {
+          return { ...prevState, [field]: value(prevState[field]) };
+        }
+        return { ...prevState, [field]: value };
+      });
       if (!hasChanges) {
         setHasChanges(true);
       }
@@ -73,10 +76,9 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
     if (validateValues()) {
       setPending(true);
       try {
-        await api.createTransaction({
-          ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postDate', 'type', 'vendor'),
-          amount: Number(values.amount),
-        });
+        await api.createTransaction(
+          pick(values, 'cardId', 'categoryId', 'currency', 'description', 'items', 'postDate', 'vendor'),
+        );
         navigation.dispatch({
           ignoreDiscard: true,
           payload: { count: 1 },
@@ -84,26 +86,20 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
         });
       } catch (error) {
         console.log(error.message);
-        setErrors(prevState => ({
-          ...prevState,
-          server: 'common.unknown-error',
-        }));
+        setErrorDialog(true);
       }
       setPending(false);
     }
   }, [navigation, validateValues, values]);
 
   const validateValues = useCallback(() => {
-    const { amount, cardId, categoryId, currencyCode, postDate, type, vendor } = values;
-    if (!amount || !cardId || !categoryId || !currencyCode || !postDate || !type || !vendor) {
+    const { cardId, categoryId, items, postDate, vendor } = values;
+    if (!cardId || !categoryId || items.length === 0 || !postDate || !vendor) {
       setErrors({
-        amount: amount ? null : 'screens.create-transaction.errors.empty-amount',
         cardId: cardId ? null : 'screens.create-transaction.errors.empty-card',
         categoryId: categoryId ? null : 'screens.create-transaction.errors.empty-category',
-        currencyCode: currencyCode ? null : 'screens.create-transaction.errors.empty-currency',
+        items: items.length === 0 ? 'screens.create-transaction.errors.empty-items' : null,
         postDate: postDate ? null : 'screens.create-transaction.errors.empty-date',
-        server: null,
-        type: type ? null : 'screens.create-transaction.errors.empty-type',
         vendor: vendor ? null : 'screens.create-transaction.errors.empty-vendor',
       });
       return false;
@@ -127,13 +123,17 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
     setDiscardDialog(action);
   }, []);
 
+  const closeErrorDialog = useCallback(() => {
+    setErrorDialog(false);
+  }, []);
+
   const getAccountFromStorage = useCallback(async () => {
     const storageKey = storage.getItemKey('account');
     const cachedAccount = await storage.getItem(storageKey);
     if (cachedAccount) {
       setValues(prevState => ({
         ...prevState,
-        currencyCode: transaction.currencyCode || cachedAccount.currencyCode,
+        currency: transaction.currency || cachedAccount.currency,
       }));
     }
   }, [transaction]);
@@ -160,9 +160,11 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
     <CreateTransactionScreenComponent
       {...props}
       closeDiscardDialog={closeDiscardDialog}
+      closeErrorDialog={closeErrorDialog}
       createTransaction={createTransaction}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
+      errorDialog={errorDialog}
       navigateBack={navigateBack}
       pending={pending}
       setNavigationOptions={navigation.setOptions}

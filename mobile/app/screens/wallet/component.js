@@ -78,7 +78,7 @@ WalletScreenComponent.propTypes = {
   cards: PropTypes.array.isRequired,
   monthlySpending: PropTypes.shape({
     credit: PropTypes.number.isRequired,
-    currencyCode: PropTypes.string,
+    currency: PropTypes.string,
     date: PropTypes.string.isRequired,
     debit: PropTypes.number.isRequired,
   }),

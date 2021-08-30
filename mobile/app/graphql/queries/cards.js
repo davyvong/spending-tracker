@@ -5,7 +5,7 @@ export const card = gql`
     card(id: $id) {
       color
       company
-      currencyCode
+      currency
       name
       id
       type
@@ -18,7 +18,7 @@ export const cards = gql`
     cards {
       color
       company
-      currencyCode
+      currency
       name
       id
       type

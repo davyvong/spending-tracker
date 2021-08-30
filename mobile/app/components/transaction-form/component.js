@@ -1,17 +1,38 @@
+import Button from 'components/button';
 import CurrencyInput from 'components/currency-input';
 import DateInput from 'components/date-input';
 import RadioPickerInput from 'components/radio-picker-input';
+import Text from 'components/text';
 import VendorAutoComplete from 'components/vendor-autocomplete';
 import TextInput from 'components/text-input';
-import { currencyOptions } from 'constants/currencies';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, useCallback } from 'react';
+import { Pressable, View } from 'react-native';
+import Modal from 'react-native-modal';
 
-import { typeOptions } from './constants';
+import styles from './styles';
 
-const TransactionFormComponent = ({ cardOptions, categoryOptions, editable, errors, updateValue, values }) => {
+const TransactionFormComponent = ({
+  applySelectedItem,
+  cardOptions,
+  categoryOptions,
+  closeItemModal,
+  editable,
+  errors,
+  selectedItem,
+  setSelectedItem,
+  theme,
+  updateSelectedItem,
+  updateValue,
+  values,
+}) => {
   const [locale] = useLocale();
+
+  const getCancelButtonStyle = useCallback(
+    ({ pressed }) => (pressed ? [styles.button, theme.cancelButtonPressed] : [styles.button, theme.cancelButton]),
+    [theme],
+  );
 
   return (
     <Fragment>
@@ -44,16 +65,6 @@ const TransactionFormComponent = ({ cardOptions, categoryOptions, editable, erro
         onChangeText={updateValue('description')}
         value={values.description}
       />
-      <CurrencyInput
-        currencies={currencyOptions}
-        editable={editable}
-        error={errors.amount && locale.t(errors.amount)}
-        label={locale.t('components.transaction-form.labels.amount')}
-        onChangeAmount={updateValue('amount')}
-        onChangeCurrency={updateValue('currencyCode')}
-        valueAmount={values.amount}
-        valueCurrency={values.currencyCode}
-      />
       <RadioPickerInput
         editable={editable}
         error={errors.categoryId && locale.t(errors.categoryId)}
@@ -62,27 +73,72 @@ const TransactionFormComponent = ({ cardOptions, categoryOptions, editable, erro
         options={categoryOptions}
         value={values.categoryId}
       />
-      <RadioPickerInput
-        editable={editable}
-        error={errors.type && locale.t(errors.type)}
-        label={locale.t('components.transaction-form.labels.type')}
-        onChange={updateValue('type')}
-        options={typeOptions}
-        value={values.type}
-      />
+      {values.items.map((item, index) => (
+        <Pressable key={index} onPress={() => setSelectedItem({ ...item, index })}>
+          <Text>
+            Item {index} {item.description} {item.amount}
+          </Text>
+        </Pressable>
+      ))}
+      <Modal
+        backdropTransitionOutTiming={0}
+        isVisible={selectedItem !== null}
+        onBackButtonPress={closeItemModal}
+        onBackdropPress={closeItemModal}
+        style={styles.modal}
+        useNativeDriverForBackdrop={false}
+      >
+        <View style={[styles.innerModal, theme.innerModal]}>
+          {selectedItem !== null && (
+            <Fragment>
+              <TextInput
+                editable={editable}
+                label={locale.t('components.transaction-form.labels.description')}
+                onChangeText={updateSelectedItem('description')}
+                value={selectedItem.description}
+              />
+              <CurrencyInput
+                editable={editable}
+                error={errors.amount && locale.t(errors.amount)}
+                hideCurrency
+                label={locale.t('components.transaction-form.labels.amount')}
+                onChangeAmount={updateSelectedItem('amount')}
+                valueAmount={selectedItem.amount}
+              />
+            </Fragment>
+          )}
+          <View style={styles.buttonRow}>
+            <Button onPress={closeItemModal} style={getCancelButtonStyle}>
+              <Text>{locale.t('components.transaction-form.buttons.cancel')}</Text>
+            </Button>
+            <Button
+              onPress={applySelectedItem}
+              style={styles.button}
+              title={locale.t('components.transaction-form.buttons.apply')}
+            />
+          </View>
+        </View>
+      </Modal>
     </Fragment>
   );
 };
 
 TransactionFormComponent.defaultProps = {
   editable: true,
+  items: [],
 };
 
 TransactionFormComponent.propTypes = {
+  applySelectedItem: PropTypes.func.isRequired,
   cardOptions: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, value: PropTypes.any })),
   categoryOptions: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, value: PropTypes.any })),
+  closeItemModal: PropTypes.func.isRequired,
   editable: PropTypes.bool,
   errors: PropTypes.object.isRequired,
+  selectedItem: PropTypes.object,
+  setSelectedItem: PropTypes.func.isRequired,
+  theme: PropTypes.object.isRequired,
+  updateSelectedItem: PropTypes.func.isRequired,
   updateValue: PropTypes.func.isRequired,
   values: PropTypes.object.isRequired,
 };

@@ -12,6 +12,7 @@ import styles from './styles';
 const CurrencyInputComponent = ({
   currencies,
   editable,
+  hideCurrency,
   name,
   onChangeAmount,
   onChangeCurrency,
@@ -77,7 +78,7 @@ const CurrencyInputComponent = ({
 
   return (
     <Fragment>
-      <Pressable disabled={!editable} onPress={openModal}>
+      <Pressable disabled={!editable || hideCurrency} onPress={openModal}>
         <TextInput
           {...props}
           editable={editable}
@@ -85,10 +86,12 @@ const CurrencyInputComponent = ({
           onChangeText={onChangeAmount}
           value={valueAmount}
         />
-        <View style={[styles.currencyValue, theme.currencyValue]}>
-          <Text style={styles.currencyValueText}>{valueCurrency}</Text>
-          <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} />
-        </View>
+        {!hideCurrency && (
+          <View style={[styles.currencyValue, theme.currencyValue]}>
+            <Text style={styles.currencyValueText}>{valueCurrency}</Text>
+            <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} />
+          </View>
+        )}
       </Pressable>
       <Modal
         backdropTransitionOutTiming={0}
@@ -124,11 +127,13 @@ const CurrencyInputComponent = ({
 
 CurrencyInputComponent.defaultProps = {
   currencies: [],
+  hideCurrency: false,
 };
 
 CurrencyInputComponent.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, value: PropTypes.any })),
   editable: PropTypes.bool.isRequired,
+  hideCurrency: PropTypes.bool,
   name: PropTypes.string,
   onChangeAmount: PropTypes.func,
   onChangeCurrency: PropTypes.func,

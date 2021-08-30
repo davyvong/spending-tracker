@@ -6,12 +6,11 @@ export default class Transaction {
     amount: PropTypes.number,
     cardId: PropTypes.string,
     categoryId: PropTypes.string,
-    currencyCode: PropTypes.string,
+    currency: PropTypes.string,
     description: PropTypes.string,
     id: PropTypes.string,
     icon: PropTypes.string,
     postDate: PropTypes.string,
-    type: PropTypes.string,
     vendor: PropTypes.string,
   });
 
@@ -20,19 +19,19 @@ export default class Transaction {
   }
 
   get isCredit() {
-    return this.type === 'credit';
+    return this.amount > 0;
   }
 
   get isDebit() {
-    return this.type === 'debit';
+    return this.amount < 0;
   }
 
   getFormattedAmount(locale) {
-    const currency = getCurrency(this.currencyCode);
+    const currency = getCurrency(this.currency);
     const amount = locale.toCurrency(this.amount, { precision: currency?.precision, unit: '' });
     if (this.amount === 0) {
       return amount;
     }
-    return `${this.isCredit ? '+' : '-'}${amount}`;
+    return `${this.isCredit ? '+' : ''}${amount}`;
   }
 }

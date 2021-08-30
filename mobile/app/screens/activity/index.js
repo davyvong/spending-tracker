@@ -30,7 +30,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
       let storageKey = storage.getItemKey('account');
       const account = await storage.getItem(storageKey);
       storageKey = storage.getItemKey('daily-spending', null, {
-        currencyCode: account?.currencyCode,
+        currency: account?.currency,
         date: stateDailySpending.date,
       });
       const cachedDailySpending = await storage.getItem(storageKey);
@@ -39,7 +39,7 @@ const ActivityScreen = ({ navigation, ...props }) => {
       } else {
         dailySpendingList.push({
           credit: 0,
-          currencyCode: account?.currencyCode,
+          currency: account?.currency,
           date: stateDailySpending.date,
           debit: 0,
         });

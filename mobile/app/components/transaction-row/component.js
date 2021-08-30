@@ -30,7 +30,7 @@ const TransactionRowComponent = ({ card, category, theme, transaction, ...props 
         <Text style={[styles.transactionRowAmount, transaction.isCredit && theme.transactionRowAmountPositive]}>
           {transaction.getFormattedAmount(locale)}
         </Text>
-        <Text style={[styles.transactionRowCurrency, theme.transactionRowMutedText]}>{transaction.currencyCode}</Text>
+        <Text style={[styles.transactionRowCurrency, theme.transactionRowMutedText]}>{transaction.currency}</Text>
       </View>
     </Pressable>
   );

@@ -14,7 +14,7 @@ export default `
     accountId: String
     color: String
     company: String
-    currencyCode: String
+    currency: String
     id: ID!
     name: String
     type: String

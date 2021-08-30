@@ -17,28 +17,32 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
   const [saveDialog, setSaveDialog] = useState(false);
   const [pendingSave, setPendingSave] = useState(false);
   const [errors, setErrors] = useState({
     amount: null,
     cardId: null,
     categoryId: null,
-    currencyCode: null,
+    currency: null,
     postDate: null,
-    server: null,
-    type: null,
     vendor: null,
   });
   const [values, setValues] = useState({
     cardId: null,
     categoryId: null,
-    currencyCode: null,
+    currency: null,
     description: '',
+    items: [
+      {
+        amount: '',
+        description: '',
+      },
+    ],
     postDate: '',
-    type: 'debit',
     vendor: '',
     ...transaction,
-    amount: transaction?.amount?.toFixed(getCurrency(transaction?.currencyCode)?.precision) || '',
+    amount: transaction?.amount?.toFixed(getCurrency(transaction?.currency)?.precision) || '',
   });
 
   const theme = useMemo(
@@ -53,16 +57,18 @@ const EditTransactionScreen = ({ route, ...props }) => {
       discardButton: {
         backgroundColor: palette.get('backgrounds.alternate-button'),
       },
-      serverError: {
-        color: palette.get('texts.error'),
-      },
     }),
     [palette],
   );
 
   const updateValue = useCallback(
     field => value => {
-      setValues(prevState => ({ ...prevState, [field]: value }));
+      setValues(prevState => {
+        if (value instanceof Function) {
+          return { ...prevState, [field]: value(prevState[field]) };
+        }
+        return { ...prevState, [field]: value };
+      });
       if (!hasChanges) {
         setHasChanges(true);
       }
@@ -71,16 +77,13 @@ const EditTransactionScreen = ({ route, ...props }) => {
   );
 
   const validateValues = useCallback(() => {
-    const { amount, cardId, categoryId, currencyCode, postDate, type, vendor } = values;
-    if (!amount || !cardId || !categoryId || !currencyCode || !postDate || !type || !vendor) {
+    const { cardId, categoryId, items, postDate, vendor } = values;
+    if (!cardId || !categoryId || items.length === 0 || !postDate || !vendor) {
       setErrors({
-        amount: amount ? null : 'screens.create-transaction.errors.empty-amount',
         cardId: cardId ? null : 'screens.create-transaction.errors.empty-card',
         categoryId: categoryId ? null : 'screens.create-transaction.errors.empty-category',
-        currencyCode: currencyCode ? null : 'screens.create-transaction.errors.empty-currency',
+        items: items.length === 0 ? 'screens.create-transaction.errors.empty-items' : null,
         postDate: postDate ? null : 'screens.create-transaction.errors.empty-date',
-        server: null,
-        type: type ? null : 'screens.create-transaction.errors.empty-type',
         vendor: vendor ? null : 'screens.create-transaction.errors.empty-vendor',
       });
       return false;
@@ -91,10 +94,10 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const saveTransaction = useCallback(async () => {
     setPendingSave(true);
     try {
-      await api.updateTransaction(values.id, {
-        ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postDate', 'type', 'vendor'),
-        amount: Number(values.amount),
-      });
+      await api.updateTransaction(
+        values.id,
+        pick(values, 'cardId', 'categoryId', 'description', 'items', 'postDate', 'vendor'),
+      );
       navigation.dispatch({
         ignoreDiscard: true,
         payload: { count: 1 },
@@ -102,10 +105,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
       });
     } catch (error) {
       console.log(error.message);
-      setErrors(prevState => ({
-        ...prevState,
-        server: 'common.unknown-error',
-      }));
+      setErrorDialog(true);
     }
     setPendingSave(false);
   }, [navigation, values]);
@@ -136,6 +136,10 @@ const EditTransactionScreen = ({ route, ...props }) => {
     setDiscardDialog(action);
   }, []);
 
+  const closeErrorDialog = useCallback(() => {
+    setErrorDialog(false);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', event => {
       const { action } = event.data;
@@ -154,9 +158,11 @@ const EditTransactionScreen = ({ route, ...props }) => {
     <EditTransactionScreenComponent
       {...props}
       closeDiscardDialog={closeDiscardDialog}
+      closeErrorDialog={closeErrorDialog}
       closeSaveDialog={closeSaveDialog}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
+      errorDialog={errorDialog}
       navigateBack={navigateBack}
       openSaveDialog={openSaveDialog}
       pendingSave={pendingSave}

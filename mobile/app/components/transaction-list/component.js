@@ -113,7 +113,7 @@ const TransactionListComponent = ({
                   {selectedTransaction.getFormattedAmount(locale)}
                 </Text>
                 <Text style={[styles.actionSheetTransactionSmallText, theme.actionSheetTransactionMutedText]}>
-                  {selectedTransaction.currencyCode}
+                  {selectedTransaction.currency}
                 </Text>
               </View>
             </View>

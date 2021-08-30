@@ -10,13 +10,21 @@ export default {
         accountId: context.accountId,
         createTime: getCurrentTimestamp(),
       };
+      data.amount = data.items.reduce((amount, item) => amount + item.amount, 0);
       data.updateTime = data.createTime;
       return context.dataSources.transaction.model.create(data);
     },
     updateTransaction: async (parent, args, context) => {
+      const data = {
+        ...args.data,
+        updateTime: getCurrentTimestamp(),
+      };
+      if (Array.isArray(data.items)) {
+        data.amount = data.items.reduce((amount, item) => amount + item.amount, 0);
+      }
       await context.dataSources.transaction.model.findOneAndUpdate(
         { _id: args.id, accountId: context.accountId },
-        { ...args.data, updateTime: getCurrentTimestamp() },
+        data,
       );
       return context.dataSources.transaction.findOneById(args.id);
     },

@@ -6,11 +6,13 @@ export const createTransaction = gql`
       amount
       cardId
       categoryId
-      currencyCode
       description
       id
+      items {
+        amount
+        description
+      }
       postDate
-      type
       vendor
     }
   }
@@ -28,11 +30,13 @@ export const updateTransaction = gql`
       amount
       cardId
       categoryId
-      currencyCode
       description
       id
+      items {
+        amount
+        description
+      }
       postDate
-      type
       vendor
     }
   }

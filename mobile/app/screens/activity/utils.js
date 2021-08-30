@@ -7,7 +7,7 @@ export const getBaseDailySpending = dayCount => {
   for (let i = 0; i < dayCount; i += 1) {
     dailySpendingList.push({
       credit: 0,
-      currencyCode: null,
+      currency: null,
       date: currentDate.format('YYYY-MM-DD'),
       debit: 0,
     });
