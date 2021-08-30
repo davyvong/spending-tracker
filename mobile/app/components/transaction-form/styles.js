@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 60,
-    marginHorizontal: 24,
+    marginBottom: 30,
+    marginHorizontal: 12,
   },
   innerModal: {
     borderRadius: 10,

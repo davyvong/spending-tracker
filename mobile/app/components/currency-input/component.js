@@ -82,7 +82,7 @@ const CurrencyInputComponent = ({
         <TextInput
           {...props}
           editable={editable}
-          keyboardType="numeric"
+          keyboardType="default"
           onChangeText={onChangeAmount}
           value={valueAmount}
         />

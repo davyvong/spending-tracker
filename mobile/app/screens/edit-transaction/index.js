@@ -33,7 +33,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
     vendor: '',
     ...transaction,
     items: Array.isArray(transaction.items)
-      ? transaction.items.map(item => ({ amount: String(item.amount), description: item.description }))
+      ? transaction.items.map(item => ({ amount: item.amount?.toString() || '', description: item.description }))
       : [{ amount: '', description: '' }],
   });
 
@@ -70,7 +70,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
 
   const validateValues = useCallback(() => {
     const { cardId, categoryId, items, postDate, vendor } = values;
-    const badItems = items.some(item => !item.amount || !item.description);
+    const badItems = items.some(item => Number.isNaN(item.amount) || !item.amount || !item.description);
     if (badItems || !cardId || !categoryId || !postDate || !vendor) {
       setErrors({
         cardId: cardId ? null : 'screens.create-transaction.errors.empty-card',
