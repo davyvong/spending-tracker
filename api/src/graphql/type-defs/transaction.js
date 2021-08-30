@@ -14,6 +14,7 @@ export default `
     amount: Float
     cardId: String
     categoryId: String
+    currency: String
     id: ID!
     items: [TransactionItem]
     postDate: String

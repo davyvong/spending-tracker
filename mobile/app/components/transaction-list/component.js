@@ -117,11 +117,6 @@ const TransactionListComponent = ({
                 </Text>
               </View>
             </View>
-            {selectedTransaction?.description ? (
-              <View style={[styles.actionSheetTransactionDescription, theme.actionSheetTransactionDescription]}>
-                <Text>{selectedTransaction.description}</Text>
-              </View>
-            ) : null}
           </View>
         )}
       </ActionSheet>

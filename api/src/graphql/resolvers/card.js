@@ -18,10 +18,17 @@ export default {
         { _id: args.id, accountId: context.accountId },
         { ...args.data, updateTime: getCurrentTimestamp() },
       );
+      if (args.data.currency) {
+        await context.dataSources.transaction.model.updateMany(
+          { accountId: context.accountId, cardId: args.id },
+          { currency: args.data.currency },
+        );
+      }
       return context.dataSources.card.findOneById(args.id);
     },
     deleteCard: async (parent, args, context) => {
       try {
+        await context.dataSources.transaction.model.deleteMany({ accountId: context.accountId, cardId: args.id });
         await context.dataSources.card.model.findOneAndRemove({
           _id: args.id,
           accountId: context.accountId,

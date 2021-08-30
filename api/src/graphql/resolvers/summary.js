@@ -34,12 +34,12 @@ export default {
           query.cardId = cardId;
         }
       }
-      const transactions = await context.dataSources.transaction.model.find(query).populate('cardId');
+      const transactions = await context.dataSources.transaction.model.find(query);
       let dailySpending = {};
       transactions.forEach(transaction => {
-        if (!dailySpending[transaction.cardId.currency]) {
-          dailySpending[transaction.cardId.currency] = {
-            currency: transaction.cardId.currency,
+        if (!dailySpending[transaction.currency]) {
+          dailySpending[transaction.currency] = {
+            currency: transaction.currency,
             spending: Array(countOfDays + 1)
               .fill(null)
               .reduce((map, item, index) => {
@@ -57,9 +57,7 @@ export default {
         }
         if (transaction.amount !== 0) {
           const type = transaction.amount < 0 ? 'debit' : 'credit';
-          dailySpending[transaction.cardId.currency].spending[transaction.postDate][type] += Math.abs(
-            transaction.amount,
-          );
+          dailySpending[transaction.currency].spending[transaction.postDate][type] += Math.abs(transaction.amount);
         }
       });
       dailySpending = Object.values(dailySpending);
@@ -100,12 +98,12 @@ export default {
           query.cardId = cardId;
         }
       }
-      const transactions = await context.dataSources.transaction.model.find(query).populate('cardId');
+      const transactions = await context.dataSources.transaction.model.find(query);
       let monthlySpending = {};
       transactions.forEach(transaction => {
-        if (!monthlySpending[transaction.cardId.currency]) {
-          monthlySpending[transaction.cardId.currency] = {
-            currency: transaction.cardId.currency,
+        if (!monthlySpending[transaction.currency]) {
+          monthlySpending[transaction.currency] = {
+            currency: transaction.currency,
             spending: Array(countOfMonths + 1)
               .fill(null)
               .reduce((map, item, index) => {
@@ -125,7 +123,7 @@ export default {
           let monthString = moment(transaction.postDate);
           monthString = getMonthStringFromMoment(monthString);
           const type = transaction.amount < 0 ? 'debit' : 'credit';
-          monthlySpending[transaction.cardId.currency].spending[monthString][type] += Math.abs(transaction.amount);
+          monthlySpending[transaction.currency].spending[monthString][type] += Math.abs(transaction.amount);
         }
       });
       monthlySpending = Object.values(monthlySpending);

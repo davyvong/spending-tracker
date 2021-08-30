@@ -6,6 +6,7 @@ export const createTransaction = gql`
       amount
       cardId
       categoryId
+      currency
       id
       items {
         amount
@@ -29,6 +30,7 @@ export const updateTransaction = gql`
       amount
       cardId
       categoryId
+      currency
       id
       items {
         amount
