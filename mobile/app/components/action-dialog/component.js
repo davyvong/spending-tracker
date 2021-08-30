@@ -10,6 +10,8 @@ import styles from './styles';
 
 const ActionDialogComponent = ({
   children,
+  hidePrimary,
+  hideSecondary,
   onClose,
   onModalHide,
   onPressPrimary,
@@ -45,30 +47,41 @@ const ActionDialogComponent = ({
           {message ? <Text style={styles.messageText}>{message}</Text> : children}
         </View>
         <View style={styles.ctaRow}>
-          <Button onPress={onPressSecondary} style={getSecondaryButtonStyle}>
-            <Text>{secondaryAction.label || locale.t('components.action-dialog.buttons.cancel')}</Text>
-          </Button>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={onPressPrimary}
-            style={[
-              styles.ctaButton,
-              theme.primaryButton,
-              primaryAction.color && { backgroundColor: primaryAction.color },
-            ]}
-          >
-            <Text style={theme.primaryButtonText}>
-              {primaryAction.label || locale.t('components.action-dialog.buttons.confirm')}
-            </Text>
-          </TouchableOpacity>
+          {!hideSecondary && (
+            <Button onPress={onPressSecondary} style={getSecondaryButtonStyle}>
+              <Text>{secondaryAction.label || locale.t('components.action-dialog.buttons.cancel')}</Text>
+            </Button>
+          )}
+          {!hidePrimary && (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={onPressPrimary}
+              style={[
+                styles.ctaButton,
+                theme.primaryButton,
+                primaryAction.color && { backgroundColor: primaryAction.color },
+              ]}
+            >
+              <Text style={theme.primaryButtonText}>
+                {primaryAction.label || locale.t('components.action-dialog.buttons.confirm')}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </Modal>
   );
 };
 
+ActionDialogComponent.defaultProps = {
+  hidePrimary: false,
+  hideSecondary: false,
+};
+
 ActionDialogComponent.propTypes = {
   children: PropTypes.node,
+  hidePrimary: PropTypes.bool,
+  hideSecondary: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   onModalHide: PropTypes.func.isRequired,
   onPressPrimary: PropTypes.func.isRequired,

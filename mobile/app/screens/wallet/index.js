@@ -77,7 +77,7 @@ const WalletScreen = ({ navigation, ...props }) => {
       const selectedCard = await storage.getItem(storageKey);
       storageKey = storage.getItemKey('monthly-spending', null, {
         cardId: selectedCardId,
-        currencyCode: selectedCard?.currencyCode,
+        currency: selectedCard?.currency,
         month,
       });
       const monthlySpending = await storage.getItem(storageKey);

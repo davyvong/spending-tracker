@@ -32,7 +32,7 @@ export default new Schema(
       required: true,
       type: Number,
     },
-    currencyCode: {
+    currency: {
       enum: currencyEnum,
       required: true,
       type: String,

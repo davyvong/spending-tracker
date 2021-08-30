@@ -10,7 +10,7 @@ import styles from './styles';
 const MonthlySummaryComponent = ({ pending, spending, theme }) => {
   const [locale] = useLocale();
 
-  const currency = useMemo(() => getCurrency(spending?.currencyCode), [spending]);
+  const currency = useMemo(() => getCurrency(spending?.currency), [spending]);
 
   if (!spending) {
     return null;
@@ -32,7 +32,7 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
         </Text>
         <Text style={[styles.statisticAmount, currency?.cryptocurrency && styles.statisticAmountSmall]}>
           {locale.toCurrency(spending.credit, { precision: currency?.precision, unit: '' })}{' '}
-          <Text style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currencyCode}</Text>
+          <Text style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currency}</Text>
         </Text>
       </View>
       <View style={[styles.statisticCard, theme.statisticCard]}>
@@ -41,7 +41,7 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
         </Text>
         <Text style={[styles.statisticAmount, currency?.cryptocurrency && styles.statisticAmountSmall]}>
           {locale.toCurrency(spending.debit, { precision: currency?.precision, unit: '' })}{' '}
-          <Text style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currencyCode}</Text>
+          <Text style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currency}</Text>
         </Text>
       </View>
     </View>
@@ -56,7 +56,7 @@ MonthlySummaryComponent.propTypes = {
   pending: PropTypes.bool,
   spending: PropTypes.shape({
     credit: PropTypes.number,
-    currencyCode: PropTypes.string,
+    currency: PropTypes.string,
     date: PropTypes.string,
     debit: PropTypes.number,
   }),

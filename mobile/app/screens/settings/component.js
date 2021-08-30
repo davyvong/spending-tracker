@@ -87,9 +87,9 @@ const SettingsScreenComponent = ({
           <Text style={theme.sectionHeaderText}>{locale.t('screens.settings.sections.preferences')}</Text>
         </View>
         <RadioPickerModal
-          onChange={currency => updateAccount({ currencyCode: currency })}
+          onChange={currency => updateAccount({ currency })}
           options={currencyOptions}
-          value={account?.currencyCode}
+          value={account?.currency}
         >
           <View style={styles.ctaRow}>
             <MaterialCommunityIcons
@@ -100,7 +100,7 @@ const SettingsScreenComponent = ({
             />
             <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.default-currency')}</Text>
             <Spacer />
-            <Text style={[styles.ctaRowText, theme.selectedValueText]}>{account?.currencyCode}</Text>
+            <Text style={[styles.ctaRowText, theme.selectedValueText]}>{account?.currency}</Text>
             <MaterialIcons color={theme.defaultIcon} name="expand-more" size={20} style={styles.ctaRowRightIcon} />
           </View>
         </RadioPickerModal>

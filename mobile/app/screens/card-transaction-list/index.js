@@ -67,7 +67,7 @@ const CardTransactionListScreen = ({ navigation, route, ...props }) => {
 
   const navigateToCreateTransaction = useCallback(() => {
     navigation.navigate(routeOptions.createTransactionScreen.name, {
-      transaction: { cardId: card.id, currencyCode: card.currencyCode },
+      transaction: { cardId: card.id, currency: card.currency },
     });
   }, [navigation]);
 

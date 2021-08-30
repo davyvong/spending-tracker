@@ -134,12 +134,12 @@ export const APIProvider = ({ children }) => {
         data.dailySpending.map(currencySpending =>
           currencySpending.spending.map(spending => {
             const storageKey = storage.getItemKey('daily-spending', null, {
-              currencyCode: currencySpending.currencyCode,
+              currency: currencySpending.currency,
               date: spending.date,
             });
             return storage.setItem(storageKey, {
               ...spending,
-              currencyCode: currencySpending.currencyCode,
+              currency: currencySpending.currency,
             });
           }),
         ),
@@ -163,7 +163,7 @@ export const APIProvider = ({ children }) => {
           currencySpending.spending.map(spending => {
             const storageFilters = {
               cardId: filters?.cardId,
-              currencyCode: currencySpending.currencyCode,
+              currency: currencySpending.currency,
               month: spending.date,
             };
             if (!storageFilters.cardId) {
@@ -172,7 +172,7 @@ export const APIProvider = ({ children }) => {
             const storageKey = storage.getItemKey('monthly-spending', null, storageFilters);
             return storage.setItem(storageKey, {
               ...spending,
-              currencyCode: currencySpending.currencyCode,
+              currency: currencySpending.currency,
             });
           }),
         ),

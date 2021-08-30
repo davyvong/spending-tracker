@@ -13,9 +13,11 @@ import styles from './styles';
 
 const EditTransactionScreenComponent = ({
   closeDiscardDialog,
+  closeErrorDialog,
   closeSaveDialog,
   discardDialog,
   errors,
+  errorDialog,
   openSaveDialog,
   navigateBack,
   pendingSave,
@@ -58,6 +60,13 @@ const EditTransactionScreenComponent = ({
         visible={discardDialog}
       />
       <ActionDialog
+        hideSecondary
+        onClose={closeErrorDialog}
+        message={locale.t('common.unknown-error')}
+        primaryAction={{ onPress: closeErrorDialog }}
+        visible={errorDialog}
+      />
+      <ActionDialog
         onClose={closeSaveDialog}
         message={locale.t('screens.edit-transaction.messages.save-transaction')}
         primaryAction={{
@@ -72,11 +81,13 @@ const EditTransactionScreenComponent = ({
 
 EditTransactionScreenComponent.propTypes = {
   closeDiscardDialog: PropTypes.func.isRequired,
+  closeErrorDialog: PropTypes.func.isRequired,
   closeSaveDialog: PropTypes.func.isRequired,
   discardDialog: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
-  openSaveDialog: PropTypes.func.isRequired,
+  errorDialog: PropTypes.bool.isRequired,
   navigateBack: PropTypes.func.isRequired,
+  openSaveDialog: PropTypes.func.isRequired,
   pendingSave: PropTypes.bool.isRequired,
   saveDialog: PropTypes.bool.isRequired,
   saveTransaction: PropTypes.func.isRequired,

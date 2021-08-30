@@ -7,9 +7,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     marginTop: -8,
   },
-  serverError: {
-    marginTop: 8,
-  },
 });
 
 export default styles;

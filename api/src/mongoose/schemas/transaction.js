@@ -14,7 +14,6 @@ export default new Schema(
       },
     },
     amount: {
-      min: 0,
       required: true,
       type: Number,
       validate: {
@@ -43,7 +42,7 @@ export default new Schema(
       required: true,
       type: Number,
     },
-    currencyCode: {
+    currency: {
       enum: currencyEnum,
       required: true,
       type: String,
@@ -51,18 +50,25 @@ export default new Schema(
         validator: value => !isEmpty(value),
       },
     },
-    description: {
-      type: String,
-    },
-    postDate: {
-      index: true,
-      required: true,
-      type: String,
-      validate: {
-        validator: value => !isEmpty(value),
+    items: [
+      {
+        amount: {
+          required: true,
+          type: Number,
+          validate: {
+            validator: value => isNumeric(value.toString()),
+          },
+        },
+        description: {
+          required: true,
+          type: String,
+          validate: {
+            validator: value => !isEmpty(value),
+          },
+        },
       },
-    },
-    type: {
+    ],
+    postDate: {
       index: true,
       required: true,
       type: String,

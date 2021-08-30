@@ -14,12 +14,16 @@ export default `
     amount: Float
     cardId: String
     categoryId: String
-    currencyCode: String
-    description: String
+    currency: String
     id: ID!
+    items: [TransactionItem]
     postDate: String
-    type: String
     vendor: String
+  }
+
+  type TransactionItem {
+    amount: Float
+    description: String
   }
 
   input TransactionFilters {
@@ -29,25 +33,24 @@ export default `
     startDate: String
   }
 
-  input CreateTransactionData {
+  input TransactionItemData {
     amount: Float!
+    description: String!
+  }
+
+  input CreateTransactionData {
     cardId: ID!
-    categoryId: ID!
-    currencyCode: String!
-    description: String
+    categoryId: ID! 
+    items: [TransactionItemData]!
     postDate: String!
-    type: String!
     vendor: String!
   }
 
   input UpdateTransactionData {
-    amount: Float
     cardId: ID
     categoryId: ID
-    currencyCode: String
-    description: String
+    items: [TransactionItemData]
     postDate: String
-    type: String
     vendor: String
   }
 `;

@@ -30,12 +30,6 @@ const styles = StyleSheet.create({
   actionSheetTransactionSmallText: {
     marginTop: 4,
   },
-  actionSheetTransactionDescription: {
-    borderRadius: 5,
-    marginTop: 12,
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-  },
 });
 
 export default styles;

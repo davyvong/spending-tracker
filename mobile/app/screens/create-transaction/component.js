@@ -1,7 +1,6 @@
 import ActionDialog from 'components/action-dialog';
 import Button from 'components/button';
 import ScrollView from 'components/scroll-view';
-import Text from 'components/text';
 import TransactionForm from 'components/transaction-form';
 import Title from 'components/title';
 import { routeOptions } from 'constants/routes';
@@ -14,9 +13,11 @@ import styles from './styles';
 
 const CreateTransactionScreenComponent = ({
   closeDiscardDialog,
+  closeErrorDialog,
   createTransaction,
   discardDialog,
   errors,
+  errorDialog,
   navigateBack,
   pending,
   setNavigationOptions,
@@ -43,7 +44,6 @@ const CreateTransactionScreenComponent = ({
         StickyHeaderComponent={<Title>{locale.t(routeOptions.createTransactionScreen.title)}</Title>}
       >
         <TransactionForm editable={!pending} errors={errors} updateValue={updateValue} values={values} />
-        {errors.server && <Text style={[styles.serverError, theme.serverError]}>{locale.t(errors.server)}</Text>}
       </ScrollView>
       <ActionDialog
         onClose={closeDiscardDialog}
@@ -55,15 +55,24 @@ const CreateTransactionScreenComponent = ({
         }}
         visible={discardDialog}
       />
+      <ActionDialog
+        hideSecondary
+        onClose={closeErrorDialog}
+        message={locale.t('common.unknown-error')}
+        primaryAction={{ onPress: closeErrorDialog }}
+        visible={errorDialog}
+      />
     </View>
   );
 };
 
 CreateTransactionScreenComponent.propTypes = {
   closeDiscardDialog: PropTypes.func.isRequired,
+  closeErrorDialog: PropTypes.func.isRequired,
   createTransaction: PropTypes.func.isRequired,
   discardDialog: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
+  errorDialog: PropTypes.bool.isRequired,
   navigateBack: PropTypes.func.isRequired,
   pending: PropTypes.bool.isRequired,
   setNavigationOptions: PropTypes.func.isRequired,

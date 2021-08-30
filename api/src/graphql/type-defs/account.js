@@ -10,7 +10,7 @@ export default `
   }
 
   type Account {
-    currencyCode: String
+    currency: String
     email: String
     firstName: String
     id: ID!
@@ -19,7 +19,7 @@ export default `
   }
 
   input UpdateAccountData {
-    currencyCode: String
+    currency: String
     email: String
     firstName: String
     lastName: String

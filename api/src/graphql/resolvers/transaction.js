@@ -1,4 +1,4 @@
-import { InternalServerError } from 'http-errors';
+import { BadRequest, InternalServerError } from 'http-errors';
 import { getCurrentTimestamp } from 'utils/date';
 import { buildFindOptions } from 'utils/mongo';
 
@@ -10,13 +10,33 @@ export default {
         accountId: context.accountId,
         createTime: getCurrentTimestamp(),
       };
+      data.amount = data.items.reduce((amount, item) => amount + item.amount, 0);
       data.updateTime = data.createTime;
+      const card = await context.dataSources.card.findOneById(data.cardId);
+      if (!card) {
+        throw new BadRequest();
+      }
+      data.currency = card.currency;
       return context.dataSources.transaction.model.create(data);
     },
     updateTransaction: async (parent, args, context) => {
+      const data = {
+        ...args.data,
+        updateTime: getCurrentTimestamp(),
+      };
+      if (Array.isArray(data.items)) {
+        data.amount = data.items.reduce((amount, item) => amount + item.amount, 0);
+      }
+      if (data.cardId) {
+        const card = await context.dataSources.card.findOneById(data.cardId);
+        if (!card) {
+          throw new BadRequest();
+        }
+        data.currency = card.currency;
+      }
       await context.dataSources.transaction.model.findOneAndUpdate(
         { _id: args.id, accountId: context.accountId },
-        { ...args.data, updateTime: getCurrentTimestamp() },
+        data,
       );
       return context.dataSources.transaction.findOneById(args.id);
     },

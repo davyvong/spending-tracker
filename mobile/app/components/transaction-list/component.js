@@ -113,15 +113,10 @@ const TransactionListComponent = ({
                   {selectedTransaction.getFormattedAmount(locale)}
                 </Text>
                 <Text style={[styles.actionSheetTransactionSmallText, theme.actionSheetTransactionMutedText]}>
-                  {selectedTransaction.currencyCode}
+                  {selectedTransaction.currency}
                 </Text>
               </View>
             </View>
-            {selectedTransaction?.description ? (
-              <View style={[styles.actionSheetTransactionDescription, theme.actionSheetTransactionDescription]}>
-                <Text>{selectedTransaction.description}</Text>
-              </View>
-            ) : null}
           </View>
         )}
       </ActionSheet>

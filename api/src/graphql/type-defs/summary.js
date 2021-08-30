@@ -5,7 +5,7 @@ export default `
   }
 
   type CurrencySpending {
-    currencyCode: String
+    currency: String
     spending: [Spending]
   }
 

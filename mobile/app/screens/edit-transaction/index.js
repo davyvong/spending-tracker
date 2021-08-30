@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { getCurrency } from 'constants/currencies';
 import useAPI from 'hooks/api';
 import useTheme from 'hooks/theme';
 import pick from 'lodash/pick';
@@ -17,28 +16,25 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const { palette } = useTheme();
   const [hasChanges, setHasChanges] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
   const [saveDialog, setSaveDialog] = useState(false);
   const [pendingSave, setPendingSave] = useState(false);
   const [errors, setErrors] = useState({
-    amount: null,
     cardId: null,
     categoryId: null,
-    currencyCode: null,
+    items: null,
     postDate: null,
-    server: null,
-    type: null,
     vendor: null,
   });
   const [values, setValues] = useState({
     cardId: null,
     categoryId: null,
-    currencyCode: null,
-    description: '',
     postDate: '',
-    type: 'debit',
     vendor: '',
     ...transaction,
-    amount: transaction?.amount?.toFixed(getCurrency(transaction?.currencyCode)?.precision) || '',
+    items: Array.isArray(transaction.items)
+      ? transaction.items.map(item => ({ amount: String(item.amount), description: item.description }))
+      : [{ amount: '', description: '' }],
   });
 
   const theme = useMemo(
@@ -53,16 +49,18 @@ const EditTransactionScreen = ({ route, ...props }) => {
       discardButton: {
         backgroundColor: palette.get('backgrounds.alternate-button'),
       },
-      serverError: {
-        color: palette.get('texts.error'),
-      },
     }),
     [palette],
   );
 
   const updateValue = useCallback(
     field => value => {
-      setValues(prevState => ({ ...prevState, [field]: value }));
+      setValues(prevState => {
+        if (value instanceof Function) {
+          return { ...prevState, [field]: value(prevState[field]) };
+        }
+        return { ...prevState, [field]: value };
+      });
       if (!hasChanges) {
         setHasChanges(true);
       }
@@ -71,16 +69,14 @@ const EditTransactionScreen = ({ route, ...props }) => {
   );
 
   const validateValues = useCallback(() => {
-    const { amount, cardId, categoryId, currencyCode, postDate, type, vendor } = values;
-    if (!amount || !cardId || !categoryId || !currencyCode || !postDate || !type || !vendor) {
+    const { cardId, categoryId, items, postDate, vendor } = values;
+    const badItems = items.some(item => !item.amount || !item.description);
+    if (badItems || !cardId || !categoryId || !postDate || !vendor) {
       setErrors({
-        amount: amount ? null : 'screens.create-transaction.errors.empty-amount',
         cardId: cardId ? null : 'screens.create-transaction.errors.empty-card',
         categoryId: categoryId ? null : 'screens.create-transaction.errors.empty-category',
-        currencyCode: currencyCode ? null : 'screens.create-transaction.errors.empty-currency',
+        items: badItems ? 'screens.create-transaction.errors.empty-items' : null,
         postDate: postDate ? null : 'screens.create-transaction.errors.empty-date',
-        server: null,
-        type: type ? null : 'screens.create-transaction.errors.empty-type',
         vendor: vendor ? null : 'screens.create-transaction.errors.empty-vendor',
       });
       return false;
@@ -91,10 +87,9 @@ const EditTransactionScreen = ({ route, ...props }) => {
   const saveTransaction = useCallback(async () => {
     setPendingSave(true);
     try {
-      await api.updateTransaction(values.id, {
-        ...pick(values, 'cardId', 'categoryId', 'currencyCode', 'description', 'postDate', 'type', 'vendor'),
-        amount: Number(values.amount),
-      });
+      const data = pick(values, 'cardId', 'categoryId', 'items', 'postDate', 'vendor');
+      data.items = data.items.map(item => ({ ...item, amount: Number(item.amount) }));
+      await api.updateTransaction(values.id, data);
       navigation.dispatch({
         ignoreDiscard: true,
         payload: { count: 1 },
@@ -102,10 +97,7 @@ const EditTransactionScreen = ({ route, ...props }) => {
       });
     } catch (error) {
       console.log(error.message);
-      setErrors(prevState => ({
-        ...prevState,
-        server: 'common.unknown-error',
-      }));
+      setErrorDialog(true);
     }
     setPendingSave(false);
   }, [navigation, values]);
@@ -136,6 +128,10 @@ const EditTransactionScreen = ({ route, ...props }) => {
     setDiscardDialog(action);
   }, []);
 
+  const closeErrorDialog = useCallback(() => {
+    setErrorDialog(false);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', event => {
       const { action } = event.data;
@@ -154,9 +150,11 @@ const EditTransactionScreen = ({ route, ...props }) => {
     <EditTransactionScreenComponent
       {...props}
       closeDiscardDialog={closeDiscardDialog}
+      closeErrorDialog={closeErrorDialog}
       closeSaveDialog={closeSaveDialog}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
+      errorDialog={errorDialog}
       navigateBack={navigateBack}
       openSaveDialog={openSaveDialog}
       pendingSave={pendingSave}
