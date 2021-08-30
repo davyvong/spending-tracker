@@ -11,6 +11,8 @@ import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback } from 'react';
 import { Pressable, View } from 'react-native';
+
+import DraggableFlatList from 'react-native-draggable-flatlist';
 import Modal from 'react-native-modal';
 
 import styles from './styles';
@@ -40,9 +42,18 @@ const TransactionFormComponent = ({
   );
 
   const renderTransactionItem = useCallback(
-    (item, index, list) => (
-      <View key={index} style={[styles.transactionItemRow, index > 0 && styles.transactionItemRowSpacer]}>
+    ({ drag, index, isActive, item }) => (
+      <View
+        key={index}
+        style={[
+          styles.transactionItemRow,
+          index > 0 && styles.transactionItemRowSpacer,
+          isActive && styles.transactionItemRowHover,
+          isActive && theme.transactionItemRowHover,
+        ]}
+      >
         <Pressable
+          onLongPress={values.items.length > 1 ? drag : undefined}
           onPress={() => setSelectedItem({ ...item, index })}
           style={[styles.transactionItem, theme.transactionItem]}
         >
@@ -54,14 +65,14 @@ const TransactionFormComponent = ({
             {currency && ` ${currency}`}
           </Text>
         </Pressable>
-        {list.length > 1 && (
+        {values.items.length > 1 && (
           <Pressable onPress={() => removeItem(index)} style={styles.transactionItemDelete}>
             <MaterialIcons color={theme.transactionItemDeleteIcon.color} name="delete" size={20} />
           </Pressable>
         )}
       </View>
     ),
-    [currency, locale, theme],
+    [currency, locale, theme, values.items],
   );
 
   return (
@@ -98,7 +109,12 @@ const TransactionFormComponent = ({
         value={values.categoryId}
       />
       <Text style={[styles.fieldTitle, theme.fieldTitle]}>{locale.t('components.transaction-form.labels.items')}</Text>
-      {values.items.map(renderTransactionItem)}
+      <DraggableFlatList
+        data={values.items}
+        keyExtractor={(item, index) => index.toString()}
+        onDragEnd={({ data }) => updateValue('items')(data)}
+        renderItem={renderTransactionItem}
+      />
       {errors.items && <Text style={[styles.fieldError, theme.fieldError]}>{locale.t(errors.items)}</Text>}
       <Pressable
         onPress={addItem}
