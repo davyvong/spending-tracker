@@ -82,6 +82,7 @@ const TransactionFormComponent = ({
       <DraggableFlatList
         contentContainerStyle={styles.contentContainer}
         data={values.items}
+        keyboardShouldPersistTaps="handled"
         keyExtractor={(item, index) => index.toString()}
         ListHeaderComponent={
           <Fragment>
