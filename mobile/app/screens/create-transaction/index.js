@@ -28,15 +28,12 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
   const [values, setValues] = useState({
     cardId: null,
     categoryId: null,
-    items: [
-      {
-        amount: '',
-        description: '',
-      },
-    ],
     postDate: '',
     vendor: '',
     ...transaction,
+    items: Array.isArray(transaction.items)
+      ? transaction.items.map(item => ({ amount: item.amount?.toString() || '', description: item.description }))
+      : [{ amount: '', description: '' }],
   });
 
   const theme = useMemo(
