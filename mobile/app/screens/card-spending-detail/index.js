@@ -1,23 +1,33 @@
+import useTheme from 'hooks/theme';
 import Card from 'models/card';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import CardSpendingDetailScreenComponent from './component';
 
-const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
+const CardSpendingDetailScreen = ({ route, ...props }) => {
   const { card, endDate, startDate } = route.params;
 
-  console.log({ card, endDate, startDate });
+  console.log({ endDate, startDate });
 
-  return <CardSpendingDetailScreenComponent {...props} card={card} setNavigationOptions={navigation.setOptions} />;
+  const { palette } = useTheme();
+
+  const theme = useMemo(
+    () => ({
+      chartTooltip: {
+        fill: palette.get('backgrounds.chart-tooltip'),
+      },
+      chartTooltipText: {
+        fill: palette.get('texts.chart-tooltip'),
+      },
+    }),
+    [theme],
+  );
+
+  return <CardSpendingDetailScreenComponent {...props} card={card} theme={theme} />;
 };
 
 CardSpendingDetailScreen.propTypes = {
-  navigation: PropTypes.shape({
-    addListener: PropTypes.func.isRequired,
-    navigate: PropTypes.func.isRequired,
-    setOptions: PropTypes.func.isRequired,
-  }),
   route: PropTypes.shape({
     params: PropTypes.shape({
       card: Card.propTypes.isRequired,

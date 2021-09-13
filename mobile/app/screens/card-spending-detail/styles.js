@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
   contentContainer: {
     marginTop: -8,
   },
+  chartContainer: {
+    marginHorizontal: -24,
+  },
 });
 
 export default styles;

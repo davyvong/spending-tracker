@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import MonthPicker from 'components/month-picker';
-import MonthlySummary from 'components/monthly-summary';
+import MonthlySpending from 'components/monthly-spending';
 import ScrollView from 'components/scroll-view';
 import Spacer from 'components/spacer';
 import Text from 'components/text';
@@ -49,7 +49,7 @@ const WalletScreenComponent = ({
             </View>
             {monthlySpending && (
               <View style={styles.sectionBlock}>
-                <MonthlySummary spending={monthlySpending} />
+                <MonthlySpending spending={monthlySpending} />
               </View>
             )}
             <Pressable onPress={navigateToTransactions} style={styles.ctaRow}>
