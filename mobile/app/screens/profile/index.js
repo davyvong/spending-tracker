@@ -73,7 +73,6 @@ const ProfileScreen = ({ navigation, ...props }) => {
         type: 'POP',
       });
     } catch (error) {
-      console.log(error.message);
       setErrors(prevState => ({
         ...prevState,
         server: 'common.unknown-error',

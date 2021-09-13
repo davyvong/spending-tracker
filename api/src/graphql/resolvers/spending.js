@@ -57,11 +57,11 @@ export default {
           categorySpending[transaction.categoryId].spending[transaction.currency].debit += Math.abs(transaction.amount);
           categorySpending[transaction.categoryId].transactionCount++;
         }
-        categorySpending = Object.values(categorySpending);
-        for (let i = 0; i < categorySpending.length; i++) {
-          categorySpending[i].spending = Object.values(categorySpending[i].spending);
-        }
       });
+      categorySpending = Object.values(categorySpending);
+      for (let i = 0; i < categorySpending.length; i++) {
+        categorySpending[i].spending = Object.values(categorySpending[i].spending);
+      }
       return categorySpending;
     },
     dailySpending: async (parent, args, context) => {
@@ -108,8 +108,8 @@ export default {
                 dateString = getDateStringFromMoment(dateString);
                 map[dateString] = {
                   credit: 0,
-                  date: dateString,
                   debit: 0,
+                  type: dateString,
                 };
                 return map;
               }, {}),
@@ -172,8 +172,8 @@ export default {
                 monthString = getMonthStringFromMoment(monthString);
                 map[monthString] = {
                   credit: 0,
-                  date: monthString,
                   debit: 0,
+                  type: monthString,
                 };
                 return map;
               }, {}),

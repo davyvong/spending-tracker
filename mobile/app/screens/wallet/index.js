@@ -122,12 +122,11 @@ const WalletScreen = ({ navigation, ...props }) => {
   const navigateToSummary = useCallback(async () => {
     const storageKey = storage.getItemKey('card', selectedCardId);
     const card = await storage.getItem(storageKey);
-    const endDate = moment(selectedMonth).add(1, 'months');
     if (card) {
       navigation.navigate(routeOptions.cardSpendingDetailScreen.name, {
         card,
-        endDate: endDate.format('YYYY-MM'),
-        startDate: selectedMonth,
+        endMonth: selectedMonth,
+        startMonth: selectedMonth,
         title: card.name,
       });
     }

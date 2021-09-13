@@ -9,7 +9,7 @@ import { VictoryPie, VictoryTooltip } from 'victory-native';
 
 import styles from './styles';
 
-const CardSpendingDetailScreenComponent = ({ card, data, theme }) => {
+const CardSpendingDetailScreenComponent = ({ card, categorySpending, theme }) => {
   const renderSpending = useCallback(
     spending => <CategoryRow {...spending} currency={card.currency} key={spending.categoryId} />,
     [],
@@ -20,7 +20,7 @@ const CardSpendingDetailScreenComponent = ({ card, data, theme }) => {
       <ScrollView contentContainerStyle={styles.contentContainer} StickyHeaderComponent={<Title>{card?.name}</Title>}>
         <View style={styles.chartContainer}>
           <VictoryPie
-            data={data}
+            data={categorySpending}
             height={250}
             labelComponent={
               <VictoryTooltip
@@ -38,7 +38,7 @@ const CardSpendingDetailScreenComponent = ({ card, data, theme }) => {
             padding={24}
           />
         </View>
-        <View style={styles.spendingContainer}>{data.map(renderSpending)}</View>
+        <View style={styles.spendingContainer}>{categorySpending.map(renderSpending)}</View>
       </ScrollView>
     </View>
   );
@@ -46,8 +46,11 @@ const CardSpendingDetailScreenComponent = ({ card, data, theme }) => {
 
 CardSpendingDetailScreenComponent.propTypes = {
   card: Card.propTypes,
-  data: PropTypes.arrayOf(
+  categorySpending: PropTypes.arrayOf(
     PropTypes.shape({
+      amount: PropTypes.number,
+      categoryId: PropTypes.string,
+      transactionCount: PropTypes.number,
       x: PropTypes.string,
       y: PropTypes.number,
     }),
