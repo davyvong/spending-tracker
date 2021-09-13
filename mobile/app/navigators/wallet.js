@@ -3,6 +3,7 @@ import { routeOptions } from 'constants/routes';
 import Header from 'core/header';
 import useLocale from 'hooks/locale';
 import React from 'react';
+import CardSpendingDetailScreen from 'screens/card-spending-detail';
 import CardTransactionListScreen from 'screens/card-transaction-list';
 import CreateTransactionScreen from 'screens/create-transaction';
 import EditTransactionScreen from 'screens/edit-transaction';
@@ -31,6 +32,12 @@ const WalletNavigator = () => {
           ...routeOptions.walletScreen,
           title: locale.t(routeOptions.walletScreen.title),
         }}
+      />
+      <Stack.Screen
+        component={CardSpendingDetailScreen}
+        name={routeOptions.cardSpendingDetailScreen.name}
+        options={routeOptions.cardSpendingDetailScreen}
+        unmountOnBlur
       />
       <Stack.Screen
         component={CardTransactionListScreen}

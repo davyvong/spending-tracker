@@ -17,6 +17,7 @@ import styles from './styles';
 const WalletScreenComponent = ({
   cards,
   monthlySpending,
+  navigateToSummary,
   navigateToTransactions,
   refreshing,
   refreshMonthlySpending,
@@ -67,6 +68,22 @@ const WalletScreenComponent = ({
                 style={styles.ctaRowRightIcon}
               />
             </Pressable>
+            <Pressable onPress={navigateToSummary} style={styles.ctaRow}>
+              <MaterialCommunityIcons
+                color={theme.actionIcon}
+                name="chart-arc"
+                size={28}
+                style={styles.ctaRowLeftIcon}
+              />
+              <Text style={styles.ctaRowText}>{locale.t('screens.wallet.actions.spending')}</Text>
+              <Spacer />
+              <MaterialIcons
+                color={theme.defaultIcon}
+                name="keyboard-arrow-right"
+                size={20}
+                style={styles.ctaRowRightIcon}
+              />
+            </Pressable>
           </Fragment>
         )}
       </ScrollView>
@@ -82,6 +99,7 @@ WalletScreenComponent.propTypes = {
     date: PropTypes.string.isRequired,
     debit: PropTypes.number.isRequired,
   }),
+  navigateToSummary: PropTypes.func.isRequired,
   navigateToTransactions: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
   refreshMonthlySpending: PropTypes.func.isRequired,
