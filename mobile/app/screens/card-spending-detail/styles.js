@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     marginTop: -8,
   },
   chartContainer: {
+    display: 'none',
     marginHorizontal: -24,
   },
   spendingContainer: {
