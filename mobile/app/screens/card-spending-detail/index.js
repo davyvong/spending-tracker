@@ -24,7 +24,9 @@ const CardSpendingDetailScreen = ({ route, ...props }) => {
     [theme],
   );
 
-  return <CardSpendingDetailScreenComponent {...props} card={card} theme={theme} />;
+  const data = useMemo(() => [], []);
+
+  return <CardSpendingDetailScreenComponent {...props} card={card} data={data} theme={theme} />;
 };
 
 CardSpendingDetailScreen.propTypes = {

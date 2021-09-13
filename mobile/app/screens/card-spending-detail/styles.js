@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
   chartContainer: {
     marginHorizontal: -24,
   },
+  spendingContainer: {
+    marginHorizontal: -24,
+  },
 });
 
 export default styles;
