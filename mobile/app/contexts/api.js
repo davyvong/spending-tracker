@@ -135,7 +135,7 @@ export const APIProvider = ({ children }) => {
           currencySpending.spending.map(spending => {
             const storageKey = storage.getItemKey('daily-spending', null, {
               currency: currencySpending.currency,
-              date: spending.date,
+              date: spending.type,
             });
             return storage.setItem(storageKey, {
               ...spending,
@@ -164,7 +164,7 @@ export const APIProvider = ({ children }) => {
             const storageFilters = {
               cardId: filters?.cardId,
               currency: currencySpending.currency,
-              month: spending.date,
+              month: spending.type,
             };
             if (!storageFilters.cardId) {
               delete storageFilters.cardId;

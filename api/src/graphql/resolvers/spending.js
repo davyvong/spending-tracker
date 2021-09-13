@@ -4,6 +4,66 @@ import { getDateStringFromMoment, getMonthStringFromMoment } from 'utils/date';
 
 export default {
   Query: {
+    categorySpending: async (parent, args, context) => {
+      const account = await context.dataSources.account.findOneById(context.accountId);
+      if (!account) {
+        throw new BadRequest();
+      }
+      const startMonth = moment(args.startMonth, 'YYYY-MM', true);
+      if (!startMonth.isValid()) {
+        throw new BadRequest();
+      }
+      const endMonth = moment(args.endMonth, 'YYYY-MM', true);
+      if (!endMonth.isValid()) {
+        throw new BadRequest();
+      }
+      const countOfMonths = endMonth.diff(startMonth, 'months');
+      if (countOfMonths > 6) {
+        throw new BadRequest();
+      }
+      const query = {
+        accountId: context.accountId,
+        postDate: {
+          $gte: args.startMonth,
+        },
+      };
+      endMonth.add(1, 'months');
+      query.postDate.$lte = getMonthStringFromMoment(endMonth);
+      if (args.filters) {
+        const { cardId } = args.filters;
+        if (cardId) {
+          query.cardId = cardId;
+        }
+      }
+      let categorySpending = {};
+      const transactions = await context.dataSources.transaction.model.find(query);
+      transactions.forEach(transaction => {
+        if (transaction.amount >= 0) {
+          return;
+        }
+        if (!categorySpending[transaction.categoryId]) {
+          categorySpending[transaction.categoryId] = {
+            categoryId: transaction.categoryId,
+            spending: {
+              [transaction.currency]: {
+                credit: 0,
+                debit: Math.abs(transaction.amount),
+                type: transaction.currency,
+              },
+            },
+            transactionCount: 1,
+          };
+        } else {
+          categorySpending[transaction.categoryId].spending[transaction.currency].debit += Math.abs(transaction.amount);
+          categorySpending[transaction.categoryId].transactionCount++;
+        }
+        categorySpending = Object.values(categorySpending);
+        for (let i = 0; i < categorySpending.length; i++) {
+          categorySpending[i].spending = Object.values(categorySpending[i].spending);
+        }
+      });
+      return categorySpending;
+    },
     dailySpending: async (parent, args, context) => {
       const account = await context.dataSources.account.findOneById(context.accountId);
       if (!account) {
