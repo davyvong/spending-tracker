@@ -18,8 +18,6 @@
   "components.date-input.buttons.cancel": "Cancel",
   "components.monthly-summary.labels.credit": "Credit",
   "components.monthly-summary.labels.debit": "Debit",
-  "components.monthly-summary.labels.deposits": "Deposits",
-  "components.monthly-summary.labels.withdrawals": "Withdrawals",
   "components.multi-select-input.buttons.apply": "Apply",
   "components.multi-select-input.buttons.cancel": "Cancel",
   "components.radio-picker-input.buttons.apply": "Apply",
