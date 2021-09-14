@@ -8,7 +8,7 @@ import { normalizeText } from 'utils/styles';
 import { daysOfWeek, initialAnimatedData } from './constants';
 import styles from './styles';
 
-const SpendingChartComponent = ({ data, maxSpent, theme }) => {
+const DailySpendingChartComponent = ({ data, maxSpent, theme }) => {
   const [locale] = useLocale();
   const animatedData = useRef(initialAnimatedData);
 
@@ -56,10 +56,10 @@ const SpendingChartComponent = ({ data, maxSpent, theme }) => {
   );
 };
 
-SpendingChartComponent.propTypes = {
+DailySpendingChartComponent.propTypes = {
   data: PropTypes.array.isRequired,
   maxSpent: PropTypes.number.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
-export default SpendingChartComponent;
+export default DailySpendingChartComponent;

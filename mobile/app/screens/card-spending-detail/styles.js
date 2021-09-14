@@ -4,11 +4,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  contentContainer: {
-    marginTop: -8,
-  },
   chartContainer: {
-    display: 'none',
     marginHorizontal: -24,
   },
   spendingContainer: {

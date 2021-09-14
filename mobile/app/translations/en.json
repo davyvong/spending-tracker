@@ -14,7 +14,7 @@
   "components.action-dialog.buttons.cancel": "Cancel",
   "components.action-dialog.buttons.confirm": "Confirm",
   "components.action-sheet.buttons.close": "Close",
-  "components.category-row.transaction-count": "{{count}} transactions",
+  "components.category-row.transaction-count": "{{count}} Transactions",
   "components.date-input.buttons.apply": "Apply",
   "components.date-input.buttons.cancel": "Cancel",
   "components.monthly-spending.labels.credit": "Credit",

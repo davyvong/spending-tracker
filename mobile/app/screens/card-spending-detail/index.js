@@ -64,6 +64,7 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
           }
         }
       }
+      categorySpending.sort((a, b) => a.x > b.x);
       setCategorySpending(categorySpending);
     }
   }, [card, startMonth]);
