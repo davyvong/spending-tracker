@@ -96,7 +96,6 @@ const EditTransactionScreen = ({ route, ...props }) => {
         type: 'POP',
       });
     } catch (error) {
-      console.log(error.message);
       setErrorDialog(true);
     }
     setPendingSave(false);

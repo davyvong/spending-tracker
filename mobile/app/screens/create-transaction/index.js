@@ -80,7 +80,6 @@ const CreateTransactionScreen = ({ navigation, route, ...props }) => {
           type: 'POP',
         });
       } catch (error) {
-        console.log(error.message);
         setErrorDialog(true);
       }
       setPending(false);

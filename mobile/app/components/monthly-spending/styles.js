@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
     fontSize: normalizeText(16),
     marginTop: 6,
   },
-  statisticAmountSmall: {
-    fontSize: normalizeText(14),
-  },
   statisticCurrency: {
     fontSize: normalizeText(12),
   },

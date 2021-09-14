@@ -4,6 +4,7 @@ export default new Map(
   Object.entries({
     'backgrounds.alternate-button': '#d63031',
     'backgrounds.app': '#000000',
+    'backgrounds.chart-tooltip': '#a09c97',
     'backgrounds.icon': hexToRGB('#0984e3', 0.15),
     'backgrounds.input': hexToRGB('#a09c97', 0.15),
     'backgrounds.modal': '#242423',
@@ -22,6 +23,7 @@ export default new Map(
     'refresh-control': '#9e9ea7',
     shadow: '#000000',
     'texts.button': '#000000',
+    'texts.chart-tooltip': '#000000',
     'texts.error': '#d63031',
     'texts.input': '#616158',
     'texts.muted': '#616158',

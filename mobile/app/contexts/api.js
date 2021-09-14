@@ -6,7 +6,7 @@ import * as transactionsMutations from 'graphql/mutations/transactions';
 import * as accountsQueries from 'graphql/queries/accounts';
 import * as cardsQueries from 'graphql/queries/cards';
 import * as categoriesQueries from 'graphql/queries/categories';
-import * as summariesQueries from 'graphql/queries/summaries';
+import * as spendingQueries from 'graphql/queries/spending';
 import * as transactionsQueries from 'graphql/queries/transactions';
 import Account from 'models/account';
 import Card from 'models/card';
@@ -124,10 +124,42 @@ export const APIProvider = ({ children }) => {
     return categoryIds;
   }, [client]);
 
+  const getCategorySpending = useCallback(
+    async (month, filters) => {
+      const { data } = await client.query({
+        query: spendingQueries.categorySpending,
+        variables: {
+          endMonth: month,
+          filters,
+          startMonth: month,
+        },
+      });
+      const storageFilters = {
+        cardId: filters?.cardId,
+        month,
+      };
+      if (!storageFilters.cardId) {
+        delete storageFilters.cardId;
+      }
+      await Promise.all(
+        data.categorySpending.map(categorySpending => {
+          const storageKey = storage.getItemKey('category-spending', categorySpending.categoryId, storageFilters);
+          return storage.setItem(storageKey, categorySpending);
+        }),
+      );
+      const storageKey = storage.getItemKey('category-spending', null, storageFilters);
+      await storage.setItem(
+        storageKey,
+        data.categorySpending.map(categorySpending => categorySpending.categoryId),
+      );
+    },
+    [client],
+  );
+
   const getDailySpending = useCallback(
     async (startDate, endDate) => {
       const { data } = await client.query({
-        query: summariesQueries.dailySpending,
+        query: spendingQueries.dailySpending,
         variables: { endDate, startDate },
       });
       await Promise.all(
@@ -135,11 +167,12 @@ export const APIProvider = ({ children }) => {
           currencySpending.spending.map(spending => {
             const storageKey = storage.getItemKey('daily-spending', null, {
               currency: currencySpending.currency,
-              date: spending.date,
+              date: spending.type,
             });
             return storage.setItem(storageKey, {
               ...spending,
               currency: currencySpending.currency,
+              date: spending.type,
             });
           }),
         ),
@@ -151,7 +184,7 @@ export const APIProvider = ({ children }) => {
   const getMonthlySpending = useCallback(
     async (month, filters) => {
       const { data } = await client.query({
-        query: summariesQueries.monthlySpending,
+        query: spendingQueries.monthlySpending,
         variables: {
           endMonth: month,
           filters,
@@ -164,7 +197,7 @@ export const APIProvider = ({ children }) => {
             const storageFilters = {
               cardId: filters?.cardId,
               currency: currencySpending.currency,
-              month: spending.date,
+              month: spending.type,
             };
             if (!storageFilters.cardId) {
               delete storageFilters.cardId;
@@ -173,6 +206,7 @@ export const APIProvider = ({ children }) => {
             return storage.setItem(storageKey, {
               ...spending,
               currency: currencySpending.currency,
+              date: spending.type,
             });
           }),
         ),
@@ -314,6 +348,7 @@ export const APIProvider = ({ children }) => {
     getAccount,
     getCards,
     getCategories,
+    getCategorySpending,
     getDailySpending,
     getMonthlySpending,
     getTransaction,

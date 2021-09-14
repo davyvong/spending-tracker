@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import MonthPicker from 'components/month-picker';
-import MonthlySummary from 'components/monthly-summary';
+import MonthlySpending from 'components/monthly-spending';
 import ScrollView from 'components/scroll-view';
 import Spacer from 'components/spacer';
 import Text from 'components/text';
@@ -17,6 +17,7 @@ import styles from './styles';
 const WalletScreenComponent = ({
   cards,
   monthlySpending,
+  navigateToSummary,
   navigateToTransactions,
   refreshing,
   refreshMonthlySpending,
@@ -48,7 +49,7 @@ const WalletScreenComponent = ({
             </View>
             {monthlySpending && (
               <View style={styles.sectionBlock}>
-                <MonthlySummary spending={monthlySpending} />
+                <MonthlySpending spending={monthlySpending} />
               </View>
             )}
             <Pressable onPress={navigateToTransactions} style={styles.ctaRow}>
@@ -59,6 +60,22 @@ const WalletScreenComponent = ({
                 style={styles.ctaRowLeftIcon}
               />
               <Text style={styles.ctaRowText}>{locale.t('screens.wallet.actions.transactions')}</Text>
+              <Spacer />
+              <MaterialIcons
+                color={theme.defaultIcon}
+                name="keyboard-arrow-right"
+                size={20}
+                style={styles.ctaRowRightIcon}
+              />
+            </Pressable>
+            <Pressable onPress={navigateToSummary} style={styles.ctaRow}>
+              <MaterialCommunityIcons
+                color={theme.actionIcon}
+                name="chart-arc"
+                size={28}
+                style={styles.ctaRowLeftIcon}
+              />
+              <Text style={styles.ctaRowText}>{locale.t('screens.wallet.actions.spending')}</Text>
               <Spacer />
               <MaterialIcons
                 color={theme.defaultIcon}
@@ -82,6 +99,7 @@ WalletScreenComponent.propTypes = {
     date: PropTypes.string.isRequired,
     debit: PropTypes.number.isRequired,
   }),
+  navigateToSummary: PropTypes.func.isRequired,
   navigateToTransactions: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
   refreshMonthlySpending: PropTypes.func.isRequired,

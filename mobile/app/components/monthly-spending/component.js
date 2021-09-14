@@ -7,7 +7,7 @@ import { ActivityIndicator, View } from 'react-native';
 
 import styles from './styles';
 
-const MonthlySummaryComponent = ({ pending, spending, theme }) => {
+const MonthlySpendingComponent = ({ pending, spending, theme }) => {
   const [locale] = useLocale();
 
   const currency = useMemo(() => getCurrency(spending?.currency), [spending]);
@@ -27,19 +27,15 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
   return (
     <View style={[styles.container, styles.statisticRow]}>
       <View style={[styles.statisticCard, theme.statisticCard]}>
-        <Text style={theme.statisticLabel}>
-          {locale.t(`components.monthly-summary.labels.${currency?.cryptocurrency ? 'deposits' : 'credit'}`)}
-        </Text>
-        <Text style={[styles.statisticAmount, currency?.cryptocurrency && styles.statisticAmountSmall]}>
+        <Text style={theme.statisticLabel}>{locale.t('components.monthly-spending.labels.credit')}</Text>
+        <Text style={styles.statisticAmount}>
           {locale.toCurrency(spending.credit, { precision: currency?.precision, unit: '' })}{' '}
           <Text style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currency}</Text>
         </Text>
       </View>
       <View style={[styles.statisticCard, theme.statisticCard]}>
-        <Text style={theme.statisticLabel}>
-          {locale.t(`components.monthly-summary.labels.${currency?.cryptocurrency ? 'withdrawals' : 'debit'}`)}
-        </Text>
-        <Text style={[styles.statisticAmount, currency?.cryptocurrency && styles.statisticAmountSmall]}>
+        <Text style={theme.statisticLabel}>{locale.t('components.monthly-spending.labels.debit')}</Text>
+        <Text style={styles.statisticAmount}>
           {locale.toCurrency(spending.debit, { precision: currency?.precision, unit: '' })}{' '}
           <Text style={[styles.statisticCurrency, theme.statisticCurrency]}>{spending.currency}</Text>
         </Text>
@@ -48,11 +44,11 @@ const MonthlySummaryComponent = ({ pending, spending, theme }) => {
   );
 };
 
-MonthlySummaryComponent.defaultProps = {
+MonthlySpendingComponent.defaultProps = {
   pending: false,
 };
 
-MonthlySummaryComponent.propTypes = {
+MonthlySpendingComponent.propTypes = {
   pending: PropTypes.bool,
   spending: PropTypes.shape({
     credit: PropTypes.number,
@@ -63,4 +59,4 @@ MonthlySummaryComponent.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default MonthlySummaryComponent;
+export default MonthlySpendingComponent;

@@ -119,6 +119,19 @@ const WalletScreen = ({ navigation, ...props }) => {
     [getMonthlySpending, selectedCardId],
   );
 
+  const navigateToSummary = useCallback(async () => {
+    const storageKey = storage.getItemKey('card', selectedCardId);
+    const card = await storage.getItem(storageKey);
+    if (card) {
+      navigation.navigate(routeOptions.cardSpendingDetailScreen.name, {
+        card,
+        endMonth: selectedMonth,
+        startMonth: selectedMonth,
+        title: card.name,
+      });
+    }
+  }, [selectedMonth, selectedCardId]);
+
   const navigateToTransactions = useCallback(async () => {
     const storageKey = storage.getItemKey('card', selectedCardId);
     const card = await storage.getItem(storageKey);
@@ -147,6 +160,7 @@ const WalletScreen = ({ navigation, ...props }) => {
       {...props}
       cards={cards}
       monthlySpending={monthlySpending}
+      navigateToSummary={navigateToSummary}
       navigateToTransactions={navigateToTransactions}
       refreshing={refreshing}
       refreshMonthlySpending={refreshMonthlySpending}

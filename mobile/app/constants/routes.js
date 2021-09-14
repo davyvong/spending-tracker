@@ -8,6 +8,9 @@ export const routeOptions = {
     name: 'ActivityScreen',
     title: 'screens.activity.title',
   },
+  cardSpendingDetailScreen: {
+    name: 'CardSpendingDetailScreen',
+  },
   cardTransactionListScreen: {
     name: 'CardTransactionListScreen',
   },
