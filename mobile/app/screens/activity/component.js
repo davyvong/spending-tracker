@@ -1,6 +1,6 @@
 import Button from 'components/button';
 import Spacer from 'components/spacer';
-import SpendingChart from 'components/spending-chart';
+import DailySpendingChart from 'components/daily-spending-chart';
 import Title from 'components/title';
 import TransactionList from 'components/transaction-list';
 import { routeOptions } from 'constants/routes';
@@ -28,7 +28,7 @@ const ActivityScreenComponent = ({
       <TransactionList
         ListHeaderComponent={
           <View style={styles.spendingChart}>
-            <SpendingChart data={dailySpending} />
+            <DailySpendingChart data={dailySpending} />
           </View>
         }
         ListStickyHeaderComponent={

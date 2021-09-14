@@ -2,9 +2,9 @@ import useTheme from 'hooks/theme';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-import SpendingChartComponent from './component';
+import DailySpendingChartComponent from './component';
 
-const SpendingChart = ({ data, ...props }) => {
+const DailySpendingChart = ({ data, ...props }) => {
   const { palette } = useTheme();
 
   const theme = useMemo(
@@ -21,15 +21,15 @@ const SpendingChart = ({ data, ...props }) => {
 
   const maxSpent = useMemo(() => data.reduce((max, day) => Math.max(max, day.debit), 0), [data]);
 
-  return <SpendingChartComponent {...props} data={data} maxSpent={maxSpent} theme={theme} />;
+  return <DailySpendingChartComponent {...props} data={data} maxSpent={maxSpent} theme={theme} />;
 };
 
-SpendingChart.defaultProps = {
+DailySpendingChart.defaultProps = {
   data: [],
 };
 
-SpendingChart.propTypes = {
+DailySpendingChart.propTypes = {
   data: PropTypes.array,
 };
 
-export default SpendingChart;
+export default DailySpendingChart;

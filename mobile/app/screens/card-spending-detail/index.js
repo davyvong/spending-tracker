@@ -17,14 +17,11 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
 
   const theme = useMemo(
     () => ({
-      chartTooltip: {
-        fill: palette.get('backgrounds.chart-tooltip'),
-      },
-      chartTooltipText: {
-        fill: palette.get('texts.chart-tooltip'),
+      categorySectionHeaderText: {
+        color: palette.get('texts.primary'),
       },
     }),
-    [theme],
+    [palette],
   );
 
   const getCategorySpendingFromAPI = useCallback(() => api.getCategorySpending(startMonth, { cardId: card?.id }), [
@@ -56,14 +53,14 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
               categorySpending.push({
                 amount,
                 categoryId: cachedCategorySpending.categoryId,
+                categoryName: cachedCategory?.name,
                 transactionCount: cachedCategorySpending.transactionCount,
-                x: cachedCategory?.name,
-                y: Math.abs(amount),
               });
             }
           }
         }
       }
+      categorySpending.sort((a, b) => a.amount > b.amount);
       setCategorySpending(categorySpending);
     }
   }, [card, startMonth]);
