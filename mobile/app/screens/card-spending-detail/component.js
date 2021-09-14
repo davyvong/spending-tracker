@@ -5,7 +5,8 @@ import Card from 'models/card';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
-import { VictoryPie, VictoryTooltip } from 'victory-native';
+import VictoryPie from 'victory-native/lib/components/victory-pie';
+import VictoryTooltip from 'victory-native/lib/components/victory-tooltip';
 
 import styles from './styles';
 
