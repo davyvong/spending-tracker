@@ -12,7 +12,7 @@ import styles from './styles';
 const CardSpendingDetailScreenComponent = ({ card, categorySpending, theme }) => {
   const renderSpending = useCallback(
     spending => <CategoryRow {...spending} currency={card.currency} key={spending.categoryId} />,
-    [],
+    [card],
   );
 
   return (
