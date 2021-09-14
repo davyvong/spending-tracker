@@ -3,11 +3,10 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "build-android": "expo build:android --no-wait --type apk",
-    "build-ios": "expo build:ios --no-wait --type simulator",
     "eslint": "eslint --ignore-path .gitignore .",
     "optimize": "expo-optimize",
     "prettier": "prettier --check --ignore-path .gitignore .",
+    "publish": "expo publish",
     "start": "expo start"
   },
   "dependencies": {
