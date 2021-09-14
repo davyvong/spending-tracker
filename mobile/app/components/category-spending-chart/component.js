@@ -7,11 +7,9 @@ import { normalizeText } from 'utils/styles';
 
 import styles from './styles';
 
-export const initialAnimatedData = new Array(7).fill(null).map(() => new Animated.Value(0));
-
 const CategorySpendingChartComponent = ({ data, maxSpent, theme }) => {
   const [locale] = useLocale();
-  const animatedData = useRef(initialAnimatedData);
+  const animatedData = useRef(new Array(7).fill(null).map(() => new Animated.Value(0)));
 
   const renderBar = useCallback(
     (item, index) => {

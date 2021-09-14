@@ -5,12 +5,12 @@ import React, { useCallback, useRef } from 'react';
 import { Animated, View } from 'react-native';
 import { normalizeText } from 'utils/styles';
 
-import { daysOfWeek, initialAnimatedData } from './constants';
+import { daysOfWeek } from './constants';
 import styles from './styles';
 
 const DailySpendingChartComponent = ({ data, maxSpent, theme }) => {
   const [locale] = useLocale();
-  const animatedData = useRef(initialAnimatedData);
+  const animatedData = useRef(daysOfWeek.map(() => new Animated.Value(0)));
 
   const renderBar = useCallback(
     (item, index) => {
