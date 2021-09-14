@@ -29,9 +29,9 @@ jobs:
         uses: expo/expo-github-action@v6
         with:
           expo-version: 4.x
-          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
-          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
           expo-cache: true
+          username: ${{ secrets.EXPO_CLI_USERNAME }}
+          password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - name: Publish Build
         run: expo build:ios --no-wait --type simulator
         working-directory: mobile
