@@ -19,7 +19,10 @@ const CategorySpendingChart = ({ data, ...props }) => {
     [palette],
   );
 
-  const absData = useMemo(() => data.map(category => ({ ...category, amount: Math.abs(category.amount) })), [data]);
+  const absData = useMemo(
+    () => data.map(category => ({ ...category, amount: Math.abs(category.amount) })).slice(0, 7),
+    [data],
+  );
 
   const maxSpent = useMemo(() => absData.reduce((max, category) => Math.max(max, category.amount), 0), [absData]);
 

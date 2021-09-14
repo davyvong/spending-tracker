@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
   categorySpendingContainer: {
     marginBottom: 12,
   },
+  categorySectionHeader: {
+    marginVertical: 8,
+  },
   categoryListContainer: {
     marginHorizontal: -24,
   },

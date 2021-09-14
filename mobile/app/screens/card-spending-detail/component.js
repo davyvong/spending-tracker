@@ -1,7 +1,9 @@
 import CategoryRow from 'components/category-row';
 import CategorySpendingChart from 'components/category-spending-chart';
 import ScrollView from 'components/scroll-view';
+import Text from 'components/text';
 import Title from 'components/title';
+import useLocale from 'hooks/locale';
 import Card from 'models/card';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback } from 'react';
@@ -9,7 +11,9 @@ import { View } from 'react-native';
 
 import styles from './styles';
 
-const CardSpendingDetailScreenComponent = ({ card, categorySpending }) => {
+const CardSpendingDetailScreenComponent = ({ card, categorySpending, theme }) => {
+  const [locale] = useLocale();
+
   const renderSpending = useCallback(
     spending => <CategoryRow {...spending} currency={card.currency} key={spending.categoryId} />,
     [card],
@@ -22,6 +26,11 @@ const CardSpendingDetailScreenComponent = ({ card, categorySpending }) => {
           <Fragment>
             <View style={styles.categorySpendingContainer}>
               <CategorySpendingChart data={categorySpending} />
+            </View>
+            <View style={styles.categorySectionHeader}>
+              <Text style={theme.categorySectionHeaderText}>
+                {locale.t('screens.card-spending-detail.sections.categories')}
+              </Text>
             </View>
             <View style={styles.categoryListContainer}>{categorySpending.map(renderSpending)}</View>
           </Fragment>
@@ -42,6 +51,7 @@ CardSpendingDetailScreenComponent.propTypes = {
       y: PropTypes.number,
     }),
   ),
+  theme: PropTypes.object.isRequired,
 };
 
 export default CardSpendingDetailScreenComponent;

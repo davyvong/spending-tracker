@@ -35,11 +35,16 @@ const CategorySpendingChartComponent = ({ data, maxSpent, theme }) => {
   );
 
   const renderXLabel = useCallback(
-    item => (
-      <Text key={item.categoryId} style={styles.xLabel}>
-        {item.categoryName}
-      </Text>
-    ),
+    item => {
+      if (!item.categoryName) {
+        return null;
+      }
+      return (
+        <Text key={item.categoryId} style={styles.xLabel}>
+          {item.categoryName.substring(0, 4)}
+        </Text>
+      );
+    },
     [locale],
   );
 

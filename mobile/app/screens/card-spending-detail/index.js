@@ -1,8 +1,9 @@
 import useAPI from 'hooks/api';
 import useStorage from 'hooks/storage';
+import useTheme from 'hooks/theme';
 import Card from 'models/card';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import CardSpendingDetailScreenComponent from './component';
 
@@ -11,7 +12,17 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
 
   const api = useAPI();
   const storage = useStorage();
+  const { palette } = useTheme();
   const [categorySpending, setCategorySpending] = useState([]);
+
+  const theme = useMemo(
+    () => ({
+      categorySectionHeaderText: {
+        color: palette.get('texts.primary'),
+      },
+    }),
+    [palette],
+  );
 
   const getCategorySpendingFromAPI = useCallback(() => api.getCategorySpending(startMonth, { cardId: card?.id }), [
     card,
@@ -71,7 +82,7 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
     };
   }, [getCategorySpending, navigation]);
 
-  return <CardSpendingDetailScreenComponent {...props} card={card} categorySpending={categorySpending} />;
+  return <CardSpendingDetailScreenComponent {...props} card={card} categorySpending={categorySpending} theme={theme} />;
 };
 
 CardSpendingDetailScreen.propTypes = {

@@ -45,6 +45,7 @@
   "navigators.wallet.title": "Wallet",
   "screens.activity.buttons.create": "Create",
   "screens.activity.title": "Recent Activity",
+  "screens.card-spending-detail.sections.categories": "Categories",
   "screens.card-transaction-list.buttons.create": "Create",
   "screens.category-detail.buttons.create": "Create",
   "screens.category-list.title": "Categories",
