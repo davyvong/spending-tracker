@@ -1,9 +1,8 @@
 import useAPI from 'hooks/api';
 import useStorage from 'hooks/storage';
-import useTheme from 'hooks/theme';
 import Card from 'models/card';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import CardSpendingDetailScreenComponent from './component';
 
@@ -12,20 +11,7 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
 
   const api = useAPI();
   const storage = useStorage();
-  const { palette } = useTheme();
   const [categorySpending, setCategorySpending] = useState([]);
-
-  const theme = useMemo(
-    () => ({
-      chartTooltip: {
-        fill: palette.get('backgrounds.chart-tooltip'),
-      },
-      chartTooltipText: {
-        fill: palette.get('texts.chart-tooltip'),
-      },
-    }),
-    [theme],
-  );
 
   const getCategorySpendingFromAPI = useCallback(() => api.getCategorySpending(startMonth, { cardId: card?.id }), [
     card,
@@ -56,15 +42,14 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
               categorySpending.push({
                 amount,
                 categoryId: cachedCategorySpending.categoryId,
+                categoryName: cachedCategory?.name,
                 transactionCount: cachedCategorySpending.transactionCount,
-                x: cachedCategory?.name,
-                y: Math.abs(amount),
               });
             }
           }
         }
       }
-      categorySpending.sort((a, b) => a.x > b.x);
+      categorySpending.sort((a, b) => a.amount > b.amount);
       setCategorySpending(categorySpending);
     }
   }, [card, startMonth]);
@@ -86,7 +71,7 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
     };
   }, [getCategorySpending, navigation]);
 
-  return <CardSpendingDetailScreenComponent {...props} card={card} categorySpending={categorySpending} theme={theme} />;
+  return <CardSpendingDetailScreenComponent {...props} card={card} categorySpending={categorySpending} />;
 };
 
 CardSpendingDetailScreen.propTypes = {

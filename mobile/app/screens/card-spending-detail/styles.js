@@ -4,10 +4,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  chartContainer: {
-    marginHorizontal: -24,
+  categorySpendingContainer: {
+    marginBottom: 12,
   },
-  spendingContainer: {
+  categoryListContainer: {
     marginHorizontal: -24,
   },
 });
