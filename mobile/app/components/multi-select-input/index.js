@@ -27,9 +27,10 @@ const MultiSelectInput = props => {
     [palette],
   );
 
-  const renderComponent = useCallback(inputProps => <MultiSelectInputComponent {...inputProps} theme={theme} />, [
-    theme,
-  ]);
+  const renderComponent = useCallback(
+    inputProps => <MultiSelectInputComponent {...inputProps} theme={theme} />,
+    [theme],
+  );
 
   return <TextInput {...props} component={renderComponent} />;
 };

@@ -43,10 +43,10 @@ const CurrencyInputComponent = ({
     setTempCurrency(currency.value);
   };
 
-  const tempSelectedCurrency = useMemo(() => currencies.findIndex(currency => currency.value === tempCurrency), [
-    currencies,
-    tempCurrency,
-  ]);
+  const tempSelectedCurrency = useMemo(
+    () => currencies.findIndex(currency => currency.value === tempCurrency),
+    [currencies, tempCurrency],
+  );
 
   const renderCurrency = useCallback(
     ({ index, item: currency = {} }) => {

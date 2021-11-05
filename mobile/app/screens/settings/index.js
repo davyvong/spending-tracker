@@ -52,10 +52,10 @@ const SettingsScreen = ({ navigation, ...props }) => {
     }
   }, []);
 
-  const getAccount = useCallback(() => getAccountFromAPI().then(getAccountFromStorage).catch(getAccountFromStorage), [
-    getAccountFromAPI,
-    getAccountFromStorage,
-  ]);
+  const getAccount = useCallback(
+    () => getAccountFromAPI().then(getAccountFromStorage).catch(getAccountFromStorage),
+    [getAccountFromAPI, getAccountFromStorage],
+  );
 
   const updateAccount = useCallback(
     updateData => api.updateAccount(updateData).then(getAccountFromStorage).catch(getAccountFromStorage),

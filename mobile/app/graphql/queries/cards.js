@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const card = gql`
-  query($id: ID!) {
+  query ($id: ID!) {
     card(id: $id) {
       color
       company
