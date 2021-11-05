@@ -1,9 +1,12 @@
 name: Mobile
 
 on:
-  push:
+  pull_request:
     paths:
       - mobile/**
+  push:
+    branches:
+      - develop
 
 jobs:
   lint:

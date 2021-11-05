@@ -1,9 +1,12 @@
 name: API
 
 on:
-  push:
+  pull_request:
     paths:
       - api/**
+  push:
+    branches:
+      - develop
 
 jobs:
   lint:
