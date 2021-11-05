@@ -13,7 +13,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Run Checkout
         uses: actions/checkout@v2
       - name: Setup Node
         uses: actions/setup-node@v2
