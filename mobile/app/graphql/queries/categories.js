@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const category = gql`
-  query($id: ID!) {
+  query ($id: ID!) {
     category(id: $id) {
       icon
       id

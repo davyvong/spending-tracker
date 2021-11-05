@@ -27,9 +27,10 @@ const RadioPickerInput = props => {
     [palette],
   );
 
-  const renderComponent = useCallback(inputProps => <RadioPickerInputComponent {...inputProps} theme={theme} />, [
-    theme,
-  ]);
+  const renderComponent = useCallback(
+    inputProps => <RadioPickerInputComponent {...inputProps} theme={theme} />,
+    [theme],
+  );
 
   return <TextInput {...props} component={renderComponent} />;
 };

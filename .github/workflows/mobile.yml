@@ -1,13 +1,16 @@
-name: Expo
+name: Mobile
 
 on:
+  pull_request:
+    paths:
+      - mobile/**
   push:
     branches:
       - develop
 
 jobs:
-  publish:
-    name: Publish
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Run Checkout
@@ -28,13 +31,9 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
         working-directory: mobile
-      - name: Setup Expo CLI
-        uses: expo/expo-github-action@v6
-        with:
-          expo-version: 4.x
-          expo-cache: true
-          username: ${{ secrets.EXPO_CLI_USERNAME }}
-          password: ${{ secrets.EXPO_CLI_PASSWORD }}
-      - name: Publish Build
-        run: expo publish
+      - name: Run Eslint
+        run: npm run eslint
+        working-directory: mobile
+      - name: Run Prettier
+        run: npm run prettier
         working-directory: mobile

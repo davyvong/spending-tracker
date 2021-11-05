@@ -24,10 +24,10 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
     [palette],
   );
 
-  const getCategorySpendingFromAPI = useCallback(() => api.getCategorySpending(startMonth, { cardId: card?.id }), [
-    card,
-    startMonth,
-  ]);
+  const getCategorySpendingFromAPI = useCallback(
+    () => api.getCategorySpending(startMonth, { cardId: card?.id }),
+    [card, startMonth],
+  );
 
   const getCategorySpendingFromStorage = useCallback(async () => {
     if (card?.id) {

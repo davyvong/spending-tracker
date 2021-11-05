@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const transaction = gql`
-  query($id: ID!) {
+  query ($id: ID!) {
     transaction(id: $id) {
       amount
       cardId
@@ -19,7 +19,7 @@ export const transaction = gql`
 `;
 
 export const transactions = gql`
-  query($filters: TransactionFilters, $page: Page) {
+  query ($filters: TransactionFilters, $page: Page) {
     categories {
       icon
       id

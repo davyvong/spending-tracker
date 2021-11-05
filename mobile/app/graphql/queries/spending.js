@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const categorySpending = gql`
-  query($startMonth: String!, $endMonth: String!, $filters: SpendingFilter) {
+  query ($startMonth: String!, $endMonth: String!, $filters: SpendingFilter) {
     categorySpending(startMonth: $startMonth, endMonth: $endMonth, filters: $filters) {
       categoryId
       spending {
@@ -15,7 +15,7 @@ export const categorySpending = gql`
 `;
 
 export const dailySpending = gql`
-  query($startDate: String!, $endDate: String!, $filters: SpendingFilter) {
+  query ($startDate: String!, $endDate: String!, $filters: SpendingFilter) {
     dailySpending(startDate: $startDate, endDate: $endDate, filters: $filters) {
       currency
       spending {
@@ -28,7 +28,7 @@ export const dailySpending = gql`
 `;
 
 export const monthlySpending = gql`
-  query($startMonth: String!, $endMonth: String!, $filters: SpendingFilter) {
+  query ($startMonth: String!, $endMonth: String!, $filters: SpendingFilter) {
     monthlySpending(startMonth: $startMonth, endMonth: $endMonth, filters: $filters) {
       currency
       spending {
