@@ -1,8 +1,10 @@
 name: Expo
+
 on:
   push:
     branches:
       - develop
+
 jobs:
   publish:
     name: Publish
@@ -20,7 +22,8 @@ jobs:
         with:
           path: mobile/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
