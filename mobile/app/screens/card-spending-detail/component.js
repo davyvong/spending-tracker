@@ -22,7 +22,7 @@ const CardSpendingDetailScreenComponent = ({ card, categorySpending, theme }) =>
   return (
     <View style={styles.container}>
       <ScrollView StickyHeaderComponent={<Title>{card?.name}</Title>}>
-        {categorySpending.length > 0 && (
+        {categorySpending.length === Number.MAX_SAFE_INTEGER && (
           <Fragment>
             <View style={styles.categorySpendingContainer}>
               <CategorySpendingChart data={categorySpending} />
