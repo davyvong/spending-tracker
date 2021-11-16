@@ -4,11 +4,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  categorySpendingContainer: {
-    marginBottom: 12,
-  },
   categorySectionHeader: {
-    marginVertical: 8,
+    marginBottom: 8,
   },
   categoryListContainer: {
     marginHorizontal: -24,
