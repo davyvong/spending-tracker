@@ -14,6 +14,7 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
   const storage = useStorage();
   const { palette } = useTheme();
   const [categorySpending, setCategorySpending] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const theme = useMemo(
     () => ({
@@ -73,6 +74,12 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
     [getCategorySpendingFromAPI, getCategorySpendingFromStorage],
   );
 
+  const refreshCategorySpending = useCallback(async () => {
+    setRefreshing(true);
+    await getCategorySpending();
+    setRefreshing(false);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getCategorySpending();
@@ -82,7 +89,16 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
     };
   }, [getCategorySpending, navigation]);
 
-  return <CardSpendingDetailScreenComponent {...props} card={card} categorySpending={categorySpending} theme={theme} />;
+  return (
+    <CardSpendingDetailScreenComponent
+      {...props}
+      card={card}
+      categorySpending={categorySpending}
+      refreshCategorySpending={refreshCategorySpending}
+      refreshing={refreshing}
+      theme={theme}
+    />
+  );
 };
 
 CardSpendingDetailScreen.propTypes = {

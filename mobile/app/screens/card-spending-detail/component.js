@@ -6,11 +6,11 @@ import useLocale from 'hooks/locale';
 import Card from 'models/card';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
-import { View } from 'react-native';
+import { RefreshControl, View } from 'react-native';
 
 import styles from './styles';
 
-const CardSpendingDetailScreenComponent = ({ card, categorySpending, theme }) => {
+const CardSpendingDetailScreenComponent = ({ card, categorySpending, refreshCategorySpending, refreshing, theme }) => {
   const [locale] = useLocale();
 
   const renderSpending = useCallback(
@@ -20,7 +20,17 @@ const CardSpendingDetailScreenComponent = ({ card, categorySpending, theme }) =>
 
   return (
     <View style={styles.container}>
-      <ScrollView StickyHeaderComponent={<Title>{card?.name}</Title>}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            color={[theme.refreshControl]}
+            onRefresh={refreshCategorySpending}
+            refreshing={refreshing}
+            tintColor={theme.refreshControl}
+          />
+        }
+        StickyHeaderComponent={<Title>{card?.name}</Title>}
+      >
         <View style={styles.categorySectionHeader}>
           <Text style={theme.categorySectionHeaderText}>
             {locale.t('screens.card-spending-detail.sections.categories')}
@@ -43,6 +53,8 @@ CardSpendingDetailScreenComponent.propTypes = {
       y: PropTypes.number,
     }),
   ),
+  refreshCategorySpending: PropTypes.func.isRequired,
+  refreshing: PropTypes.bool.isRequired,
   theme: PropTypes.object.isRequired,
 };
 

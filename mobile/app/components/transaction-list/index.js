@@ -80,7 +80,7 @@ const TransactionList = ({ onDelete, ...props }) => {
       {
         callback: navigateToCopyTransaction,
         icon: 'content-copy',
-        label: 'Duplicate',
+        label: locale.t('components.transaction-list.actions.duplicate'),
       },
       {
         callback: openDeleteDialog,

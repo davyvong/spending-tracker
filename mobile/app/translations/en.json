@@ -35,6 +35,7 @@
   "components.transaction-form.labels.items": "Items",
   "components.transaction-form.labels.vendor": "Vendor",
   "components.transaction-list.actions.delete": "Delete",
+  "components.transaction-list.actions.duplicate": "Duplicate",
   "components.transaction-list.actions.edit": "Edit",
   "components.transaction-list.buttons.delete": "Delete",
   "components.transaction-list.messages.delete-transaction": "Are you sure you want to permanently delete this transaction?",
