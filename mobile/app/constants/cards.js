@@ -1,7 +1,3 @@
-export const getCardType = cardType => cardTypeMap[cardType];
-
-export const getSupportedCardTypes = () => ['savingsAccount', 'chequingAccount', 'lineOfCredit', 'creditCard'];
-
 const cardTypeMap = {
   chequingAccount: {
     id: 'chequingAccount',
@@ -20,3 +16,15 @@ const cardTypeMap = {
     name: 'Savings Account',
   },
 };
+
+export const getCardType = cardType => cardTypeMap[cardType];
+
+export const getSupportedCardTypes = () => Object.keys(cardTypeMap);
+
+export const cardTypeOptions = getSupportedCardTypes().map(type => {
+  const cardType = getCardType(type);
+  return {
+    label: cardType.name,
+    value: cardType.id,
+  };
+});

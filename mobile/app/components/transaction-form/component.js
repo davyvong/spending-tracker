@@ -11,7 +11,6 @@ import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback } from 'react';
 import { Pressable, View } from 'react-native';
-
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import Modal from 'react-native-modal';
 

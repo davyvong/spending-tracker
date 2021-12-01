@@ -26,6 +26,10 @@ export const routeOptions = {
     name: 'CategoryListScreen',
     title: 'screens.category-list.title',
   },
+  createCardScreen: {
+    name: 'CreateCardScreen',
+    title: 'screens.create-card.title',
+  },
   createTransactionScreen: {
     name: 'CreateTransactionScreen',
     title: 'screens.create-transaction.title',
