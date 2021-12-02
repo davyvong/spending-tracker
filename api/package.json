@@ -7,7 +7,7 @@
     "docker": "docker-compose --file docker-compose.yml --file docker-compose.local.yml up --build",
     "docker:dev": "docker-compose --file docker-compose.yml --file docker-compose.dev.yml --file docker-compose.local.yml up --build",
     "lint:eslint": "eslint --ignore-path .gitignore src",
-    "lint: prettier": "prettier --check --ignore-path .gitignore src"
+    "lint:prettier": "prettier --check --ignore-path .gitignore src"
   },
   "dependencies": {
     "@babel/cli": "^7.16.0",
