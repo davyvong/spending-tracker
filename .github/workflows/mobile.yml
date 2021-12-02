@@ -24,16 +24,16 @@ jobs:
         uses: actions/cache@v2
         with:
           path: mobile/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-npm-
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        run: npm ci
         working-directory: mobile
       - name: Run Eslint
-        run: npm run eslint
+        run: npm run lint:eslint
         working-directory: mobile
       - name: Run Prettier
-        run: npm run prettier
+        run: npm run lint:prettier
         working-directory: mobile

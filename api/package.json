@@ -1,15 +1,13 @@
 {
   "name": "@budget/api",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
-    "prebuild": "rimraf build",
     "build": "babel src --out-dir build --source-maps --copy-files",
-    "eslint": "eslint src",
-    "prettier": "prettier --check src",
-    "start": "cross-env NODE_ENV=development nodemon --exec babel-node --require dotenv/config src/index.js",
-    "prestart:production": "npm run build",
-    "start:production": "cross-env NODE_ENV=production node --require dotenv/config build/index.js"
+    "docker": "docker-compose --file docker-compose.yml --file docker-compose.local.yml up --build",
+    "docker:dev": "docker-compose --file docker-compose.yml --file docker-compose.dev.yml --file docker-compose.local.yml up --build",
+    "lint:eslint": "eslint --ignore-path .gitignore src",
+    "lint:prettier": "prettier --check --ignore-path .gitignore src"
   },
   "dependencies": {
     "@babel/cli": "^7.16.0",
@@ -44,16 +42,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
     "babel-eslint": "^10.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
-    "cross-env": "^7.0.3",
     "eslint": "^7.25.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^3.4.0",
-    "nodemon": "^2.0.14",
-    "prettier": "^2.4.1",
-    "rimraf": "^3.0.2"
+    "prettier": "^2.4.1"
   }
 }
