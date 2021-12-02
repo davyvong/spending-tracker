@@ -8,9 +8,10 @@ const styles = StyleSheet.create({
     marginTop: 18,
   },
   cardVisibility: {
+    padding: 12,
     position: 'absolute',
-    right: 12,
-    top: 12,
+    right: 0,
+    top: 0,
   },
 });
 

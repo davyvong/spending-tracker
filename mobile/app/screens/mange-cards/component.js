@@ -82,7 +82,7 @@ SettingsScreenComponent.propTypes = {
   setNavigationOptions: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   updateCardVisibility: PropTypes.func.isRequired,
-  visibleLoading: PropTypes.bool.isRequired,
+  visibleLoading: PropTypes.number.isRequired,
 };
 
 export default SettingsScreenComponent;
