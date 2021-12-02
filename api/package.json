@@ -3,8 +3,8 @@
   "version": "3.0.0",
   "private": true,
   "scripts": {
-    "docker": "docker-compose up --build",
-    "docker:dev": "docker-compose --file docker-compose.yml --file docker-compose.dev.yml up --build",
+    "docker": "docker-compose --file docker-compose.yml --file docker-compose.local.yml up --build",
+    "docker:dev": "docker-compose --file docker-compose.yml --file docker-compose.dev.yml --file docker-compose.local.yml up --build",
     "lint:eslint": "eslint src",
     "lint:prettier": "prettier --check src"
   },
