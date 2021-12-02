@@ -1,2 +1,5 @@
 # Artifacts
 build/
+
+# Docker
+docker-compose.local.yml

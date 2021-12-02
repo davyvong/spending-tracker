@@ -65,7 +65,7 @@ import pkg from '../package.json';
   await server.start();
   server.applyMiddleware({
     app,
-    path: process.env.SERVER_PREFIX ? `/${process.env.SERVER_PREFIX}/graphql` : '/graphql',
+    path: '/',
   });
 
   app.get('*', () => {
@@ -75,6 +75,8 @@ import pkg from '../package.json';
   app.use(errorHandler());
   app.use(compression());
 
-  await new Promise(resolve => app.listen(process.env.SERVER_PORT, resolve));
-  console.log(`${pkg.name} running on http://localhost:${process.env.SERVER_PORT}/`);
+  const port = parseInt(process.env.APOLLO_SERVER_PORT);
+
+  await new Promise(resolve => app.listen(port, resolve));
+  console.log(`${pkg.name} running on http://localhost:${port}/`);
 })();
