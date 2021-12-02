@@ -38,6 +38,10 @@ export const routeOptions = {
     name: 'EditTransactionScreen',
     title: 'screens.edit-transaction.title',
   },
+  manageCardsScreen: {
+    name: 'ManageCardsScreen',
+    title: 'screens.manage-cards.title',
+  },
   passwordScreen: {
     name: 'PasswordScreen',
     title: 'screens.password.title',

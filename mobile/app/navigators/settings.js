@@ -3,6 +3,8 @@ import { routeOptions } from 'constants/routes';
 import Header from 'core/header';
 import useLocale from 'hooks/locale';
 import React from 'react';
+import CreateCardScreen from 'screens/create-card';
+import ManageCardsScreen from 'screens/mange-cards';
 import PasswordScreen from 'screens/password';
 import ProfileScreen from 'screens/profile';
 import SettingsScreen from 'screens/settings';
@@ -30,6 +32,24 @@ const SettingsNavigator = () => {
           ...routeOptions.settingsScreen,
           title: locale.t(routeOptions.settingsScreen.title),
         }}
+      />
+      <Stack.Screen
+        component={CreateCardScreen}
+        name={routeOptions.createCardScreen.name}
+        options={{
+          ...routeOptions.createCardScreen,
+          title: locale.t(routeOptions.createCardScreen.title),
+        }}
+        unmountOnBlur
+      />
+      <Stack.Screen
+        component={ManageCardsScreen}
+        name={routeOptions.manageCardsScreen.name}
+        options={{
+          ...routeOptions.manageCardsScreen,
+          title: locale.t(routeOptions.manageCardsScreen.title),
+        }}
+        unmountOnBlur
       />
       <Stack.Screen
         component={PasswordScreen}

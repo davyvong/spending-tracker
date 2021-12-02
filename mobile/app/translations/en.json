@@ -20,8 +20,8 @@
   "components.category-row.transaction-count": "{{count}} Transactions",
   "components.date-input.buttons.apply": "Apply",
   "components.date-input.buttons.cancel": "Cancel",
-  "components.monthly-spending.labels.credit": "Credit",
-  "components.monthly-spending.labels.debit": "Debit",
+  "components.monthly-spending.labels.credit": "Deposit",
+  "components.monthly-spending.labels.debit": "Withdraw",
   "components.multi-select-input.buttons.apply": "Apply",
   "components.multi-select-input.buttons.cancel": "Cancel",
   "components.radio-picker-input.buttons.apply": "Apply",
@@ -83,6 +83,8 @@
   "screens.login.inputs.email-placeholder": "Email",
   "screens.login.inputs.password-label": "Password",
   "screens.login.inputs.password-placeholder": "Password",
+  "screens.manage-cards.buttons.create": "Create",
+  "screens.manage-cards.title": "Manage Cards",
   "screens.password.title": "Change Password",
   "screens.password.buttons.change": "Change",
   "screens.password.buttons.discard": "Discard",
@@ -121,7 +123,6 @@
   "screens.settings.title": "Settings",
   "screens.wallet.actions.spending": "Spending",
   "screens.wallet.actions.transactions": "Transactions",
-  "screens.wallet.buttons.create": "Create",
   "screens.wallet.messages.recently-spent": "You have recently spent",
   "screens.wallet.title": "Wallet"
 }
