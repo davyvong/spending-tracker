@@ -32,8 +32,8 @@ jobs:
         run: npm ci
         working-directory: mobile
       - name: Run Eslint
-        run: npm run eslint
+        run: npm run lint:eslint
         working-directory: mobile
       - name: Run Prettier
-        run: npm run prettier
+        run: npm run lint:prettier
         working-directory: mobile

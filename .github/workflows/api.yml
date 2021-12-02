@@ -32,10 +32,10 @@ jobs:
         run: npm ci
         working-directory: api
       - name: Run Eslint
-        run: npm run eslint
+        run: npm run lint:eslint
         working-directory: api
       - name: Run Prettier
-        run: npm run prettier
+        run: npm run lint:prettier
         working-directory: api
   build:
     name: Build

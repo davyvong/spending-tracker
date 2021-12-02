@@ -6,6 +6,6 @@ COPY . .
 
 RUN npm ci
 
-RUN npx babel src --out-dir build --source-maps --copy-files
+RUN npm run build
 
 CMD node build/index.js
