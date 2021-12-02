@@ -24,12 +24,12 @@ jobs:
         uses: actions/cache@v2
         with:
           path: api/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-npm-
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        run: npm ci
         working-directory: api
       - name: Run Eslint
         run: npm run eslint
@@ -53,12 +53,12 @@ jobs:
         uses: actions/cache@v2
         with:
           path: api/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-npm-
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        run: npm ci
         working-directory: api
       - name: Run Build
         run: npm run build
