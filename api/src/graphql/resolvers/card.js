@@ -9,6 +9,7 @@ export default {
         ...args.data,
         accountId: context.accountId,
         createTime: getCurrentTimestamp(),
+        visible: true,
       };
       data.updateTime = data.createTime;
       return context.dataSources.card.model.create(data);
