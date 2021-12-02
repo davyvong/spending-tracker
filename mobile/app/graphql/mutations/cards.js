@@ -5,9 +5,11 @@ export const createCard = gql`
     createCard(data: $data) {
       color
       company
+      currency
       name
       id
       type
+      visible
     }
   }
 `;
@@ -23,9 +25,11 @@ export const updateCard = gql`
     updateCard(id: $id, data: $data) {
       color
       company
+      currency
       name
       id
       type
+      visible
     }
   }
 `;

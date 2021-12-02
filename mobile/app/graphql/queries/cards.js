@@ -9,6 +9,7 @@ export const card = gql`
       name
       id
       type
+      visible
     }
   }
 `;
@@ -22,6 +23,7 @@ export const cards = gql`
       name
       id
       type
+      visible
     }
   }
 `;

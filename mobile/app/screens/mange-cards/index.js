@@ -14,10 +14,12 @@ const SettingsScreen = ({ navigation, ...props }) => {
   const { palette } = useTheme();
   const [cards, setCards] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [visibleLoading, setVisibleLoading] = useState(-1);
 
   const theme = useMemo(
     () => ({
       activeIcon: palette.get('icons.active'),
+      activityIndicator: palette.get('icons.default'),
       defaultIcon: palette.get('icons.default'),
       refreshControl: palette.get('refresh-control'),
     }),
@@ -60,6 +62,19 @@ const SettingsScreen = ({ navigation, ...props }) => {
     navigation.navigate(routeOptions.createCardScreen.name, { card: {} });
   }, [navigation]);
 
+  const updateCardVisibility = useCallback(
+    async (id, visible, index) => {
+      try {
+        setVisibleLoading(index);
+        await api.updateCard(id, { visible });
+        await getCards();
+      } finally {
+        setVisibleLoading(-1);
+      }
+    },
+    [api.updateCard],
+  );
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getCards();
@@ -78,6 +93,8 @@ const SettingsScreen = ({ navigation, ...props }) => {
       refreshCards={refreshCards}
       setNavigationOptions={navigation.setOptions}
       theme={theme}
+      updateCardVisibility={updateCardVisibility}
+      visibleLoading={visibleLoading}
     />
   );
 };

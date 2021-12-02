@@ -1,10 +1,9 @@
 import useTheme from 'hooks/theme';
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
 import WalletCardComponent from './component';
 
-const WalletCard = ({ color, ...props }) => {
+const WalletCard = props => {
   const { palette } = useTheme();
 
   const theme = useMemo(
@@ -20,11 +19,7 @@ const WalletCard = ({ color, ...props }) => {
     [palette],
   );
 
-  return <WalletCardComponent {...props} color={color || palette.get('backgrounds.wallet-card')} theme={theme} />;
-};
-
-WalletCard.propTypes = {
-  color: PropTypes.string,
+  return <WalletCardComponent {...props} color={palette.get('backgrounds.wallet-card')} theme={theme} />;
 };
 
 export default WalletCard;

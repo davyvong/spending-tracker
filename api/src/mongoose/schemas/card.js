@@ -1,7 +1,7 @@
 import { cardTypeEnum } from 'constants/card';
 import { currencyEnum } from 'constants/currency';
 import { Schema, Types } from 'mongoose';
-import { isEmpty } from 'validator';
+import { isBoolean, isEmpty } from 'validator';
 
 export default new Schema(
   {
@@ -15,7 +15,6 @@ export default new Schema(
       },
     },
     color: {
-      required: true,
       type: String,
       validate: {
         validator: value => !isEmpty(value),
@@ -59,6 +58,12 @@ export default new Schema(
     updateTime: {
       required: true,
       type: Number,
+    },
+    visible: {
+      type: Boolean,
+      validate: {
+        validator: value => !isEmpty(value) && isBoolean(value),
+      },
     },
   },
   {

@@ -1,3 +1,4 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import Button from 'components/button';
 import ScrollView from 'components/scroll-view';
 import Title from 'components/title';
@@ -7,7 +8,7 @@ import useLocale from 'hooks/locale';
 import Card from 'models/card';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect } from 'react';
-import { RefreshControl, View } from 'react-native';
+import { ActivityIndicator, Pressable, RefreshControl, View } from 'react-native';
 
 import styles from './styles';
 
@@ -18,6 +19,8 @@ const SettingsScreenComponent = ({
   refreshing,
   setNavigationOptions,
   theme,
+  updateCardVisibility,
+  visibleLoading,
 }) => {
   const [locale] = useLocale();
 
@@ -25,9 +28,20 @@ const SettingsScreenComponent = ({
     (card, index) => (
       <View key={card.id} style={index > 0 && styles.card}>
         <WalletCard {...card} />
+        <Pressable
+          disabled={visibleLoading === index}
+          onPress={() => updateCardVisibility(card.id, !card.visible, index)}
+          style={styles.cardVisibility}
+        >
+          {visibleLoading === index ? (
+            <ActivityIndicator color={theme.activityIndicator} />
+          ) : (
+            <MaterialIcons color={theme.defaultIcon} name={card.visible ? 'visibility' : 'visibility-off'} size={24} />
+          )}
+        </Pressable>
       </View>
     ),
-    [],
+    [visibleLoading],
   );
 
   useEffect(() => {
@@ -67,6 +81,8 @@ SettingsScreenComponent.propTypes = {
   refreshCards: PropTypes.func.isRequired,
   setNavigationOptions: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
+  updateCardVisibility: PropTypes.func.isRequired,
+  visibleLoading: PropTypes.bool.isRequired,
 };
 
 export default SettingsScreenComponent;

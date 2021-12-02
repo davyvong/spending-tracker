@@ -18,10 +18,10 @@ export default `
     id: ID!
     name: String
     type: String
+    visible: Boolean
   }
 
   input CreateCardData {
-    color: String!
     company: String!
     name: String!
     type: String!
@@ -32,5 +32,6 @@ export default `
     company: String
     name: String
     type: String
+    visible: Boolean
   }
 `;
