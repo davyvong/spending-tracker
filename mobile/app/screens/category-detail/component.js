@@ -27,7 +27,7 @@ const CategoryDetailScreenComponent = ({
       <Button onPress={navigateToCreateTransaction} title={locale.t('screens.category-detail.buttons.create')} />
     );
     setNavigationOptions({ headerRight: renderHeaderRight });
-  }, [locale, setNavigationOptions]);
+  }, [locale, navigateToCreateTransaction, setNavigationOptions]);
 
   return (
     <View style={styles.container}>

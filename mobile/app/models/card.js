@@ -8,6 +8,7 @@ export default class Card {
     name: PropTypes.string,
     id: PropTypes.string,
     type: PropTypes.string,
+    visible: PropTypes.bool,
   });
 
   constructor(data) {

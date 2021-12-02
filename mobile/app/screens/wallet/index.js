@@ -46,7 +46,7 @@ const WalletScreen = ({ navigation, ...props }) => {
         cardList[i] = new Card(cachedCard);
       }
     }
-    setCards(cardList.filter(card => card instanceof Card));
+    setCards(cardList.filter(card => card instanceof Card && card.visible));
   }, []);
 
   const getCards = useCallback(

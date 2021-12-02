@@ -15,7 +15,6 @@ export default new Schema(
       },
     },
     color: {
-      required: true,
       type: String,
       validate: {
         validator: value => !isEmpty(value),
@@ -59,6 +58,13 @@ export default new Schema(
     updateTime: {
       required: true,
       type: Number,
+    },
+    visible: {
+      required: true,
+      type: Boolean,
+      validate: {
+        validator: value => typeof value === 'boolean',
+      },
     },
   },
   {

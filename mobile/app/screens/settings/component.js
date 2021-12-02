@@ -23,6 +23,7 @@ const SettingsScreenComponent = ({
   logout,
   logoutDialog,
   openLogoutDialog,
+  navigateToManageCards,
   navigateToPassword,
   navigateToProfile,
   theme,
@@ -75,6 +76,25 @@ const SettingsScreenComponent = ({
         <Pressable onPress={navigateToPassword} style={styles.ctaRow}>
           <MaterialCommunityIcons color={theme.activeIcon} name="lock-reset" size={28} style={styles.ctaRowLeftIcon} />
           <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.change-password')}</Text>
+          <Spacer />
+          <MaterialIcons
+            color={theme.defaultIcon}
+            name="keyboard-arrow-right"
+            size={20}
+            style={styles.ctaRowRightIcon}
+          />
+        </Pressable>
+        <View style={styles.sectionHeader}>
+          <Text style={theme.sectionHeaderText}>{locale.t('screens.settings.sections.wallet')}</Text>
+        </View>
+        <Pressable onPress={navigateToManageCards} style={styles.ctaRow}>
+          <MaterialCommunityIcons
+            color={theme.activeIcon}
+            name="credit-card-outline"
+            size={28}
+            style={styles.ctaRowLeftIcon}
+          />
+          <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.manage-cards')}</Text>
           <Spacer />
           <MaterialIcons
             color={theme.defaultIcon}
@@ -139,6 +159,7 @@ SettingsScreenComponent.propTypes = {
   logout: PropTypes.func.isRequired,
   logoutDialog: PropTypes.bool.isRequired,
   openLogoutDialog: PropTypes.func.isRequired,
+  navigateToManageCards: PropTypes.func.isRequired,
   navigateToPassword: PropTypes.func.isRequired,
   navigateToProfile: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,

@@ -175,20 +175,16 @@ const TransactionForm = ({ updateValue, values, ...props }) => {
 
 TransactionForm.defaultProps = {
   editable: true,
-  items: [],
 };
 
 TransactionForm.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      amount: PropTypes.string,
-      description: PropTypes.string,
-    }),
-  ),
   updateValue: PropTypes.func.isRequired,
   values: PropTypes.shape({
     cardId: PropTypes.string,
     categoryId: PropTypes.string,
+    postDate: PropTypes.string,
+    vendor: PropTypes.string,
+    items: PropTypes.array,
   }).isRequired,
 };
 

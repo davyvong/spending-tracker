@@ -85,6 +85,10 @@ const SettingsScreen = ({ navigation, ...props }) => {
     setLogoutDialog(true);
   }, []);
 
+  const navigateToManageCards = useCallback(() => {
+    navigation.navigate(routeOptions.manageCardsScreen.name);
+  }, [navigation]);
+
   const navigateToPassword = useCallback(() => {
     navigation.navigate(routeOptions.passwordScreen.name);
   }, [navigation]);
@@ -110,6 +114,7 @@ const SettingsScreen = ({ navigation, ...props }) => {
       logout={logout}
       logoutDialog={logoutDialog}
       openLogoutDialog={openLogoutDialog}
+      navigateToManageCards={navigateToManageCards}
       navigateToPassword={navigateToPassword}
       navigateToProfile={navigateToProfile}
       theme={theme}

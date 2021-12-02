@@ -26,6 +26,10 @@ export const routeOptions = {
     name: 'CategoryListScreen',
     title: 'screens.category-list.title',
   },
+  createCardScreen: {
+    name: 'CreateCardScreen',
+    title: 'screens.create-card.title',
+  },
   createTransactionScreen: {
     name: 'CreateTransactionScreen',
     title: 'screens.create-transaction.title',
@@ -33,6 +37,10 @@ export const routeOptions = {
   editTransactionScreen: {
     name: 'EditTransactionScreen',
     title: 'screens.edit-transaction.title',
+  },
+  manageCardsScreen: {
+    name: 'ManageCardsScreen',
+    title: 'screens.manage-cards.title',
   },
   passwordScreen: {
     name: 'PasswordScreen',

@@ -21,6 +21,7 @@ const CardSpendingDetailScreen = ({ navigation, route, ...props }) => {
       categorySectionHeaderText: {
         color: palette.get('texts.primary'),
       },
+      refreshControl: palette.get('refresh-control'),
     }),
     [palette],
   );
