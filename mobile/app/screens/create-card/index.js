@@ -20,11 +20,13 @@ const CreateCardScreen = ({ navigation, route, ...props }) => {
   const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState({
     company: null,
+    currency: null,
     name: null,
     type: null,
   });
   const [values, setValues] = useState({
     company: '',
+    currency: '',
     name: '',
     type: '',
     ...card,
@@ -65,7 +67,7 @@ const CreateCardScreen = ({ navigation, route, ...props }) => {
     if (validateValues()) {
       setPending(true);
       try {
-        const data = pick(values, 'company', 'name', 'type');
+        const data = pick(values, 'company', 'currency', 'name', 'type');
         await api.createCard(data);
         navigation.dispatch({
           ignoreDiscard: true,
@@ -80,10 +82,11 @@ const CreateCardScreen = ({ navigation, route, ...props }) => {
   }, [navigation, validateValues, values]);
 
   const validateValues = useCallback(() => {
-    const { company, name, type } = values;
-    if (!company || !name || !type) {
+    const { company, currency, name, type } = values;
+    if (!company || !currency || !name || !type) {
       setErrors({
         company: company ? null : 'screens.create-card.errors.empty-company',
+        currency: currency ? null : 'screens.create-card.errors.empty-currency',
         name: name ? null : 'screens.create-card.errors.empty-name',
         type: type ? null : 'screens.create-card.errors.empty-type',
       });

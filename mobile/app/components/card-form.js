@@ -1,10 +1,12 @@
 import RadioPickerInput from 'components/radio-picker-input';
 import TextInput from 'components/text-input';
+import { cardTypeOptions } from 'constants/cards';
+import { currencyOptions } from 'constants/currencies';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
-const CardFormComponent = ({ cardTypeOptions, editable, errors, updateValue, values }) => {
+const CardFormComponent = ({ editable, errors, updateValue, values }) => {
   const [locale] = useLocale();
 
   return (
@@ -13,14 +15,14 @@ const CardFormComponent = ({ cardTypeOptions, editable, errors, updateValue, val
         editable={editable}
         error={errors.name && locale.t(errors.name)}
         label={locale.t('components.card-form.labels.name')}
-        onChange={updateValue('name')}
+        onChangeText={updateValue('name')}
         value={values.name}
       />
       <TextInput
         editable={editable}
         error={errors.company && locale.t(errors.company)}
         label={locale.t('components.card-form.labels.company')}
-        onChange={updateValue('company')}
+        onChangeText={updateValue('company')}
         value={values.company}
       />
       <RadioPickerInput
@@ -31,6 +33,14 @@ const CardFormComponent = ({ cardTypeOptions, editable, errors, updateValue, val
         options={cardTypeOptions}
         value={values.type}
       />
+      <RadioPickerInput
+        editable={editable}
+        error={errors.currency && locale.t(errors.currency)}
+        label={locale.t('components.card-form.labels.currency')}
+        onChange={updateValue('currency')}
+        options={currencyOptions}
+        value={values.currency}
+      />
     </Fragment>
   );
 };
@@ -40,7 +50,6 @@ CardFormComponent.defaultProps = {
 };
 
 CardFormComponent.propTypes = {
-  cardTypeOptions: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, value: PropTypes.any })),
   editable: PropTypes.bool,
   errors: PropTypes.object.isRequired,
   updateValue: PropTypes.func.isRequired,

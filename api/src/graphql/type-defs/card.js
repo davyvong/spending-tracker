@@ -23,6 +23,7 @@ export default `
 
   input CreateCardData {
     company: String!
+    currency: String!
     name: String!
     type: String!
   }
@@ -30,6 +31,7 @@ export default `
   input UpdateCardData {
     color: String
     company: String
+    currency: String
     name: String
     type: String
     visible: Boolean
