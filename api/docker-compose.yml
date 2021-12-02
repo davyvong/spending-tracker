@@ -5,7 +5,7 @@ services:
     build:
       dockerfile: "Dockerfile"
     environment:
-      APOLLO_SERVER_PORT: "4000"
+      APOLLO_SERVER_PORT: "6000"
       NODE_ENV: "production"
     ports:
       - "4000:4000"
