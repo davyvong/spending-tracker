@@ -59,7 +59,9 @@ const SettingsScreenComponent = ({
       <FlatList
         contentContainerStyle={styles.contentContainer}
         data={cards}
+        initialNumToRender={1}
         keyExtractor={item => item.id}
+        maxToRenderPerBatch={1}
         refreshControl={
           <RefreshControl
             color={[theme.refreshControl]}
