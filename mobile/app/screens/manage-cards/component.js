@@ -1,6 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from 'components/button';
-import ScrollView from 'components/scroll-view';
 import Title from 'components/title';
 import WalletCard from 'components/wallet-card';
 import { routeOptions } from 'constants/routes';
@@ -8,7 +7,7 @@ import useLocale from 'hooks/locale';
 import Card from 'models/card';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect } from 'react';
-import { ActivityIndicator, Pressable, RefreshControl, View } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, RefreshControl, View } from 'react-native';
 
 import styles from './styles';
 
@@ -24,19 +23,19 @@ const SettingsScreenComponent = ({
 }) => {
   const [locale] = useLocale();
 
-  const renderCard = useCallback(
-    (card, index) => (
-      <View key={card.id} style={index > 0 && styles.card}>
-        <WalletCard {...card} />
+  const renderItem = useCallback(
+    ({ index, item }) => (
+      <View key={item.id} style={index > 0 && styles.card}>
+        <WalletCard {...item} />
         <Pressable
           disabled={visibleLoading === index}
-          onPress={() => updateCardVisibility(card.id, !card.visible, index)}
+          onPress={() => updateCardVisibility(item.id, !item.visible, index)}
           style={styles.cardVisibility}
         >
           {visibleLoading === index ? (
             <ActivityIndicator color={theme.activityIndicator} />
           ) : (
-            <MaterialIcons color={theme.defaultIcon} name={card.visible ? 'visibility' : 'visibility-off'} size={24} />
+            <MaterialIcons color={theme.defaultIcon} name={item.visible ? 'visibility' : 'visibility-off'} size={24} />
           )}
         </Pressable>
       </View>
@@ -53,7 +52,11 @@ const SettingsScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <ScrollView
+      <Title>{locale.t(routeOptions.manageCardsScreen.title)}</Title>
+      <FlatList
+        contentContainerStyle={styles.contentContainer}
+        data={cards}
+        keyExtractor={item => item.id}
         refreshControl={
           <RefreshControl
             color={[theme.refreshControl]}
@@ -62,10 +65,10 @@ const SettingsScreenComponent = ({
             tintColor={theme.refreshControl}
           />
         }
-        StickyHeaderComponent={<Title>{locale.t(routeOptions.manageCardsScreen.title)}</Title>}
-      >
-        {cards.map(renderCard)}
-      </ScrollView>
+        removeClippedSubviews
+        renderItem={renderItem}
+        scrollEventThrottle={200}
+      />
     </View>
   );
 };

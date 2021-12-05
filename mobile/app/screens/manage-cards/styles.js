@@ -4,6 +4,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  contentContainer: {
+    paddingHorizontal: 18,
+    paddingTop: 6,
+  },
   card: {
     marginTop: 18,
   },
