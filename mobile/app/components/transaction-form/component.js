@@ -142,6 +142,8 @@ const TransactionFormComponent = ({
         }
         onDragEnd={({ data }) => updateValue('items')(data)}
         renderItem={renderTransactionItem}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       />
       <Modal
         avoidKeyboard
