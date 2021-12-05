@@ -4,7 +4,7 @@ import Header from 'core/header';
 import useLocale from 'hooks/locale';
 import React from 'react';
 import CreateCardScreen from 'screens/create-card';
-import ManageCardsScreen from 'screens/mange-cards';
+import ManageCardsScreen from 'screens/manage-cards';
 import PasswordScreen from 'screens/password';
 import ProfileScreen from 'screens/profile';
 import SettingsScreen from 'screens/settings';
