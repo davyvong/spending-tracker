@@ -1,5 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from 'components/button';
+import ScrollViewStyles from 'components/scroll-view/styles';
 import Title from 'components/title';
 import WalletCard from 'components/wallet-card';
 import { routeOptions } from 'constants/routes';
@@ -52,7 +53,9 @@ const SettingsScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <Title>{locale.t(routeOptions.manageCardsScreen.title)}</Title>
+      <View style={ScrollViewStyles.header}>
+        <Title>{locale.t(routeOptions.manageCardsScreen.title)}</Title>
+      </View>
       <FlatList
         contentContainerStyle={styles.contentContainer}
         data={cards}
