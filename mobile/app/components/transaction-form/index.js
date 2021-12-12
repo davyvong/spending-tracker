@@ -75,7 +75,7 @@ const TransactionForm = ({ updateValue, values, ...props }) => {
       }
       setCardOptions(
         cardList
-          .filter(card => card instanceof Card)
+          .filter(card => card instanceof Card && card.visible)
           .sort((a, b) => {
             if (a.company === b.company) {
               return a.name > b.name;
