@@ -3,7 +3,11 @@ import { routeOptions } from 'constants/routes';
 import Header from 'core/header';
 import useLocale from 'hooks/locale';
 import React from 'react';
+import CreateBarcodeScreen from 'screens/create-barcode';
 import CreateCardScreen from 'screens/create-card';
+import EditBarcodeScreen from 'screens/edit-barcode';
+import EditCardScreen from 'screens/edit-card';
+import ManageBarcodesScreen from 'screens/manage-barcodes';
 import ManageCardsScreen from 'screens/manage-cards';
 import PasswordScreen from 'screens/password';
 import ProfileScreen from 'screens/profile';
@@ -34,11 +38,47 @@ const SettingsNavigator = () => {
         }}
       />
       <Stack.Screen
+        component={CreateBarcodeScreen}
+        name={routeOptions.createBarcodeScreen.name}
+        options={{
+          ...routeOptions.createBarcodeScreen,
+          title: locale.t(routeOptions.createBarcodeScreen.title),
+        }}
+        unmountOnBlur
+      />
+      <Stack.Screen
         component={CreateCardScreen}
         name={routeOptions.createCardScreen.name}
         options={{
           ...routeOptions.createCardScreen,
           title: locale.t(routeOptions.createCardScreen.title),
+        }}
+        unmountOnBlur
+      />
+      <Stack.Screen
+        component={EditBarcodeScreen}
+        name={routeOptions.editBarcodeScreen.name}
+        options={{
+          ...routeOptions.editBarcodeScreen,
+          title: locale.t(routeOptions.editBarcodeScreen.title),
+        }}
+        unmountOnBlur
+      />
+      <Stack.Screen
+        component={EditCardScreen}
+        name={routeOptions.editCardScreen.name}
+        options={{
+          ...routeOptions.editCardScreen,
+          title: locale.t(routeOptions.editCardScreen.title),
+        }}
+        unmountOnBlur
+      />
+      <Stack.Screen
+        component={ManageBarcodesScreen}
+        name={routeOptions.manageBarcodesScreen.name}
+        options={{
+          ...routeOptions.manageBarcodesScreen,
+          title: locale.t(routeOptions.manageBarcodesScreen.title),
         }}
         unmountOnBlur
       />

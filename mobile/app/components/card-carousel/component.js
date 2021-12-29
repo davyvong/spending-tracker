@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 import Carousel from 'react-native-snap-carousel';
 
-const WalletCarouselComponent = ({ data, dimensions, onChange, ...props }) => {
-  const onSnapToItem = useCallback(index => onChange(data[index]), [data, onChange]);
+const CardCarouselComponent = ({ data, dimensions, onChange, ItemComponent, ...props }) => {
+  const onSnapToItem = useCallback(index => onChange(data[index], index), [data, onChange]);
 
-  const renderItem = useCallback(({ index, item }) => <WalletCard {...item} index={index} />, []);
+  const renderItem = useCallback(({ index, item }) => <ItemComponent {...item} index={index} />, [ItemComponent]);
 
   return (
     <Carousel
@@ -20,17 +20,19 @@ const WalletCarouselComponent = ({ data, dimensions, onChange, ...props }) => {
   );
 };
 
-WalletCarouselComponent.defaultProps = {
+CardCarouselComponent.defaultProps = {
   data: [],
+  ItemComponent: WalletCard,
 };
 
-WalletCarouselComponent.propTypes = {
+CardCarouselComponent.propTypes = {
   data: PropTypes.array,
   dimensions: PropTypes.shape({
     height: PropTypes.number,
     width: PropTypes.number,
   }),
   onChange: PropTypes.func.isRequired,
+  ItemComponent: PropTypes.func,
 };
 
-export default WalletCarouselComponent;
+export default CardCarouselComponent;

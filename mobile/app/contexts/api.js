@@ -1,14 +1,17 @@
 import { useApolloClient } from '@apollo/client';
 import useStorage from 'hooks/storage';
 import * as accountsMutations from 'graphql/mutations/accounts';
+import * as barcodesMutations from 'graphql/mutations/barcodes';
 import * as cardsMutations from 'graphql/mutations/cards';
 import * as transactionsMutations from 'graphql/mutations/transactions';
 import * as accountsQueries from 'graphql/queries/accounts';
+import * as barcodesQueries from 'graphql/queries/barcodes';
 import * as cardsQueries from 'graphql/queries/cards';
 import * as categoriesQueries from 'graphql/queries/categories';
 import * as spendingQueries from 'graphql/queries/spending';
 import * as transactionsQueries from 'graphql/queries/transactions';
 import Account from 'models/account';
+import Barcode from 'models/barcode';
 import Card from 'models/card';
 import Category from 'models/category';
 import Transaction from 'models/transaction';
@@ -23,6 +26,20 @@ export const APIConsumer = APIContext.Consumer;
 export const APIProvider = ({ children }) => {
   const client = useApolloClient();
   const storage = useStorage();
+
+  const createBarcode = useCallback(
+    async barcodeData => {
+      const { data } = await client.mutate({
+        mutation: barcodesMutations.createBarcode,
+        variables: { data: barcodeData },
+      });
+      const barcode = new Barcode(data.createBarcode);
+      const storageKey = storage.getItemKey('barcode', barcode.id);
+      storage.setItem(storageKey, barcode);
+      return barcode.id;
+    },
+    [client],
+  );
 
   const createCard = useCallback(
     async cardData => {
@@ -48,6 +65,21 @@ export const APIProvider = ({ children }) => {
       const storageKey = storage.getItemKey('transaction', transaction.id);
       storage.setItem(storageKey, transaction);
       return transaction.id;
+    },
+    [client],
+  );
+
+  const deleteBarcode = useCallback(
+    async barcodeId => {
+      const response = client.mutate({
+        mutation: barcodesMutations.deleteBarcode,
+        variables: { id: barcodeId },
+      });
+      if (response.data?.deleteBarcode) {
+        const storageKey = storage.getItemKey('barcode', barcodeId);
+        await storage.deleteItem(storageKey);
+      }
+      return barcodeId;
     },
     [client],
   );
@@ -90,6 +122,22 @@ export const APIProvider = ({ children }) => {
     const storageKey = storage.getItemKey('account');
     storage.setItem(storageKey, account);
     return account.id;
+  }, [client]);
+
+  const getBarcodes = useCallback(async () => {
+    const { data } = await client.query({
+      query: barcodesQueries.barcodes,
+    });
+    const barcodeIds = [];
+    data.barcodes.forEach(barcodeData => {
+      const barcode = new Barcode(barcodeData);
+      barcodeIds.push(barcode.id);
+      const storageKey = storage.getItemKey('barcode', barcode.id);
+      storage.setItem(storageKey, barcode);
+    });
+    const storageKey = storage.getItemKey('barcodes');
+    storage.setItem(storageKey, barcodeIds);
+    return barcodeIds;
   }, [client]);
 
   const getCards = useCallback(async () => {
@@ -292,6 +340,23 @@ export const APIProvider = ({ children }) => {
     [client],
   );
 
+  const updateBarcode = useCallback(
+    async (barcodeId, updateData) => {
+      const { data } = await client.mutate({
+        mutation: barcodesMutations.updateBarcode,
+        variables: {
+          id: barcodeId,
+          data: updateData,
+        },
+      });
+      const barcode = new Barcode(data.updateBarcode);
+      const storageKey = storage.getItemKey('barcode', barcode.id);
+      storage.setItem(storageKey, barcode);
+      return barcode.id;
+    },
+    [client],
+  );
+
   const updateCard = useCallback(
     async (cardId, updateData) => {
       const { data } = await client.mutate({
@@ -341,11 +406,14 @@ export const APIProvider = ({ children }) => {
   );
 
   const value = {
+    createBarcode,
     createCard,
     createTransaction,
+    deleteBarcode,
     deleteCard,
     deleteTransaction,
     getAccount,
+    getBarcodes,
     getCards,
     getCategories,
     getCategorySpending,
@@ -355,6 +423,7 @@ export const APIProvider = ({ children }) => {
     getTransactions,
     signInWithEmail,
     updateAccount,
+    updateBarcode,
     updateCard,
     updatePassword,
     updateTransaction,

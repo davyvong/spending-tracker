@@ -126,7 +126,11 @@ const TransactionFormComponent = ({
             {errors.items && <Text style={[styles.fieldError, theme.fieldError]}>{locale.t(errors.items)}</Text>}
             <Pressable
               onPress={addItem}
-              style={[styles.transactionItemSkeleton, theme.transactionItemSkeleton, styles.transactionItemRowSpacer]}
+              style={[
+                styles.transactionItemSkeleton,
+                theme.transactionItemSkeleton,
+                values.items.length > 0 && styles.transactionItemRowSpacer,
+              ]}
             >
               <MaterialIcons
                 color={theme.transactionItemMutedText.color}

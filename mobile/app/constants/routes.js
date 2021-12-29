@@ -26,6 +26,10 @@ export const routeOptions = {
     name: 'CategoryListScreen',
     title: 'screens.category-list.title',
   },
+  createBarcodeScreen: {
+    name: 'CreateBarcodeScreen',
+    title: 'screens.create-barcode.title',
+  },
   createCardScreen: {
     name: 'CreateCardScreen',
     title: 'screens.create-card.title',
@@ -34,9 +38,21 @@ export const routeOptions = {
     name: 'CreateTransactionScreen',
     title: 'screens.create-transaction.title',
   },
+  editBarcodeScreen: {
+    name: 'EditBarcodeScreen',
+    title: 'screens.edit-barcode.title',
+  },
+  editCardScreen: {
+    name: 'EditCardScreen',
+    title: 'screens.edit-card.title',
+  },
   editTransactionScreen: {
     name: 'EditTransactionScreen',
     title: 'screens.edit-transaction.title',
+  },
+  manageBarcodesScreen: {
+    name: 'ManageBarcodesScreen',
+    title: 'screens.manage-barcodes.title',
   },
   manageCardsScreen: {
     name: 'ManageCardsScreen',

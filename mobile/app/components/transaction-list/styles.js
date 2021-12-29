@@ -9,25 +9,25 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     marginVertical: 8,
   },
-  actionSheetTransaction: {
+  actionSheet: {
     marginBottom: 18,
     paddingHorizontal: 18,
   },
-  actionSheetTransactionRow: {
+  actionSheetRow: {
     display: 'flex',
     flexDirection: 'row',
   },
-  actionSheetTransactionColumn1: {
+  actionSheetColumn1: {
     alignItems: 'flex-start',
     flex: 1,
   },
-  actionSheetTransactionColumn2: {
+  actionSheetColumn2: {
     alignItems: 'flex-end',
   },
-  actionSheetTransactionLargeText: {
+  actionSheetLargeText: {
     fontSize: normalizeText(14),
   },
-  actionSheetTransactionSmallText: {
+  actionSheetSmallText: {
     marginTop: 4,
   },
 });

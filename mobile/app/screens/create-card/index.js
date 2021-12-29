@@ -85,10 +85,10 @@ const CreateCardScreen = ({ navigation, route, ...props }) => {
     const { company, currency, name, type } = values;
     if (!company || !currency || !name || !type) {
       setErrors({
-        company: company ? null : 'screens.create-card.errors.empty-company',
-        currency: currency ? null : 'screens.create-card.errors.empty-currency',
-        name: name ? null : 'screens.create-card.errors.empty-name',
-        type: type ? null : 'screens.create-card.errors.empty-type',
+        company: company ? null : 'components.card-form.errors.empty-company',
+        currency: currency ? null : 'components.card-form.errors.empty-currency',
+        name: name ? null : 'components.card-form.errors.empty-name',
+        type: type ? null : 'components.card-form.errors.empty-type',
       });
       return false;
     }

@@ -93,26 +93,21 @@ const TransactionListComponent = ({
       </View>
       <ActionSheet onClose={() => setActionSheet(false)} options={actionSheetOptions} visible={actionSheet}>
         {selectedTransaction && (
-          <View style={styles.actionSheetTransaction}>
-            <View style={styles.actionSheetTransactionRow}>
-              <View style={styles.actionSheetTransactionColumn1}>
-                <Text style={styles.actionSheetTransactionLargeText}>{selectedTransaction.vendor}</Text>
+          <View style={styles.actionSheet}>
+            <View style={styles.actionSheetRow}>
+              <View style={styles.actionSheetColumn1}>
+                <Text style={styles.actionSheetLargeText}>{selectedTransaction.vendor}</Text>
                 {selectedCard && (
-                  <Text style={[styles.actionSheetTransactionSmallText, theme.actionSheetTransactionMutedText]}>
-                    {selectedCard.name}
-                  </Text>
+                  <Text style={[styles.actionSheetSmallText, theme.actionSheetMutedText]}>{selectedCard.name}</Text>
                 )}
               </View>
-              <View style={styles.actionSheetTransactionColumn2}>
+              <View style={styles.actionSheetColumn2}>
                 <Text
-                  style={[
-                    styles.actionSheetTransactionLargeText,
-                    selectedTransaction.isCredit && theme.actionSheetTransactionAmountPositive,
-                  ]}
+                  style={[styles.actionSheetLargeText, selectedTransaction.isCredit && theme.actionSheetAmountPositive]}
                 >
                   {selectedTransaction.getFormattedAmount(locale)}
                 </Text>
-                <Text style={[styles.actionSheetTransactionSmallText, theme.actionSheetTransactionMutedText]}>
+                <Text style={[styles.actionSheetSmallText, theme.actionSheetMutedText]}>
                   {selectedTransaction.currency}
                 </Text>
               </View>

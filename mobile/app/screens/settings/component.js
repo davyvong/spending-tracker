@@ -23,6 +23,7 @@ const SettingsScreenComponent = ({
   logout,
   logoutDialog,
   openLogoutDialog,
+  navigateToManageBarcodes,
   navigateToManageCards,
   navigateToPassword,
   navigateToProfile,
@@ -87,6 +88,22 @@ const SettingsScreenComponent = ({
         <View style={styles.sectionHeader}>
           <Text style={theme.sectionHeaderText}>{locale.t('screens.settings.sections.wallet')}</Text>
         </View>
+        <Pressable onPress={navigateToManageBarcodes} style={styles.ctaRow}>
+          <MaterialCommunityIcons
+            color={theme.activeIcon}
+            name="barcode-scan"
+            size={28}
+            style={styles.ctaRowLeftIcon}
+          />
+          <Text style={styles.ctaRowText}>{locale.t('screens.settings.actions.manage-barcodes')}</Text>
+          <Spacer />
+          <MaterialIcons
+            color={theme.defaultIcon}
+            name="keyboard-arrow-right"
+            size={20}
+            style={styles.ctaRowRightIcon}
+          />
+        </Pressable>
         <Pressable onPress={navigateToManageCards} style={styles.ctaRow}>
           <MaterialCommunityIcons
             color={theme.activeIcon}
@@ -159,6 +176,7 @@ SettingsScreenComponent.propTypes = {
   logout: PropTypes.func.isRequired,
   logoutDialog: PropTypes.bool.isRequired,
   openLogoutDialog: PropTypes.func.isRequired,
+  navigateToManageBarcodes: PropTypes.func.isRequired,
   navigateToManageCards: PropTypes.func.isRequired,
   navigateToPassword: PropTypes.func.isRequired,
   navigateToProfile: PropTypes.func.isRequired,

@@ -1,21 +1,38 @@
 import { StyleSheet } from 'react-native';
+import { normalizeText } from 'utils/styles';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   contentContainer: {
-    paddingHorizontal: 18,
+    paddingHorizontal: 24,
     paddingTop: 6,
+  },
+  actionSheet: {
+    marginBottom: 18,
+    paddingHorizontal: 18,
+  },
+  actionSheetLargeText: {
+    fontSize: normalizeText(14),
+  },
+  actionSheetSmallText: {
+    marginTop: 4,
   },
   card: {
     marginTop: 18,
   },
-  cardVisibility: {
+  cardMenuButton: {
     padding: 12,
     position: 'absolute',
-    right: 0,
+    right: -3,
     top: 0,
+  },
+  cardVisibility: {
+    bottom: 0,
+    left: 4,
+    padding: 12,
+    position: 'absolute',
   },
 });
 

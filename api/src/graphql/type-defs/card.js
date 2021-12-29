@@ -11,7 +11,6 @@ export default `
   }
 
   type Card {
-    accountId: String
     color: String
     company: String
     currency: String

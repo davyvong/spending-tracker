@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  walletCarousel: {
+  cardCarousel: {
     marginBottom: 12,
     marginHorizontal: -24,
   },
