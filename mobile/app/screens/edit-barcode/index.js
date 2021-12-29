@@ -78,6 +78,7 @@ const EditBarcodeScreen = ({ navigation, route, ...props }) => {
     setPendingSave(true);
     try {
       const data = pick(values, 'attributes', 'name', 'value');
+      data.attributes = data.attributes.map(attribute => pick(attribute, 'name', 'value'));
       await api.updateBarcode(values.id, data);
       navigation.dispatch({
         ignoreDiscard: true,
