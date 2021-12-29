@@ -37,17 +37,24 @@ const ManageBarcodesScreen = ({ navigation, ...props }) => {
 
   const getBarcodesFromAPI = useCallback(api.getBarcodes, []);
 
-  const getBarcodesFromStorage = useCallback(async barcodeIds => {
-    let barcodeList = Array.from(barcodeIds);
-    for (let i = 0; i < barcodeList.length; i += 1) {
-      const storageKey = storage.getItemKey('barcode', barcodeList[i]);
-      const cachedBarcode = await storage.getItem(storageKey);
-      if (cachedBarcode) {
-        barcodeList[i] = new Barcode(cachedBarcode);
+  const getBarcodesFromStorage = useCallback(
+    async barcodeIds => {
+      let barcodeList = Array.from(barcodeIds);
+      for (let i = 0; i < barcodeList.length; i += 1) {
+        const storageKey = storage.getItemKey('barcode', barcodeList[i]);
+        const cachedBarcode = await storage.getItem(storageKey);
+        if (cachedBarcode) {
+          barcodeList[i] = new Barcode(cachedBarcode);
+        }
       }
-    }
-    setBarcodes(barcodeList.filter(barcode => barcode instanceof Barcode));
-  }, []);
+      barcodeList = barcodeList.filter(barcode => barcode instanceof Barcode);
+      setBarcodes(barcodeList);
+      if (selectedBarcodeIndex > barcodeList.length - 1) {
+        setSelectedBarcodeIndex(barcodeList.length - 1);
+      }
+    },
+    [selectedBarcodeIndex],
+  );
 
   const getBarcodes = useCallback(
     () =>
