@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   cardVisibility: {
     bottom: 0,
-    left: 0,
+    left: 4,
     padding: 12,
     position: 'absolute',
   },

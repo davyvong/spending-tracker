@@ -1,48 +1,34 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import BarcodeGenerator from '@kichiyaki/react-native-barcode-generator';
 import Text from 'components/text';
 import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Pressable, View } from 'react-native';
-import FlipCard from 'react-native-flip-card';
 
 import styles from './styles';
 
-const BarcodeCardComponent = ({ attributes, dimensions, isFlipped, name, theme, toggleFlipped, value, ...props }) => {
-  const renderAttribute = useCallback(
-    attribute => (
-      <Text key={attribute.name} style={[styles.cardText, theme.cardSecondaryText, styles.cardAttribute]}>
-        {`${attribute.name}: ${attribute.value}`}
-      </Text>
-    ),
-    [],
-  );
-
-  return (
-    <Pressable {...props} onPress={toggleFlipped}>
-      <FlipCard clickable={false} flip={isFlipped} flipHorizontal flipVertical={false} friction={10}>
-        <View style={[styles.card, theme.card]}>
-          <LinearGradient colors={theme.cardGradient} style={styles.cardGradient} />
-          <View style={styles.cardHeader}>
-            <Text style={[styles.cardText, theme.cardPrimaryText]}>{name}</Text>
-          </View>
-          <View style={styles.cardFooter}>{attributes.map(renderAttribute)}</View>
-        </View>
-        <View style={[styles.card, styles.cardBack, theme.cardBack]}>
-          <BarcodeGenerator
-            background={theme.cardBarcode.background}
-            format="CODE128"
-            lineColor={theme.cardBarcode.line}
-            maxWidth={dimensions.width - 72}
-            text={value}
-            textStyle={styles.cardBarcodeText}
-            value={value}
-          />
-        </View>
-      </FlipCard>
-    </Pressable>
-  );
-};
+const BarcodeCardComponent = ({ dimensions, name, onPress, theme, value }) => (
+  <View style={[styles.card, theme.card]}>
+    <LinearGradient colors={theme.cardGradient} style={styles.cardGradient} />
+    <View style={styles.cardHeader}>
+      <Text style={[styles.cardText, theme.cardText]}>{name}</Text>
+    </View>
+    <BarcodeGenerator
+      background={theme.cardBarcode.background}
+      format="CODE128"
+      lineColor={theme.cardBarcode.line}
+      maxWidth={dimensions.width - 104}
+      style={styles.cardBarcode}
+      value={value}
+    />
+    {onPress && (
+      <Pressable onPress={onPress} style={styles.cardMenuButton}>
+        <MaterialIcons color={theme.defaultIcon} name="more-vert" size={24} />
+      </Pressable>
+    )}
+  </View>
+);
 
 BarcodeCardComponent.defaultProps = {
   attributes: [],
@@ -60,10 +46,9 @@ BarcodeCardComponent.propTypes = {
   dimensions: PropTypes.shape({
     width: PropTypes.number,
   }),
-  isFlipped: PropTypes.bool.isRequired,
   name: PropTypes.string,
+  onPress: PropTypes.func,
   theme: PropTypes.object,
-  toggleFlipped: PropTypes.func.isRequired,
   value: PropTypes.string,
 };
 

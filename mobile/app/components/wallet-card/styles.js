@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
     aspectRatio: 1.8,
     borderRadius: 10,
     overflow: 'hidden',
-    padding: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   walletCardGradient: {
     bottom: '-100%',

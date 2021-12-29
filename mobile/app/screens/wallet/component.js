@@ -1,11 +1,11 @@
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import CardCarousel from 'components/card-carousel';
 import MonthPicker from 'components/month-picker';
 import MonthlySpending from 'components/monthly-spending';
 import ScrollView from 'components/scroll-view';
 import Spacer from 'components/spacer';
 import Text from 'components/text';
 import Title from 'components/title';
-import WalletCarousel from 'components/wallet-carousel';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
@@ -43,7 +43,7 @@ const WalletScreenComponent = ({
       >
         {cards.length > 0 && (
           <Fragment>
-            <WalletCarousel containerCustomStyle={styles.walletCarousel} data={cards} onChange={setSelectedCard} />
+            <CardCarousel containerCustomStyle={styles.cardCarousel} data={cards} onChange={setSelectedCard} />
             <View style={styles.sectionBlock}>
               <MonthPicker onPress={setSelectedMonth} value={selectedMonth} />
             </View>

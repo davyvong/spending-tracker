@@ -1,15 +1,17 @@
 import ActionSheet from 'components/action-sheet';
 import BarcodeCard from 'components/barcode-card';
 import Button from 'components/button';
-import ScrollViewStyles from 'components/scroll-view/styles';
+import CardCarousel from 'components/card-carousel';
+import ReadOnlyTextInput from 'components/read-only-text-input';
+import ScrollView from 'components/scroll-view';
 import Text from 'components/text';
 import Title from 'components/title';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import Barcode from 'models/barcode';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import React, { Fragment, useCallback, useEffect } from 'react';
+import { RefreshControl, View } from 'react-native';
 
 import styles from './styles';
 
@@ -24,17 +26,19 @@ const ManageBarcodesScreenComponent = ({
   refreshing,
   selectedBarcode,
   setNavigationOptions,
+  setSelectedBarcode,
   theme,
 }) => {
   const [locale] = useLocale();
 
-  const renderItem = useCallback(
-    ({ index, item }) => (
-      <View key={item.id} style={index > 0 && styles.card}>
-        <BarcodeCard {...item} onLongPress={() => openActionSheet(item)} />
-      </View>
-    ),
-    [theme],
+  const renderBarcodeCard = useCallback(
+    itemProps => <BarcodeCard {...itemProps} onPress={openActionSheet} />,
+    [openActionSheet],
+  );
+
+  const renderAttribute = useCallback(
+    attribute => <ReadOnlyTextInput key={attribute.name} label={attribute.name} value={attribute.value} />,
+    [],
   );
 
   useEffect(() => {
@@ -46,15 +50,7 @@ const ManageBarcodesScreenComponent = ({
 
   return (
     <View style={styles.container}>
-      <View style={ScrollViewStyles.header}>
-        <Title>{locale.t(routeOptions.manageBarcodesScreen.title)}</Title>
-      </View>
-      <FlatList
-        contentContainerStyle={styles.contentContainer}
-        data={barcodes}
-        initialNumToRender={0}
-        keyExtractor={item => item.id}
-        maxToRenderPerBatch={1}
+      <ScrollView
         refreshControl={
           <RefreshControl
             color={[theme.refreshControl]}
@@ -63,24 +59,29 @@ const ManageBarcodesScreenComponent = ({
             tintColor={theme.refreshControl}
           />
         }
-        renderItem={renderItem}
-        scrollEventThrottle={200}
-      />
+        StickyHeaderComponent={<Title>{locale.t(routeOptions.manageBarcodesScreen.title)}</Title>}
+      >
+        <CardCarousel
+          containerCustomStyle={styles.cardCarousel}
+          data={barcodes}
+          onChange={setSelectedBarcode}
+          ItemComponent={renderBarcodeCard}
+        />
+        {selectedBarcode && (
+          <Fragment>
+            <ReadOnlyTextInput
+              label={locale.t('screens.manage-barcodes.labels.barcode')}
+              value={selectedBarcode.value}
+            />
+            {selectedBarcode.attributes.map(renderAttribute)}
+          </Fragment>
+        )}
+      </ScrollView>
       <ActionSheet onClose={closeActionSheet} options={actionSheetOptions} visible={actionSheet}>
         {selectedBarcode && (
           <View style={styles.actionSheet}>
-            <View style={styles.actionSheetRow}>
-              <View style={styles.actionSheetColumn1}>
-                <Text style={styles.actionSheetLargeText}>{selectedBarcode.name}</Text>
-                <Text style={[styles.actionSheetSmallText, theme.actionSheetMutedText]}>{selectedBarcode.value}</Text>
-              </View>
-              <View style={styles.actionSheetColumn2}>
-                <Text style={styles.actionSheetLargeText}>{selectedBarcode.getFormattedAmount(locale)}</Text>
-                <Text style={[styles.actionSheetSmallText, theme.actionSheetMutedText]}>
-                  {selectedBarcode.currency}
-                </Text>
-              </View>
-            </View>
+            <Text style={styles.actionSheetLargeText}>{selectedBarcode.name}</Text>
+            <Text style={[styles.actionSheetSmallText, theme.actionSheetMutedText]}>{selectedBarcode.value}</Text>
           </View>
         )}
       </ActionSheet>
@@ -103,6 +104,7 @@ ManageBarcodesScreenComponent.propTypes = {
   refreshBarcodes: PropTypes.func.isRequired,
   selectedBarcode: Barcode.propTypes,
   setNavigationOptions: PropTypes.func.isRequired,
+  setSelectedBarcode: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
 };
 

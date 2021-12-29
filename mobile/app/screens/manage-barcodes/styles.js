@@ -5,27 +5,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  contentContainer: {
-    paddingHorizontal: 24,
-    paddingTop: 6,
-  },
-  card: {
-    marginTop: 18,
+  cardCarousel: {
+    marginBottom: 12,
+    marginHorizontal: -24,
   },
   actionSheet: {
     marginBottom: 18,
     paddingHorizontal: 18,
-  },
-  actionSheetRow: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  actionSheetColumn1: {
-    alignItems: 'flex-start',
-    flex: 1,
-  },
-  actionSheetColumn2: {
-    alignItems: 'flex-end',
   },
   actionSheetLargeText: {
     fontSize: normalizeText(14),

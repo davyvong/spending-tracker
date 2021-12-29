@@ -14,6 +14,7 @@ const ManageBarcodesScreen = ({ navigation, ...props }) => {
   const [locale] = useLocale();
   const storage = useStorage();
   const { palette } = useTheme();
+  const [actionSheet, setActionSheet] = useState(false);
   const [barcodes, setBarcodes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedBarcode, setSelectedBarcode] = useState();
@@ -40,6 +41,7 @@ const ManageBarcodesScreen = ({ navigation, ...props }) => {
       }
     }
     setBarcodes(barcodeList.filter(barcode => barcode instanceof Barcode));
+    setSelectedBarcode(barcodeList[0]);
   }, []);
 
   const getBarcodes = useCallback(
@@ -82,11 +84,11 @@ const ManageBarcodesScreen = ({ navigation, ...props }) => {
   );
 
   const closeActionSheet = useCallback(() => {
-    setSelectedBarcode();
+    setActionSheet(false);
   }, []);
 
-  const openActionSheet = useCallback(barcode => {
-    setSelectedBarcode(barcode);
+  const openActionSheet = useCallback(() => {
+    setActionSheet(true);
   }, []);
 
   useEffect(() => {
@@ -101,7 +103,7 @@ const ManageBarcodesScreen = ({ navigation, ...props }) => {
   return (
     <ManageBarcodesScreenComponent
       {...props}
-      actionSheet={Boolean(selectedBarcode)}
+      actionSheet={actionSheet}
       actionSheetOptions={actionSheetOptions}
       barcodes={barcodes}
       closeActionSheet={closeActionSheet}
@@ -111,6 +113,7 @@ const ManageBarcodesScreen = ({ navigation, ...props }) => {
       refreshBarcodes={refreshBarcodes}
       selectedBarcode={selectedBarcode}
       setNavigationOptions={navigation.setOptions}
+      setSelectedBarcode={setSelectedBarcode}
       theme={theme}
     />
   );

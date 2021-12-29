@@ -1,13 +1,14 @@
-import textStyles from 'components/text/styles';
 import { StyleSheet } from 'react-native';
 import { normalizeText } from 'utils/styles';
 
 const styles = StyleSheet.create({
   card: {
-    aspectRatio: 1.8,
     borderRadius: 10,
+    marginBottom: 12,
     overflow: 'hidden',
-    padding: 12,
+    paddingBottom: 16,
+    paddingHorizontal: 16,
+    paddingTop: 12,
   },
   cardGradient: {
     bottom: '-100%',
@@ -20,31 +21,20 @@ const styles = StyleSheet.create({
   cardHeader: {
     flex: 1,
     flexDirection: 'row',
-  },
-  cardFooter: {
-    alignItems: 'flex-start',
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-  },
-  cardAttribute: {
-    marginTop: 5,
+    marginBottom: 18,
   },
   cardText: {
     fontSize: normalizeText(14),
   },
-  cardNameText: {
-    marginTop: 5,
+  cardBarcode: {
+    borderRadius: 5,
+    paddingVertical: 12,
   },
-  cardBack: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 0,
-  },
-  cardBarcodeText: {
-    ...textStyles.text,
-    fontSize: normalizeText(14),
-    marginTop: 12,
+  cardMenuButton: {
+    padding: 12,
+    position: 'absolute',
+    right: -3,
+    top: 0,
   },
 });
 
