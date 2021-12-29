@@ -22,14 +22,19 @@ export default `
     value: String
   }
 
+  input BarcodeAttributeData {
+    name: String!
+    value: String!
+  }
+
   input CreateBarcodeData {
-    attributes: [BarcodeAttribute]!
+    attributes: [BarcodeAttributeData]!
     name: String!
     value: String!
   }
 
   input UpdateBarcodeData {
-    attributes: [BarcodeAttribute]
+    attributes: [BarcodeAttributeData]
     name: String
     value: String
   }

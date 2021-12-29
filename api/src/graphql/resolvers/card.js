@@ -51,9 +51,6 @@ export default {
       if (!args.page) {
         return context.dataSources.card.model.find(query);
       }
-      if (args.type) {
-        query.type = args.type;
-      }
       const options = buildFindOptions(args);
       return context.dataSources.card.model.find(query, null, options);
     },

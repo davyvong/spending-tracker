@@ -5,7 +5,7 @@ import CardDataSource from 'data-sources/mongo/card';
 import CategoryDataSource from 'data-sources/mongo/category';
 import TransactionDataSource from 'data-sources/mongo/transaction';
 import AccountSchema from 'mongoose/schemas/account';
-import BarcodeSchema from 'mongoose/schemas/barcoode';
+import BarcodeSchema from 'mongoose/schemas/barcode';
 import CardSchema from 'mongoose/schemas/card';
 import CategorySchema from 'mongoose/schemas/category';
 import TransactionSchema from 'mongoose/schemas/transaction';
