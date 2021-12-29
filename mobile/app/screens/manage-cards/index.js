@@ -87,7 +87,7 @@ const ManageCardsScreen = ({ navigation, ...props }) => {
     const storageKey = storage.getItemKey('cards');
     const cachedCardIds = await storage.getItem(storageKey);
     return getCardsFromStorage(cachedCardIds.filter(id => id !== cardId));
-  }, [api.deleteCard, getCards, selectedCard]);
+  }, [api.deleteCard, getCardsFromStorage, selectedCard]);
 
   const actionSheetOptions = useMemo(() => {
     const options = [

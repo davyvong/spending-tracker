@@ -1,3 +1,4 @@
+import ActionDialog from 'components/action-dialog';
 import ActionSheet from 'components/action-sheet';
 import BarcodeCard from 'components/barcode-card';
 import Button from 'components/button';
@@ -20,11 +21,15 @@ const ManageBarcodesScreenComponent = ({
   actionSheetOptions,
   barcodes,
   closeActionSheet,
+  closeDeleteDialog,
+  deleteBarcode,
+  deleteDialog,
   navigateToCreateBarcode,
   openActionSheet,
   refreshBarcodes,
   refreshing,
   selectedBarcode,
+  selectedBarcodeIndex,
   setNavigationOptions,
   setSelectedBarcode,
   theme,
@@ -63,8 +68,9 @@ const ManageBarcodesScreenComponent = ({
       >
         <CardCarousel
           containerCustomStyle={styles.cardCarousel}
+          currentIndex={selectedBarcodeIndex}
           data={barcodes}
-          onChange={setSelectedBarcode}
+          onChange={(barcode, index) => setSelectedBarcode(index)}
           ItemComponent={renderBarcodeCard}
         />
         {selectedBarcode && (
@@ -85,6 +91,16 @@ const ManageBarcodesScreenComponent = ({
           </View>
         )}
       </ActionSheet>
+      <ActionDialog
+        onClose={closeDeleteDialog}
+        message={locale.t('screens.manage-barcodes.messages.delete-barcode')}
+        primaryAction={{
+          color: theme.deleteButton.backgroundColor,
+          label: locale.t('screens.manage-barcodes.buttons.delete'),
+          onPress: deleteBarcode,
+        }}
+        visible={deleteDialog}
+      />
     </View>
   );
 };
@@ -98,11 +114,15 @@ ManageBarcodesScreenComponent.propTypes = {
   actionSheetOptions: PropTypes.array,
   barcodes: PropTypes.arrayOf(Barcode.propTypes),
   closeActionSheet: PropTypes.func.isRequired,
+  closeDeleteDialog: PropTypes.func.isRequired,
+  deleteBarcode: PropTypes.func.isRequired,
+  deleteDialog: PropTypes.bool.isRequired,
   navigateToCreateBarcode: PropTypes.func.isRequired,
   openActionSheet: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
   refreshBarcodes: PropTypes.func.isRequired,
   selectedBarcode: Barcode.propTypes,
+  selectedBarcodeIndex: PropTypes.number.isRequired,
   setNavigationOptions: PropTypes.func.isRequired,
   setSelectedBarcode: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,

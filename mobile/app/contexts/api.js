@@ -340,6 +340,23 @@ export const APIProvider = ({ children }) => {
     [client],
   );
 
+  const updateBarcode = useCallback(
+    async (barcodeId, updateData) => {
+      const { data } = await client.mutate({
+        mutation: barcodesMutations.updateBarcode,
+        variables: {
+          id: barcodeId,
+          data: updateData,
+        },
+      });
+      const barcode = new Barcode(data.updateBarcode);
+      const storageKey = storage.getItemKey('barcode', barcode.id);
+      storage.setItem(storageKey, barcode);
+      return barcode.id;
+    },
+    [client],
+  );
+
   const updateCard = useCallback(
     async (cardId, updateData) => {
       const { data } = await client.mutate({
@@ -406,6 +423,7 @@ export const APIProvider = ({ children }) => {
     getTransactions,
     signInWithEmail,
     updateAccount,
+    updateBarcode,
     updateCard,
     updatePassword,
     updateTransaction,

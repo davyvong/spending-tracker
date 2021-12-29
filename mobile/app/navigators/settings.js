@@ -5,6 +5,7 @@ import useLocale from 'hooks/locale';
 import React from 'react';
 import CreateBarcodeScreen from 'screens/create-barcode';
 import CreateCardScreen from 'screens/create-card';
+import EditBarcodeScreen from 'screens/edit-barcode';
 import EditCardScreen from 'screens/edit-card';
 import ManageBarcodesScreen from 'screens/manage-barcodes';
 import ManageCardsScreen from 'screens/manage-cards';
@@ -51,6 +52,15 @@ const SettingsNavigator = () => {
         options={{
           ...routeOptions.createCardScreen,
           title: locale.t(routeOptions.createCardScreen.title),
+        }}
+        unmountOnBlur
+      />
+      <Stack.Screen
+        component={EditBarcodeScreen}
+        name={routeOptions.editBarcodeScreen.name}
+        options={{
+          ...routeOptions.editBarcodeScreen,
+          title: locale.t(routeOptions.editBarcodeScreen.title),
         }}
         unmountOnBlur
       />

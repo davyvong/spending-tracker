@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import Carousel from 'react-native-snap-carousel';
 
 const CardCarouselComponent = ({ data, dimensions, onChange, ItemComponent, ...props }) => {
-  const onSnapToItem = useCallback(index => onChange(data[index]), [data, onChange]);
+  const onSnapToItem = useCallback(index => onChange(data[index], index), [data, onChange]);
 
   const renderItem = useCallback(({ index, item }) => <ItemComponent {...item} index={index} />, [ItemComponent]);
 
