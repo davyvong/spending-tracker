@@ -36,11 +36,11 @@ const client = new ApolloClient({
   defaultOptions: {
     mutate: {
       errorPolicy: 'all',
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'network-only',
     },
     query: {
       errorPolicy: 'all',
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'network-only',
     },
   },
   link: from([errorLink, authLink, httpLink]),
