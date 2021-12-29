@@ -73,11 +73,11 @@ const EditTransactionScreen = ({ route, ...props }) => {
     const badItems = items.some(item => Number.isNaN(item.amount) || !item.amount || !item.description);
     if (badItems || !cardId || !categoryId || !postDate || !vendor) {
       setErrors({
-        cardId: cardId ? null : 'screens.create-transaction.errors.empty-card',
-        categoryId: categoryId ? null : 'screens.create-transaction.errors.empty-category',
-        items: badItems ? 'screens.create-transaction.errors.empty-items' : null,
-        postDate: postDate ? null : 'screens.create-transaction.errors.empty-date',
-        vendor: vendor ? null : 'screens.create-transaction.errors.empty-vendor',
+        cardId: cardId ? null : 'components.transaction-form.errors.empty-card',
+        categoryId: categoryId ? null : 'components.transaction-form.errors.empty-category',
+        items: badItems ? 'components.transaction-form.errors.empty-items' : null,
+        postDate: postDate ? null : 'components.transaction-form.errors.empty-date',
+        vendor: vendor ? null : 'components.transaction-form.errors.empty-vendor',
       });
       return false;
     }

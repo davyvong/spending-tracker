@@ -6,9 +6,9 @@ import Card from 'models/card';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import CreateCardScreenComponent from './component';
+import EditCardScreenComponent from './component';
 
-const CreateCardScreen = ({ navigation, route, ...props }) => {
+const EditCardScreen = ({ navigation, route, ...props }) => {
   const { card = {} } = route.params;
 
   const api = useAPI();
@@ -17,7 +17,8 @@ const CreateCardScreen = ({ navigation, route, ...props }) => {
   const [hasChanges, setHasChanges] = useState(false);
   const [discardDialog, setDiscardDialog] = useState(false);
   const [errorDialog, setErrorDialog] = useState(false);
-  const [pending, setPending] = useState(false);
+  const [saveDialog, setSaveDialog] = useState(false);
+  const [pendingSave, setPendingSave] = useState(false);
   const [errors, setErrors] = useState({
     company: null,
     currency: null,
@@ -63,24 +64,6 @@ const CreateCardScreen = ({ navigation, route, ...props }) => {
     [hasChanges],
   );
 
-  const createCard = useCallback(async () => {
-    if (validateValues()) {
-      setPending(true);
-      try {
-        const data = pick(values, 'company', 'currency', 'name', 'type');
-        await api.createCard(data);
-        navigation.dispatch({
-          ignoreDiscard: true,
-          payload: { count: 1 },
-          type: 'POP',
-        });
-      } catch (error) {
-        setErrorDialog(true);
-      }
-      setPending(false);
-    }
-  }, [navigation, validateValues, values]);
-
   const validateValues = useCallback(() => {
     const { company, currency, name, type } = values;
     if (!company || !currency || !name || !type) {
@@ -94,6 +77,32 @@ const CreateCardScreen = ({ navigation, route, ...props }) => {
     }
     return true;
   }, [values]);
+
+  const saveCard = useCallback(async () => {
+    setPendingSave(true);
+    try {
+      const data = pick(values, 'company', 'currency', 'name', 'type');
+      await api.updateCard(values.id, data);
+      navigation.dispatch({
+        ignoreDiscard: true,
+        payload: { count: 1 },
+        type: 'POP',
+      });
+    } catch (error) {
+      setErrorDialog(true);
+    }
+    setPendingSave(false);
+  }, [navigation, values]);
+
+  const closeSaveDialog = useCallback(() => {
+    setSaveDialog(false);
+  }, []);
+
+  const openSaveDialog = useCallback(() => {
+    if (validateValues()) {
+      setSaveDialog(true);
+    }
+  }, [validateValues]);
 
   const navigateBack = useCallback(() => {
     if (discardDialog) {
@@ -145,16 +154,19 @@ const CreateCardScreen = ({ navigation, route, ...props }) => {
   }, [hasChanges, navigation, openDiscardDialog]);
 
   return (
-    <CreateCardScreenComponent
+    <EditCardScreenComponent
       {...props}
       closeDiscardDialog={closeDiscardDialog}
       closeErrorDialog={closeErrorDialog}
-      createCard={createCard}
+      closeSaveDialog={closeSaveDialog}
       discardDialog={Boolean(discardDialog)}
       errors={errors}
       errorDialog={errorDialog}
+      openSaveDialog={openSaveDialog}
       navigateBack={navigateBack}
-      pending={pending}
+      pending={pendingSave}
+      saveCard={saveCard}
+      saveDialog={saveDialog}
       setNavigationOptions={navigation.setOptions}
       theme={theme}
       updateValue={updateValue}
@@ -163,7 +175,7 @@ const CreateCardScreen = ({ navigation, route, ...props }) => {
   );
 };
 
-CreateCardScreen.propTypes = {
+EditCardScreen.propTypes = {
   navigation: PropTypes.shape({
     addListener: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -177,4 +189,4 @@ CreateCardScreen.propTypes = {
   }),
 };
 
-export default CreateCardScreen;
+export default EditCardScreen;

@@ -70,6 +70,10 @@ const ManageCardsScreen = ({ navigation, ...props }) => {
     navigation.navigate(routeOptions.createCardScreen.name, { card: {} });
   }, [navigation]);
 
+  const navigateToEditCard = useCallback(() => {
+    navigation.navigate(routeOptions.editCardScreen.name, { card: selectedCard });
+  }, [navigation, selectedCard]);
+
   const closeDeleteDialog = useCallback(() => {
     setDeleteDialog(false);
   }, []);
@@ -88,7 +92,7 @@ const ManageCardsScreen = ({ navigation, ...props }) => {
   const actionSheetOptions = useMemo(() => {
     const options = [
       {
-        callback: () => {},
+        callback: navigateToEditCard,
         icon: 'edit',
         label: locale.t('screens.manage-cards.actions.edit'),
       },

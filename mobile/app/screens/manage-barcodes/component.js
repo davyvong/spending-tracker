@@ -52,7 +52,7 @@ const ManageBarcodesScreenComponent = ({
       <FlatList
         contentContainerStyle={styles.contentContainer}
         data={barcodes}
-        initialNumToRender={1}
+        initialNumToRender={0}
         keyExtractor={item => item.id}
         maxToRenderPerBatch={1}
         refreshControl={
@@ -63,7 +63,6 @@ const ManageBarcodesScreenComponent = ({
             tintColor={theme.refreshControl}
           />
         }
-        removeClippedSubviews={barcodes.length > 10}
         renderItem={renderItem}
         scrollEventThrottle={200}
       />

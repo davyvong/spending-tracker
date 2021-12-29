@@ -34,6 +34,10 @@ export const routeOptions = {
     name: 'CreateTransactionScreen',
     title: 'screens.create-transaction.title',
   },
+  editCardScreen: {
+    name: 'EditCardScreen',
+    title: 'screens.edit-card.title',
+  },
   editTransactionScreen: {
     name: 'EditTransactionScreen',
     title: 'screens.edit-transaction.title',
