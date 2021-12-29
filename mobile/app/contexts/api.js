@@ -97,15 +97,17 @@ export const APIProvider = ({ children }) => {
     const data = {
       barcodes: [
         {
-          amount: 20,
           attributes: [
             {
               name: 'PIN',
               value: '2536',
             },
+            {
+              name: 'Balance',
+              value: '20 CAD',
+            },
           ],
-          currency: 'CAD',
-          id: 'esso-gift-card',
+          id: '61cc06f4d905bca13b16aeee',
           name: 'ESSO Gift Card',
           value: '7042320000017738046',
         },

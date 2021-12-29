@@ -22,10 +22,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardFooter: {
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+  },
+  cardAttribute: {
+    marginTop: 5,
   },
   cardText: {
     fontSize: normalizeText(14),
