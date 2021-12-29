@@ -1,9 +1,11 @@
 import { useApolloClient } from '@apollo/client';
 import useStorage from 'hooks/storage';
 import * as accountsMutations from 'graphql/mutations/accounts';
+import * as barcodesMutations from 'graphql/mutations/barcodes';
 import * as cardsMutations from 'graphql/mutations/cards';
 import * as transactionsMutations from 'graphql/mutations/transactions';
 import * as accountsQueries from 'graphql/queries/accounts';
+import * as barcodesQueries from 'graphql/queries/barcodes';
 import * as cardsQueries from 'graphql/queries/cards';
 import * as categoriesQueries from 'graphql/queries/categories';
 import * as spendingQueries from 'graphql/queries/spending';
@@ -24,6 +26,20 @@ export const APIConsumer = APIContext.Consumer;
 export const APIProvider = ({ children }) => {
   const client = useApolloClient();
   const storage = useStorage();
+
+  const createBarcode = useCallback(
+    async barcodeData => {
+      const { data } = await client.mutate({
+        mutation: barcodesMutations.createBarcode,
+        variables: { data: barcodeData },
+      });
+      const barcode = new Barcode(data.createBarcode);
+      const storageKey = storage.getItemKey('barcode', barcode.id);
+      storage.setItem(storageKey, barcode);
+      return barcode.id;
+    },
+    [client],
+  );
 
   const createCard = useCallback(
     async cardData => {
@@ -49,6 +65,21 @@ export const APIProvider = ({ children }) => {
       const storageKey = storage.getItemKey('transaction', transaction.id);
       storage.setItem(storageKey, transaction);
       return transaction.id;
+    },
+    [client],
+  );
+
+  const deleteBarcode = useCallback(
+    async barcodeId => {
+      const response = client.mutate({
+        mutation: barcodesMutations.deleteBarcode,
+        variables: { id: barcodeId },
+      });
+      if (response.data?.deleteBarcode) {
+        const storageKey = storage.getItemKey('barcode', barcodeId);
+        await storage.deleteItem(storageKey);
+      }
+      return barcodeId;
     },
     [client],
   );
@@ -94,25 +125,9 @@ export const APIProvider = ({ children }) => {
   }, [client]);
 
   const getBarcodes = useCallback(async () => {
-    const data = {
-      barcodes: [
-        {
-          attributes: [
-            {
-              name: 'PIN',
-              value: '2536',
-            },
-            {
-              name: 'Balance',
-              value: '20 CAD',
-            },
-          ],
-          id: '61cc06f4d905bca13b16aeee',
-          name: 'ESSO Gift Card',
-          value: '7042320000017738046',
-        },
-      ],
-    };
+    const { data } = await client.query({
+      query: barcodesQueries.barcodes,
+    });
     const barcodeIds = [];
     data.barcodes.forEach(barcodeData => {
       const barcode = new Barcode(barcodeData);
@@ -374,8 +389,10 @@ export const APIProvider = ({ children }) => {
   );
 
   const value = {
+    createBarcode,
     createCard,
     createTransaction,
+    deleteBarcode,
     deleteCard,
     deleteTransaction,
     getAccount,
