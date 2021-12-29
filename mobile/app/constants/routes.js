@@ -26,6 +26,10 @@ export const routeOptions = {
     name: 'CategoryListScreen',
     title: 'screens.category-list.title',
   },
+  createBarcodeScreen: {
+    name: 'CreateBarcodeScreen',
+    title: 'screens.create-barcode.title',
+  },
   createCardScreen: {
     name: 'CreateCardScreen',
     title: 'screens.create-card.title',

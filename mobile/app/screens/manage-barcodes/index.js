@@ -1,4 +1,4 @@
-// import { routeOptions } from 'constants/routes';
+import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useLocale from 'hooks/locale';
 import useStorage from 'hooks/storage';
@@ -61,7 +61,7 @@ const ManageBarcodesScreen = ({ navigation, ...props }) => {
   }, []);
 
   const navigateToCreateBarcode = useCallback(() => {
-    // navigation.navigate(routeOptions.createBarcodeScreen.name, { barcode: {} });
+    navigation.navigate(routeOptions.createBarcodeScreen.name, { barcode: {} });
   }, [navigation]);
 
   const actionSheetOptions = useMemo(

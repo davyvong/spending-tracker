@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingHorizontal: 18,
+    paddingHorizontal: 24,
     paddingTop: 6,
   },
   actionSheet: {
