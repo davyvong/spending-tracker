@@ -30,10 +30,10 @@ const TransactionList = ({ onDelete, ...props }) => {
       deleteButton: {
         backgroundColor: palette.get('backgrounds.alternate-button'),
       },
-      actionSheetTransactionAmountPositive: {
+      actionSheetAmountPositive: {
         color: palette.get('texts.positive'),
       },
-      actionSheetTransactionMutedText: {
+      actionSheetMutedText: {
         color: palette.get('texts.muted'),
       },
     }),

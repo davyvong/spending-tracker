@@ -2,12 +2,15 @@ import { StyleSheet } from 'react-native';
 import { normalizeText } from 'utils/styles';
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   contentContainer: {
+    paddingHorizontal: 18,
     paddingTop: 6,
   },
-  sectionHeader: {
-    marginHorizontal: 24,
-    marginVertical: 8,
+  card: {
+    marginTop: 18,
   },
   actionSheet: {
     marginBottom: 18,

@@ -6,9 +6,9 @@ import Card from 'models/card';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import SettingsScreenComponent from './component';
+import ManageCardsScreenComponent from './component';
 
-const SettingsScreen = ({ navigation, ...props }) => {
+const ManageCardsScreen = ({ navigation, ...props }) => {
   const api = useAPI();
   const storage = useStorage();
   const { palette } = useTheme();
@@ -85,7 +85,7 @@ const SettingsScreen = ({ navigation, ...props }) => {
   }, [getCards, navigation]);
 
   return (
-    <SettingsScreenComponent
+    <ManageCardsScreenComponent
       {...props}
       cards={cards}
       navigateToCreateCard={navigateToCreateCard}
@@ -99,7 +99,7 @@ const SettingsScreen = ({ navigation, ...props }) => {
   );
 };
 
-SettingsScreen.propTypes = {
+ManageCardsScreen.propTypes = {
   navigation: PropTypes.shape({
     addListener: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
@@ -107,4 +107,4 @@ SettingsScreen.propTypes = {
   }),
 };
 
-export default SettingsScreen;
+export default ManageCardsScreen;

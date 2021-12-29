@@ -4,6 +4,7 @@ export default new Map(
   Object.entries({
     'backgrounds.alternate-button': '#d63031',
     'backgrounds.app': '#ffffff',
+    'backgrounds.barcode': '#ffffff',
     'backgrounds.chart-tooltip': '#5f6368',
     'backgrounds.icon': hexToRGB('#0984e3', 0.25),
     'backgrounds.input': hexToRGB('#5f6368', 0.25),
@@ -20,6 +21,7 @@ export default new Map(
     'gradients.wallet-card': hexToRGB('#ffffff', 0.5),
     'icons.active': '#0984e3',
     'icons.default': '#9e9ea7',
+    'lines.barcode': '#000000',
     'refresh-control': '#9e9ea7',
     shadow: '#000000',
     'texts.button': '#ffffff',

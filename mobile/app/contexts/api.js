@@ -9,6 +9,7 @@ import * as categoriesQueries from 'graphql/queries/categories';
 import * as spendingQueries from 'graphql/queries/spending';
 import * as transactionsQueries from 'graphql/queries/transactions';
 import Account from 'models/account';
+import Barcode from 'models/barcode';
 import Card from 'models/card';
 import Category from 'models/category';
 import Transaction from 'models/transaction';
@@ -90,6 +91,36 @@ export const APIProvider = ({ children }) => {
     const storageKey = storage.getItemKey('account');
     storage.setItem(storageKey, account);
     return account.id;
+  }, [client]);
+
+  const getBarcodes = useCallback(async () => {
+    const data = {
+      barcodes: [
+        {
+          amount: 20,
+          attributes: [
+            {
+              name: 'PIN',
+              value: '2536',
+            },
+          ],
+          currency: 'CAD',
+          id: 'esso-gift-card',
+          name: 'ESSO Gift Card',
+          value: '7042320000017738046',
+        },
+      ],
+    };
+    const barcodeIds = [];
+    data.barcodes.forEach(barcodeData => {
+      const barcode = new Barcode(barcodeData);
+      barcodeIds.push(barcode.id);
+      const storageKey = storage.getItemKey('barcode', barcode.id);
+      storage.setItem(storageKey, barcode);
+    });
+    const storageKey = storage.getItemKey('barcodes');
+    storage.setItem(storageKey, barcodeIds);
+    return barcodeIds;
   }, [client]);
 
   const getCards = useCallback(async () => {
@@ -346,6 +377,7 @@ export const APIProvider = ({ children }) => {
     deleteCard,
     deleteTransaction,
     getAccount,
+    getBarcodes,
     getCards,
     getCategories,
     getCategorySpending,

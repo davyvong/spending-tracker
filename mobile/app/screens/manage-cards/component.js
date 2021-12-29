@@ -12,7 +12,7 @@ import { ActivityIndicator, FlatList, Pressable, RefreshControl, View } from 're
 
 import styles from './styles';
 
-const SettingsScreenComponent = ({
+const ManageCardsScreenComponent = ({
   cards,
   navigateToCreateCard,
   refreshCards,
@@ -70,7 +70,7 @@ const SettingsScreenComponent = ({
             tintColor={theme.refreshControl}
           />
         }
-        removeClippedSubviews
+        removeClippedSubviews={cards.length > 10}
         renderItem={renderItem}
         scrollEventThrottle={200}
       />
@@ -78,11 +78,11 @@ const SettingsScreenComponent = ({
   );
 };
 
-SettingsScreenComponent.defaultProps = {
+ManageCardsScreenComponent.defaultProps = {
   cards: [],
 };
 
-SettingsScreenComponent.propTypes = {
+ManageCardsScreenComponent.propTypes = {
   cards: PropTypes.arrayOf(Card.propTypes),
   navigateToCreateCard: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
@@ -93,4 +93,4 @@ SettingsScreenComponent.propTypes = {
   visibleLoading: PropTypes.number.isRequired,
 };
 
-export default SettingsScreenComponent;
+export default ManageCardsScreenComponent;

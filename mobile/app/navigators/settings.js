@@ -4,6 +4,7 @@ import Header from 'core/header';
 import useLocale from 'hooks/locale';
 import React from 'react';
 import CreateCardScreen from 'screens/create-card';
+import ManageBarcodesScreen from 'screens/manage-barcodes';
 import ManageCardsScreen from 'screens/manage-cards';
 import PasswordScreen from 'screens/password';
 import ProfileScreen from 'screens/profile';
@@ -39,6 +40,15 @@ const SettingsNavigator = () => {
         options={{
           ...routeOptions.createCardScreen,
           title: locale.t(routeOptions.createCardScreen.title),
+        }}
+        unmountOnBlur
+      />
+      <Stack.Screen
+        component={ManageBarcodesScreen}
+        name={routeOptions.manageBarcodesScreen.name}
+        options={{
+          ...routeOptions.manageBarcodesScreen,
+          title: locale.t(routeOptions.manageBarcodesScreen.title),
         }}
         unmountOnBlur
       />
