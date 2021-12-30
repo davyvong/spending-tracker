@@ -1,3 +1,4 @@
+import { defaultBarcodeFormat } from 'constants/barcodes';
 import useAPI from 'hooks/api';
 import useTheme from 'hooks/theme';
 import pick from 'lodash/pick';
@@ -19,10 +20,12 @@ const EditBarcodeScreen = ({ navigation, route, ...props }) => {
   const [pendingSave, setPendingSave] = useState(false);
   const [errors, setErrors] = useState({
     attributes: null,
+    format: null,
     name: null,
     value: null,
   });
   const [values, setValues] = useState({
+    format: defaultBarcodeFormat,
     name: '',
     value: '',
     ...barcode,
@@ -61,11 +64,12 @@ const EditBarcodeScreen = ({ navigation, route, ...props }) => {
   );
 
   const validateValues = useCallback(() => {
-    const { attributes, name, value } = values;
+    const { attributes, format, name, value } = values;
     const badAttributes = attributes.some(item => !item.name || !item.value);
-    if (badAttributes || !name || !value) {
+    if (badAttributes || !format || !name || !value) {
       setErrors({
         attributes: badAttributes ? 'components.barcode-form.errors.empty-attributes' : null,
+        format: format ? null : 'components.barcode-form.errors.empty-format',
         name: name ? null : 'components.barcode-form.errors.empty-name',
         value: value ? null : 'components.barcode-form.errors.empty-value',
       });

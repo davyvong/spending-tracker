@@ -7,6 +7,7 @@ export const createBarcode = gql`
         name
         value
       }
+      format
       id
       name
       value
@@ -27,6 +28,7 @@ export const updateBarcode = gql`
         name
         value
       }
+      format
       id
       name
       value

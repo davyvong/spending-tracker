@@ -8,7 +8,7 @@ import { Pressable, View } from 'react-native';
 
 import styles from './styles';
 
-const BarcodeCardComponent = ({ dimensions, name, onPress, theme, value }) => (
+const BarcodeCardComponent = ({ dimensions, format, name, onPress, theme, value }) => (
   <View style={[styles.card, theme.card]}>
     <LinearGradient colors={theme.cardGradient} style={styles.cardGradient} />
     <View style={styles.cardHeader}>
@@ -16,7 +16,7 @@ const BarcodeCardComponent = ({ dimensions, name, onPress, theme, value }) => (
     </View>
     <BarcodeGenerator
       background={theme.cardBarcode.background}
-      format="CODE128"
+      format={format}
       lineColor={theme.cardBarcode.line}
       maxWidth={dimensions.width - 104}
       style={styles.cardBarcode}
@@ -46,6 +46,7 @@ BarcodeCardComponent.propTypes = {
   dimensions: PropTypes.shape({
     width: PropTypes.number,
   }),
+  format: PropTypes.string,
   name: PropTypes.string,
   onPress: PropTypes.func,
   theme: PropTypes.object,

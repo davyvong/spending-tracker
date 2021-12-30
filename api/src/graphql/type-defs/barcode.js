@@ -12,6 +12,7 @@ export default `
 
   type Barcode {
     attributes: [BarcodeAttribute]
+    format: String
     id: ID!
     name: String
     value: String
@@ -29,12 +30,14 @@ export default `
 
   input CreateBarcodeData {
     attributes: [BarcodeAttributeData]!
+    format: String!
     name: String!
     value: String!
   }
 
   input UpdateBarcodeData {
     attributes: [BarcodeAttributeData]
+    format: String
     name: String
     value: String
   }

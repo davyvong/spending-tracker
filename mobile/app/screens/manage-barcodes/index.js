@@ -1,3 +1,4 @@
+import { getBarcodeFormat } from 'constants/barcodes';
 import { routeOptions } from 'constants/routes';
 import useAPI from 'hooks/api';
 import useLocale from 'hooks/locale';
@@ -122,6 +123,16 @@ const ManageBarcodesScreen = ({ navigation, ...props }) => {
     setActionSheet(true);
   }, []);
 
+  const updateBarcodeFormat = useCallback(
+    async format => {
+      if (selectedBarcode && getBarcodeFormat(format)) {
+        await api.updateBarcode(selectedBarcode.id, { format });
+        await getBarcodes();
+      }
+    },
+    [api.updateBarcode, getBarcodes, selectedBarcode],
+  );
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getBarcodes();
@@ -150,6 +161,7 @@ const ManageBarcodesScreen = ({ navigation, ...props }) => {
       setNavigationOptions={navigation.setOptions}
       setSelectedBarcode={setSelectedBarcodeIndex}
       theme={theme}
+      updateBarcodeFormat={updateBarcodeFormat}
     />
   );
 };
