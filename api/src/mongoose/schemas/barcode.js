@@ -1,3 +1,4 @@
+import { barcodeFormatEnum } from 'constants/barcode';
 import { Schema, Types } from 'mongoose';
 import { isEmpty } from 'validator';
 
@@ -33,6 +34,14 @@ export default new Schema(
     createTime: {
       required: true,
       type: Number,
+    },
+    format: {
+      enum: barcodeFormatEnum,
+      require: true,
+      type: String,
+      validate: {
+        validator: value => !isEmpty(value),
+      },
     },
     name: {
       required: true,

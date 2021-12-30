@@ -9,6 +9,7 @@ export default class Barcode {
         value: PropTypes.string,
       }),
     ),
+    format: PropTypes.string,
     id: PropTypes.string,
     name: PropTypes.string,
     value: PropTypes.string,

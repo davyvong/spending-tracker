@@ -1,7 +1,9 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from 'components/button';
+import RadioPickerInput from 'components/radio-picker-input';
 import Text from 'components/text';
 import TextInput from 'components/text-input';
+import { barcodeFormatOptions } from 'constants/barcodes';
 import useLocale from 'hooks/locale';
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback } from 'react';
@@ -85,6 +87,14 @@ const BarcodeFormComponent = ({
               label={locale.t('components.barcode-form.labels.value')}
               onChangeText={updateValue('value')}
               value={values.value}
+            />
+            <RadioPickerInput
+              editable={editable}
+              error={errors.format && locale.t(errors.format)}
+              label={locale.t('components.barcode-form.labels.format')}
+              onChange={updateValue('format')}
+              options={barcodeFormatOptions}
+              value={values.format}
             />
             <Text style={[styles.fieldTitle, theme.fieldTitle]}>
               {locale.t('components.barcode-form.labels.attributes')}

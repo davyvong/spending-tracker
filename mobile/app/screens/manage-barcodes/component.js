@@ -3,10 +3,12 @@ import ActionSheet from 'components/action-sheet';
 import BarcodeCard from 'components/barcode-card';
 import Button from 'components/button';
 import CardCarousel from 'components/card-carousel';
+import RadioPickerInput from 'components/radio-picker-input';
 import ReadOnlyTextInput from 'components/read-only-text-input';
 import ScrollView from 'components/scroll-view';
 import Text from 'components/text';
 import Title from 'components/title';
+import { barcodeFormatOptions } from 'constants/barcodes';
 import { routeOptions } from 'constants/routes';
 import useLocale from 'hooks/locale';
 import Barcode from 'models/barcode';
@@ -33,6 +35,7 @@ const ManageBarcodesScreenComponent = ({
   setNavigationOptions,
   setSelectedBarcode,
   theme,
+  updateBarcodeFormat,
 }) => {
   const [locale] = useLocale();
 
@@ -78,6 +81,12 @@ const ManageBarcodesScreenComponent = ({
             <ReadOnlyTextInput
               label={locale.t('screens.manage-barcodes.labels.barcode')}
               value={selectedBarcode.value}
+            />
+            <RadioPickerInput
+              label={locale.t('screens.manage-barcodes.labels.format')}
+              onChange={updateBarcodeFormat}
+              options={barcodeFormatOptions}
+              value={selectedBarcode.format}
             />
             {selectedBarcode.attributes.map(renderAttribute)}
           </Fragment>
@@ -126,6 +135,7 @@ ManageBarcodesScreenComponent.propTypes = {
   setNavigationOptions: PropTypes.func.isRequired,
   setSelectedBarcode: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
+  updateBarcodeFormat: PropTypes.func.isRequired,
 };
 
 export default ManageBarcodesScreenComponent;

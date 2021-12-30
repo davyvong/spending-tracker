@@ -7,6 +7,7 @@ export const barcode = gql`
         name
         value
       }
+      format
       id
       name
       value
@@ -21,6 +22,7 @@ export const barcodes = gql`
         name
         value
       }
+      format
       id
       name
       value
