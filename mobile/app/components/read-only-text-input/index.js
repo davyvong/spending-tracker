@@ -9,14 +9,14 @@ import ReadOnlyTextInputComponent from './component';
 
 const ReadOnlyTextInput = props => {
   const { palette } = useTheme();
-  const [pending, setPending] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = useCallback(async () => {
-    setPending(true);
-    await sleep(100);
     Clipboard.setString(props.value);
-    setPending(false);
-  }, []);
+    setIsCopied(true);
+    await sleep(1500);
+    setIsCopied(false);
+  }, [props.value]);
 
   const theme = useMemo(
     () => ({
@@ -26,13 +26,11 @@ const ReadOnlyTextInput = props => {
   );
 
   const renderComponent = useCallback(
-    inputProps => (
-      <ReadOnlyTextInputComponent {...inputProps} copyToClipboard={copyToClipboard} pending={pending} theme={theme} />
-    ),
-    [copyToClipboard, pending, theme],
+    inputProps => <ReadOnlyTextInputComponent {...inputProps} theme={theme} />,
+    [theme],
   );
 
-  return <TextInput {...props} component={renderComponent} />;
+  return <TextInput {...props} component={renderComponent} copyToClipboard={copyToClipboard} isCopied={isCopied} />;
 };
 
 ReadOnlyTextInput.propTypes = {
