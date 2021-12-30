@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import BarcodeScannerInput from 'components/barcode-scanner-input';
 import Button from 'components/button';
 import RadioPickerInput from 'components/radio-picker-input';
 import Text from 'components/text';
@@ -81,7 +82,7 @@ const BarcodeFormComponent = ({
               onChangeText={updateValue('name')}
               value={values.name}
             />
-            <TextInput
+            <BarcodeScannerInput
               editable={editable}
               error={errors.value && locale.t(errors.value)}
               label={locale.t('components.barcode-form.labels.value')}
