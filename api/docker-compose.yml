@@ -7,5 +7,6 @@ services:
     environment:
       APOLLO_SERVER_PORT: "6000"
       NODE_ENV: "production"
+    image: "davyvong/spending-tracker"
     ports:
       - "6000:6000"
