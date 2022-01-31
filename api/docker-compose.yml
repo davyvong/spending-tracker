@@ -3,6 +3,7 @@ version: "3.9"
 services:
   api:
     build:
+      context: "./"
       dockerfile: "Dockerfile"
     environment:
       APOLLO_SERVER_PORT: "6000"
