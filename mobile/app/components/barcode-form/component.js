@@ -85,7 +85,7 @@ const BarcodeFormComponent = ({
             <BarcodeScannerInput
               editable={editable}
               error={errors.value && locale.t(errors.value)}
-              label={locale.t('components.barcode-form.labels.value')}
+              label={locale.t('components.barcode-form.labels.barcode')}
               onChangeText={updateValue('value')}
               value={values.value}
             />
