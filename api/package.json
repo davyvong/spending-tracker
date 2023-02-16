@@ -33,7 +33,7 @@
     "lodash.snakecase": "^4.1.1",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.35",
-    "mongoose": "^5.12.7",
+    "mongoose": "^5.13.15",
     "node-fetch": "^2.6.1",
     "regenerator-runtime": "^0.13.7",
     "validator": "^13.7.0"
